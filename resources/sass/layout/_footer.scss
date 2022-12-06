@@ -1,0 +1,26 @@
+.footer {
+    background: $sg-gradient;
+    font-family: $font-family-roboto;
+    font-weight: 600;
+
+    &_for-more {
+        font-size: 1.3rem;
+        text-transform: uppercase;
+    }
+
+    &_social-media {
+        justify-content: center;
+        align-items: center;
+        gap: 1.75rem;
+    }
+
+    .social-media-icon {
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+
+    &_copyright {
+        margin-top: 1.5rem;
+        margin-bottom: -0.2rem;
+    }
+}

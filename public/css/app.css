@@ -1,15 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
-@charset "UTF-8"; /*!
+@charset "UTF-8";
+/*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
-  --sg-background: #E3E3E3;
-  --sg-main-purple: #3E4189;
-  --sg-medium-purple: #5764A6;
-  --sg-light-purple: #ABB3DE;
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -52,8 +49,8 @@
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
-  --bs-body-bg-rgb: 248, 250, 252;
-  --bs-font-sans-serif: "Nunito", sans-serif;
+  --bs-body-bg-rgb: 227, 227, 227;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
@@ -61,7 +58,7 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.6;
   --bs-body-color: #212529;
-  --bs-body-bg: #f8fafc;
+  --bs-body-bg: #E3E3E3;
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
@@ -90,20 +87,6 @@
   }
 }
 
-.stargaze-logo {
-  height: 3rem;
-}
-
-.nav-item {
-  color: var(--sg-main-purple);
-  font-weight: 600;
-  font-size: 1.2rem;
-}
-
-.nav-item :hover {
-  color: var(--sg-light-purple);
-}
-
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);
@@ -112,7 +95,7 @@ body {
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background-color: var(--sg-background);
+  background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -617,7 +600,7 @@ progress {
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: #f8fafc;
+  background-color: #E3E3E3;
   border: 1px solid var(--bs-border-color);
   border-radius: 0.375rem;
   max-width: 100%;
@@ -2011,7 +1994,7 @@ progress {
   font-weight: 400;
   line-height: 1.6;
   color: #212529;
-  background-color: #f8fafc;
+  background-color: #E3E3E3;
   background-clip: padding-box;
   border: 1px solid #ced4da;
   -webkit-appearance: none;
@@ -2033,7 +2016,7 @@ progress {
 }
 .form-control:focus {
   color: #212529;
-  background-color: #f8fafc;
+  background-color: #E3E3E3;
   border-color: #86b7fe;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
@@ -2163,7 +2146,7 @@ textarea.form-control-lg {
   font-weight: 400;
   line-height: 1.6;
   color: #212529;
-  background-color: #f8fafc;
+  background-color: #E3E3E3;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
@@ -2240,7 +2223,7 @@ textarea.form-control-lg {
   height: 1em;
   margin-top: 0.3em;
   vertical-align: top;
-  background-color: #f8fafc;
+  background-color: #E3E3E3;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2351,10 +2334,10 @@ textarea.form-control-lg {
   outline: 0;
 }
 .form-range:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 1px #f8fafc, 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 0 1px #E3E3E3, 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 .form-range:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 1px #f8fafc, 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 0 1px #E3E3E3, 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 .form-range::-moz-focus-outer {
   border: 0;
@@ -3660,8 +3643,8 @@ textarea.form-control-lg {
   --bs-nav-tabs-border-radius: 0.375rem;
   --bs-nav-tabs-link-hover-border-color: #e9ecef #e9ecef #dee2e6;
   --bs-nav-tabs-link-active-color: #495057;
-  --bs-nav-tabs-link-active-bg: #f8fafc;
-  --bs-nav-tabs-link-active-border-color: #dee2e6 #dee2e6 #f8fafc;
+  --bs-nav-tabs-link-active-bg: #E3E3E3;
+  --bs-nav-tabs-link-active-border-color: #dee2e6 #dee2e6 #E3E3E3;
   border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
 }
 .nav-tabs .nav-link {
@@ -4345,7 +4328,7 @@ textarea.form-control-lg {
 
 .accordion {
   --bs-accordion-color: #212529;
-  --bs-accordion-bg: #f8fafc;
+  --bs-accordion-bg: #E3E3E3;
   --bs-accordion-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
   --bs-accordion-border-color: var(--bs-border-color);
   --bs-accordion-border-width: 1px;
@@ -10836,4 +10819,69 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+header {
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+}
+header .stargaze-logo {
+  height: 3rem;
+}
+header .sg-nav-link {
+  color: rgb(74, 32, 117);
+  text-decoration: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  font-size: 1.25rem;
+}
+header .sg-nav-link:hover {
+  color: rgb(163, 80, 202);
+}
+
+.footer {
+  background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+}
+.footer_for-more {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+}
+.footer_social-media {
+  justify-content: center;
+  align-items: center;
+  gap: 1.75rem;
+}
+.footer .social-media-icon {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+.footer_copyright {
+  margin-top: 1.5rem;
+  margin-bottom: -0.2rem;
+}
+
+.homepage {
+  font-family: "Roboto", sans-serif;
+}
+.homepage_search-box {
+  background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
+  border-radius: 2rem;
+  margin-bottom: 5rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+.homepage_search-box input, .homepage_search-box select {
+  height: 3rem;
+  border-radius: 2rem;
+  border-style: none;
+  font-size: 1rem;
+}
+.homepage_search-box input:focus, .homepage_search-box select:focus {
+  outline: none;
+}
+.homepage_search-box .button-custom {
+  background: rgb(114, 26, 165);
+  color: white;
+  font-weight: 800;
+  box-shadow: 2rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
 }

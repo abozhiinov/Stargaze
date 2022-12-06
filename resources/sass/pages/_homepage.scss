@@ -1,0 +1,29 @@
+.homepage {
+    font-family: $font-family-roboto;
+
+    &_search-box {
+        background: $sg-gradient;
+        border-radius: 2rem;
+        margin-bottom: 5rem;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+
+        input, select {
+            height: 3rem;
+            border-radius: 2rem;
+            border-style: none;
+            font-size: 1rem;
+            
+            &:focus{
+                outline: none;
+            }
+        }
+
+        .button-custom {
+            background: $sg-button-purple;
+            color: white;
+            font-weight: 800;
+            box-shadow: 2rem;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+    }
+}
