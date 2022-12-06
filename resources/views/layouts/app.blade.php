@@ -13,54 +13,53 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url('css/app.css') }}"> -->
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+        <header>
+            <nav class="">
+                <div class="nav d-flex justify-content-between p-4">
+                    <a class="navbar-logo" href="{{ url('/') }}">
+                        <img src="{{url('/images/stargaze-logo.png')}}" class="img-responsive stargaze-logo">
+                    </a>
+                    <ul id='navbar' class="d-flex justify-between gap-4 p-2 list-unstyled">
+                        <li id="navbar-home" class="nav-item">
+                            <a class="sg-nav-link" href="/">{{ __('Начало') }}</a>
+                        </li>
+                        <li id="navbar-artists" class="nav-item">
+                            <a class="sg-nav-link" href="/artists">{{ __('Изпълнители') }}</a>
+                        </li> 
+                        <li id="navbar-events" class="nav-item">
+                            <a class="sg-nav-link" href="/events">{{ __('Събития') }}</a>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="sg-nav-link" href="{{ route('login') }}">{{ __('Вход') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="sg-nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle link-primary" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -72,12 +71,24 @@
                         @endguest
                     </ul>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
 
         <main class="py-4">
             @yield('content')
         </main>
+
+        <footer class="text-center text-white">
+            <div id="footer" class="footer py-4">
+                <p id="footer_for-more" class="footer_for-more">{{ __('Следи за изяви и тук') }} </p>
+                <div id="footer_social-media" class="d-flex footer_social-media">
+                    <a href="#"><img src="{{url('/images/fb_icon.png')}}" class="social-media-icon"></a>
+                    <a href="#"><img src="{{url('/images/ig_icon.png')}}" class="social-media-icon"></a>
+                    <a href="#"><img src="{{url('/images/tw_icon.png')}}" class="social-media-icon"></a>
+                </div>
+                <p id="footer_copyright" class="footer_copyright"> © Copyright Stargaze. All Rights Reserved </p>
+            </div>
+        </footer>
     </div>
 </body>
 </html>
