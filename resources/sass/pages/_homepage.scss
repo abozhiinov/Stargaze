@@ -1,29 +1,25 @@
 .homepage {
     font-family: $font-family-roboto;
 
-    &_search-box {
-        background: $sg-gradient;
-        border-radius: 2rem;
-        margin-bottom: 5rem;
-        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    &-hot-picks {
+        overflow-x: hidden;
+    }
 
-        input, select {
-            height: 3rem;
-            border-radius: 2rem;
-            border-style: none;
-            font-size: 1rem;
-            
-            &:focus{
-                outline: none;
-            }
+    &-hot-pick {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        &-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: $border-radius-main;
         }
 
-        .button-custom {
-            background: $sg-button-purple;
+        &-text {
             color: white;
-            font-weight: 800;
-            box-shadow: 2rem;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
         }
     }
 }

@@ -1,0 +1,13 @@
+.button-custom {
+    background: $sg-color-button-purple;
+    color: white;
+    border-radius: $border-radius-main;
+    border-style: none;
+    font-weight: 800;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.375s ease-in-out;
+
+    &:hover {
+        background: $sg-color-lighter-purple;
+    }
+}

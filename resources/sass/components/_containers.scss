@@ -1,0 +1,23 @@
+.main-container {
+    background: $sg-gradient;
+    border-radius: 2rem;
+    margin-bottom: 5rem;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+
+    input, select {
+        padding-left: 1rem;
+        height: 3rem;
+        border-radius: 2rem;
+        border-style: none;
+        font-size: 1rem;
+        
+        &:focus{
+            outline: none;
+        }
+    }
+}
+
+h2 {
+    font-family: $font-family-roboto;
+    color: $sg-color-dark-purple;
+}

@@ -1,19 +1,22 @@
-header {
+.header {
     font-family: $font-family-roboto;
-    font-weight: 600;
 
     .stargaze-logo {
         height: 3rem;
     }
 
     .sg-nav-link {
-        color: $sg-medium-purple;
+        color: $sg-color-medium-purple;
         text-decoration: none;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        transition: 0.15s ease-in-out;
         font-size: 1.25rem;
 
         &:hover{
-            color: $sg-lighter-purple;
+            color: $sg-color-lighter-purple;
         }
+    }
+
+    #navbar {
+        gap: 2.5rem !important;
     }
 }

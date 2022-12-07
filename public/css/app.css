@@ -1,5 +1,188 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 @charset "UTF-8";
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+audio, canvas, progress, video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+[hidden], template {
+  display: none;
+}
+
+a {
+  background-color: transparent;
+}
+
+a:active, a:hover {
+  outline: 0;
+}
+
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+dfn {
+  font-style: italic;
+}
+
+h1, .h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+mark, .mark {
+  background: #ff0;
+  color: #000;
+}
+
+small, .small {
+  font-size: 80%;
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+img {
+  border: 0;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+figure {
+  margin: 1em 40px;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+pre {
+  overflow: auto;
+}
+
+code, kbd, pre, samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+button, input, optgroup, select, textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+button {
+  overflow: visible;
+}
+
+button, select {
+  text-transform: none;
+}
+
+button, html input[type=button], input[type=reset],
+input[type=submit] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button[disabled], html input[disabled] {
+  cursor: default;
+}
+
+button::-moz-focus-inner, input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+input {
+  line-height: normal;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+input[type=search] {
+  -webkit-appearance: textfield;
+  box-sizing: content-box;
+}
+
+input[type=search]::-webkit-search-cancel-button, input[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+  border: 0;
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+}
+
+optgroup {
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td, th {
+  padding: 0;
+}
+
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -10820,21 +11003,23 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-header {
+.header {
   font-family: "Roboto", sans-serif;
-  font-weight: 600;
 }
-header .stargaze-logo {
+.header .stargaze-logo {
   height: 3rem;
 }
-header .sg-nav-link {
+.header .sg-nav-link {
   color: rgb(74, 32, 117);
   text-decoration: none;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
   font-size: 1.25rem;
 }
-header .sg-nav-link:hover {
+.header .sg-nav-link:hover {
   color: rgb(163, 80, 202);
+}
+.header #navbar {
+  gap: 2.5rem !important;
 }
 
 .footer {
@@ -10860,28 +11045,114 @@ header .sg-nav-link:hover {
   margin-bottom: -0.2rem;
 }
 
-.homepage {
-  font-family: "Roboto", sans-serif;
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
 }
-.homepage_search-box {
+.dashboard-box {
+  margin: 0 3rem 0 3rem;
+}
+.dashboard-thumbnail {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 2rem;
+}
+
+.register, .login {
   background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
   border-radius: 2rem;
-  margin-bottom: 5rem;
+  color: white;
+  font-family: "Roboto", sans-serif;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  margin: 5rem 0 8.4rem 0;
 }
-.homepage_search-box input, .homepage_search-box select {
+.register .card-header, .login .card-header {
+  margin-top: 1rem;
+  text-align: center;
+  background: none;
+  border-bottom: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.register input:not([type=checkbox]), .login input:not([type=checkbox]) {
+  background: white;
   height: 3rem;
   border-radius: 2rem;
   border-style: none;
   font-size: 1rem;
 }
-.homepage_search-box input:focus, .homepage_search-box select:focus {
+.register input:not([type=checkbox]):focus, .login input:not([type=checkbox]):focus {
   outline: none;
 }
-.homepage_search-box .button-custom {
+.register .button-custom, .login .button-custom {
+  height: 3rem;
+  width: 50%;
+  margin-bottom: 1rem;
+}
+.register .btn-link, .login .btn-link {
+  color: white !important;
+}
+
+.button-custom {
   background: rgb(114, 26, 165);
   color: white;
+  border-radius: 2rem;
+  border-style: none;
   font-weight: 800;
-  box-shadow: 2rem;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+  transition: 0.375s ease-in-out;
+}
+.button-custom:hover {
+  background: rgb(163, 80, 202);
+}
+
+.main-container {
+  background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
+  border-radius: 2rem;
+  margin-bottom: 5rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+.main-container input, .main-container select {
+  padding-left: 1rem;
+  height: 3rem;
+  border-radius: 2rem;
+  border-style: none;
+  font-size: 1rem;
+}
+.main-container input:focus, .main-container select:focus {
+  outline: none;
+}
+
+h2, .h2 {
+  font-family: "Roboto", sans-serif;
+  color: rgb(49, 22, 113);
+}
+
+.search-input-field {
+  width: 30%;
+}
+
+.homepage {
+  font-family: "Roboto", sans-serif;
+}
+.homepage-hot-picks {
+  overflow-x: hidden;
+}
+.homepage-hot-pick {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.homepage-hot-pick-image {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 2rem;
+}
+.homepage-hot-pick-text {
+  color: white;
 }

@@ -6,6 +6,16 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Layout
 @import 'layout/header';
 @import 'layout/footer';
+@import 'layout/dashboard';
+
+// Components
+@import 'components/register';
+@import 'components/buttons';
+@import 'components/containers';
+@import 'components/search';
+
+// Pages
 @import 'pages/homepage';
