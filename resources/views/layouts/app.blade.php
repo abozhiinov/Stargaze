@@ -23,7 +23,7 @@
     <div id="app">
         <header>
             <nav class="">
-                <div class="nav d-flex justify-content-between p-4">
+                <div class="header nav d-flex justify-content-between p-4">
                     <a class="navbar-logo" href="{{ url('/') }}">
                         <img src="{{url('/images/stargaze-logo.png')}}" class="img-responsive stargaze-logo">
                     </a>
