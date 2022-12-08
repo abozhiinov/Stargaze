@@ -1,10 +1,12 @@
+<?php use App\Http\Controllers\ArtistController; ?>
+
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
 	<h2 class="dashboard-title text-center">Изпълнители</h2>
 	<form>
-		<div class="row main-container d-flex justify-content-around p-4 mt-5">
+		<div class="form-container d-flex justify-content-around p-4 mt-5">
 			<input type="text" class="search-input-field" placeholder="Търси изпълнител...">
 			<select class="search-input-field">
 				<option value="" disabled selected>Жанрове</option>
@@ -15,12 +17,18 @@
 		</div>
 	</form>
 
-	<div class="dashboard justify-content-start align-items-center">
-		<?php for ( $count = 0; $count < 8; $count++ ) : ?>
-			<div class="main-container col-sm-3 mb-4 dashboard-box">
-				<img src="{{url('/images/galena.jpg')}}" class="dashboard-thumbnail">
-			</div>
-		<?php endfor; ?>
+	@php $artists = ArtistController::allArtists() @endphp
+	<div class="dashboard">
+		@if(count($artists) > 0)
+			@foreach($artists as $artist)
+				<div class="dashboard-artist-box">
+					<a href="/artist/{{$artist->username}}">
+						<span class="dashboard-artist-name">{{$artist->name}}</span>
+						<img src="{{ url('images/' . $artist->profile_picture) }}" class="dashboard-artist-thumbnail">
+					</a>
+				</div>
+			@endforeach
+		@endif
 	</div>
 </div>
 @endsection
