@@ -34,6 +34,9 @@
                         <li id="navbar-artists" class="nav-item">
                             <a class="sg-nav-link" href="/artists">{{ __('Изпълнители') }}</a>
                         </li> 
+                        <li id="navbar-places" class="nav-item">
+                            <a class="sg-nav-link" href="/places">{{ __('Заведения') }}</a>
+                        </li>
                         <li id="navbar-events" class="nav-item">
                             <a class="sg-nav-link" href="/events">{{ __('Събития') }}</a>
                         </li>
@@ -82,9 +85,9 @@
             <div id="footer" class="footer py-4">
                 <p id="footer_for-more" class="footer_for-more">{{ __('Следи за изяви и тук') }} </p>
                 <div id="footer_social-media" class="d-flex footer_social-media">
-                    <a href="#"><img src="{{url('/images/fb_icon.png')}}" class="social-media-icon"></a>
-                    <a href="#"><img src="{{url('/images/ig_icon.png')}}" class="social-media-icon"></a>
-                    <a href="#"><img src="{{url('/images/tw_icon.png')}}" class="social-media-icon"></a>
+                    <a href="#"><img src="{{url('/images/facebook.svg')}}" class="social-media-icon"></a>
+                    <a href="#"><img src="{{url('/images/instagram.svg')}}" class="social-media-icon"></a>
+                    <a href="#"><img src="{{url('/images/twitter.svg')}}" class="social-media-icon"></a>
                 </div>
                 <p id="footer_copyright" class="footer_copyright"> © Copyright Stargaze. All Rights Reserved </p>
             </div>
