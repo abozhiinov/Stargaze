@@ -1,6 +1,8 @@
-.header {
-    font-family: $font-family-roboto;
+body {
+    font-family: 'Montserrat', sans-serif;
+}
 
+.header {
     .stargaze-logo {
         height: 3rem;
     }
@@ -8,8 +10,10 @@
     .sg-nav-link {
         color: $sg-color-medium-purple;
         text-decoration: none;
+        text-transform: uppercase;
         transition: 0.15s ease-in-out;
-        font-size: 1.25rem;
+        font-size: 1rem;
+        font-weight: 500;
 
         &:hover{
             color: $sg-color-lighter-purple;
