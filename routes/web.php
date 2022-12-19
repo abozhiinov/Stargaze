@@ -21,6 +21,10 @@ Route::get('/artists', function () {
     return view('artists');
 });
 
+Route::get('/places', function () {
+    return view('places');
+});
+
 Route::get('/events', function () {
     return view('events');
 });
@@ -29,13 +33,9 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/artist', function () {
-    return view('single-artist');
-});
+Route::get( '/artist/{username}', '\App\Http\Controllers\ArtistController@getArtistView' );
 
-Route::get('/club', function () {
-    return view('single-club');
-});
+Route::get( '/place/{name}', '\App\Http\Controllers\PlaceController@getPlaceView' );
 
 Auth::routes();
 
