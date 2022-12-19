@@ -4,35 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\Artist;
+use App\Models\Place;
 use Carbon\Carbon;
 
-class ArtistController extends Controller {
-	// Get all artists.
-	public function allArtists() {
-		return Artist::all();
-		//return DB::table( 'artists' )->orderBy( 'likes', 'asc' )->get();
+class PlaceController extends Controller
+{
+    // Get all artists.
+	public function allPlaces() {
+		return Place::all();
 	}
 
-	// Get the single view for an artist.
-	public function getArtistView( $username ) {
-		return view('single-artist', [ 'username' => $username ] );
+	// Get the single view for an artist
+	public function getPlaceView( $name ) {
+		return view('single-place', [ 'name' => $name ] );
 	}
 
-	// Get artist's data.
-	public function getArtistData( $username ) {
-		return Artist::where( 'username', $username )->get();
+	// Get artist's data
+	public function getPlaceData( $name ) {
+		return Place::where( 'name', $name )->get();
 	}
 
-	// Get artist's data.
-	public function getArtistGenre( $genre_id ) {
+	// Get artist's data
+	public function getPlaceGenre( $genre_id ) {
 		return DB::table( 'genres' )->find( $genre_id );
 	}
 
-	public function getArtistEvents( $id ) {
-		$get_events = DB::table( 'events' )
-			->where( 'artist_id', $id )
-			->get();
+	public function getPlaceEvents( $id ) {
+		$get_events = DB::table( 'events' )->where( 'club_id', $id )->get();
 		$upcoming_events = array();
 		foreach ( $get_events as $event ) :
 			$date   = Carbon::createFromFormat( 'Y-m-d', $event->date );
@@ -56,11 +54,11 @@ class ArtistController extends Controller {
 		return $upcoming_events;
 	}
 
-	// Get other artists.
-	public function otherArtists( $artist_id, $genre_id ) {
-		return DB::table( 'artists' )
+	// Get other places.
+	public function otherPlaces( $place_id, $genre_id ) {
+		return DB::table( 'places' )
 		->where([
-			[ 'id', '!=', $artist_id ],
+			[ 'id', '!=', $place_id ],
 			[ 'genre_id', '=', $genre_id ],
 		])
 		->inRandomOrder()
