@@ -1,4 +1,4 @@
-<?php use App\Http\Controllers\ArtistController; ?>
+@php use App\Http\Controllers\ArtistController; @endphp
 
 @extends('layouts.app')
 
@@ -21,10 +21,19 @@
 	<div class="dashboard">
 		@if(count($artists) > 0)
 			@foreach($artists as $artist)
-				<div class="dashboard-artist-box">
+				<div class="artist-box">
 					<a href="/artist/{{$artist->username}}">
-						<span class="dashboard-artist-name">{{$artist->name}}</span>
-						<img src="{{ url('images/' . $artist->profile_picture) }}" class="dashboard-artist-thumbnail">
+						<img src="{{ url('images/' . $artist->profile_picture) }}" class="artist-thumbnail">
+						<div class="artist-box-content">
+							<p class="artist-title">
+								{{$artist->name}}
+								<span>
+								@if($artist->verified == 1)
+								<img class="artist-verified" src="{{url('/images/verified.svg')}}">
+								@endif
+								</span>
+							</p>
+						</div>
 					</a>
 				</div>
 			@endforeach
