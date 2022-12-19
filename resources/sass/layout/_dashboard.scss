@@ -1,15 +1,117 @@
 .dashboard {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+    max-width: 100%;
+    width: calc(100% - 8rem);
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.event {
+    &-dashboard {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: space-around;
+        gap: 4rem;
+        max-width: 100%;
+        width: calc(100% - 8rem);
+        margin-left: auto;
+        margin-right: auto;
+    }
 
     &-box {
-        margin: 0 3rem 0 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+
+        &-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 0.5rem 2rem;
+        }
+
+        .event-thumbnail {
+            position: relative;
+            opacity: 1;
+            object-fit: cover;
+            object-position: top;
+    
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+    
+        .event-title {
+            z-index: 100;
+            position: absolute;
+            color: white;
+            text-shadow: $text-shadow-main;
+            font-size: 2rem;
+            font-weight: bold;
+            left: 4.5rem;
+            top: 16rem;
+        }
+    
+        .event-date {
+            z-index: 100;
+            position: absolute;
+            color: white;
+            text-shadow: $text-shadow-main;
+            font-size: 1.5rem;
+            left: 4.5rem;
+            top: 18.5rem;
+        }
+
+        .event-book {
+            width: 10rem;
+            height: 3rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 1rem;
+            position: absolute;
+            display: none;
+            z-index: 100;
+        }
+
+        &:hover .event-book{ 
+            display: block;
+        }
     }
 
     &-thumbnail {
-        width: 100%;
-        height: 100%;
+        width: 35rem;
+        height: 20rem;
         object-fit: cover;
         border-radius: $border-radius-main;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    &-name {
+        z-index: 100;
+        position: absolute;
+        color: white;
+        text-shadow: $text-shadow-main;
+        font-size: 1.75rem;
+        font-weight: bold;
+        left: 5rem;
+        top: 18rem;
     }
 }
