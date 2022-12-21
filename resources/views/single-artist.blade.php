@@ -51,11 +51,13 @@
 		<div class="upcoming-events">
 			@foreach( $events as $event )
 			<div class="event-box">
-				<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
-				<button class="event-book button-custom">Запази</button>
-				<div class="event-info">
-					<p class="event-title">{{$event["title"]}}</p>
-					<p class="event-date">{{$event["event_date"]}}</p>
+				<div class="event-box-content">
+					<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
+					<button class="event-book button-custom">Запази</button>
+					<div class="event-info">
+						<p class="event-title">{{$event["title"]}}</p>
+						<p class="event-date">{{$event["event_date"]}}</p>
+					</div>
 				</div>
 			</div>
 			@endforeach
