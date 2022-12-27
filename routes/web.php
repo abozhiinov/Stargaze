@@ -33,6 +33,10 @@ Route::get('/register', function () {
     return view('register');
 });
 
+Route::get('/profile/{id}', function () {
+    return view( 'my-profile' );
+});
+
 Route::get( '/artist/{username}', '\App\Http\Controllers\ArtistController@getArtistView' );
 
 Route::get( '/place/{name}', '\App\Http\Controllers\PlaceController@getPlaceView' );
@@ -48,3 +52,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get( '/dashboardGenreSort/{type}/{id}/{order?}/{search?}', '\App\Http\Controllers\AjaxController@dashboardGenreSort' );
+Route::get( '/dashboardOrder/{type}/{order}/{id?}/{search?}', '\App\Http\Controllers\AjaxController@dashboardOrder' );
+Route::get( '/dashboardSearch/{type}/{search}/{id?}/{order?}', '\App\Http\Controllers\AjaxController@dashboardSearch' );
