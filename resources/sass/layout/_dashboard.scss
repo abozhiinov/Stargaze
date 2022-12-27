@@ -4,8 +4,7 @@
     gap: 4rem;
     max-width: 100%;
     width: calc(100% - 8rem);
-    margin-left: auto;
-    margin-right: auto;
+    margin: 4rem auto;
 
     @media (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
@@ -20,60 +19,33 @@
     &-dashboard {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        justify-content: space-around;
         gap: 4rem;
         max-width: 100%;
-        width: calc(100% - 8rem);
-        margin-left: auto;
-        margin-right: auto;
+        width: calc(100% - 5rem);
+        margin: 4rem auto;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
     }
 
     &-box {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-
-        &-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 0.5rem 2rem;
-        }
-
         .event-thumbnail {
-            position: relative;
-            opacity: 1;
-            object-fit: cover;
-            object-position: top;
-    
-            &:hover {
-                opacity: 0.7;
-            }
+
         }
     
         .event-title {
-            z-index: 100;
-            position: absolute;
-            color: white;
-            text-shadow: $text-shadow-main;
-            font-size: 2rem;
-            font-weight: bold;
-            left: 4.5rem;
-            top: 16rem;
         }
     
         .event-date {
-            z-index: 100;
-            position: absolute;
+            z-index: 200;
             color: white;
             text-shadow: $text-shadow-main;
             font-size: 1.5rem;
-            left: 4.5rem;
-            top: 18.5rem;
+            margin-bottom: 0;
+            position: relative;
+            bottom: 0;
+            left: 0;
         }
 
         .event-book {
@@ -83,6 +55,8 @@
             font-weight: 500;
             font-size: 1rem;
             position: absolute;
+            top: 50%;
+            left: 50%;
             display: none;
             z-index: 100;
         }
@@ -91,27 +65,13 @@
             display: block;
         }
     }
+}
 
-    &-thumbnail {
-        width: 35rem;
-        height: 20rem;
-        object-fit: cover;
-        border-radius: $border-radius-main;
-        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-
-        &:hover {
-            opacity: 0.7;
-        }
-    }
-
-    &-name {
-        z-index: 100;
-        position: absolute;
-        color: white;
-        text-shadow: $text-shadow-main;
-        font-size: 1.75rem;
-        font-weight: bold;
-        left: 5rem;
-        top: 18rem;
-    }
+.my-profile-dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+    max-width: 100%;
+    width: calc(100% - 8rem);
+    margin: 2rem auto;
 }
