@@ -71,13 +71,17 @@
 		@foreach($places as $place)
 			<div class="place-box">
 				<a href="/place/{{$place->name}}">
-					<span class="place-name">
-					{{$place->name}}
-					@if($place->verified == 1)
-					<img class="place-verified" src="{{url('/images/verified.svg')}}">
-					@endif
-					</span>
-					<img src="{{ url('images/' . $place->profile_picture) }}" class="artist-thumbnail">
+					<img src="{{ url('images/' . $place->profile_picture) }}" class="place-thumbnail">
+					<div class="place-box-content">
+						<p class="place-title">
+							{{$place->name}}
+							<span>
+							@if($place->verified == 1)
+							<img class="place-verified" src="{{url('/images/verified.svg')}}">
+							@endif
+							</span>
+						</p>
+					</div>
 				</a>
 			</div>
 		@endforeach

@@ -26,7 +26,7 @@
 					@endif
 				</div>
 				@if(!empty($artist_genre))
-				<p class="single-artist-genre">{{$artist_genre->genre}}</p>
+				<p class="single-artist-genre">{{$artist_genre->name}}</p>
 				@endif
 			</div>
 			<a href="{{ url($artist->facebook) }}">
@@ -51,6 +51,7 @@
 		<div class="upcoming-events">
 			@foreach( $events as $event )
 			<div class="event-box">
+				<a>
 				<div class="event-box-content">
 					<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
 					<button class="event-book button-custom">Запази</button>
@@ -59,6 +60,7 @@
 						<p class="event-date">{{$event["event_date"]}}</p>
 					</div>
 				</div>
+				</a>
 			</div>
 			@endforeach
 		</div>
@@ -75,6 +77,10 @@
 					<a href="/artist/{{$artist->username}}">
 						<img src="{{ url('images/' . $artist->profile_picture) }}" class="artist-thumbnail">
 						<div class="artist-box-content">
+							<div class="artist-box-likes">
+								<img class="artist-likes" src="{{url('/images/likes.svg')}}">
+								<p class="artist-likes-count"> {{$artist->likes}}</p>
+							</div>
 							<p class="artist-title">
 								{{$artist->name}}
 								<span>
