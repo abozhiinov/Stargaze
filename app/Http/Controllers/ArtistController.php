@@ -67,4 +67,13 @@ class ArtistController extends Controller {
 		->limit( 3 )
 		->get();
 	}
+
+	// Get admin's artists.
+	public function getAdminArtists ( $admin_id ) {
+		return Artist::where( 'admin_id', $admin_id )->get();
+	}
+
+	public function getAllGenres () {
+		return DB::table('genres')->get();
+	}
 }

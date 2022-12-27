@@ -36,11 +36,6 @@ class EventController extends Controller
 		return $pass_events;
 	}
 
-	// Get the single view for an artist
-	public function getEventView( $id ) {
-		return view( 'single-event', [ 'id' => $id ] );
-	}
-
 	public function getEventData( $id ) {
 		$event = DB::table( 'events' )->where( 'id', $id )->get()[0];
 		$pass_event = array();

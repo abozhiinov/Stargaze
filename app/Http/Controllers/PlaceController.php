@@ -65,4 +65,13 @@ class PlaceController extends Controller
 		->limit( 3 )
 		->get();
 	}
+
+	// Get artists by admin
+	public function getAdminPlaces( $admin_id ) {
+		return Place::where( 'admin_id', $admin_id )->get();
+	}
+
+	public function getAllLocations() {
+		return DB::table( 'locations' )->get();
+	}
 }
