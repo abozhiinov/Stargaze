@@ -13,7 +13,53 @@
 }
 
 .button-add-new {
-    width: 20rem;
-    height: 2.5rem;
-    box-shadow: none;
+    &-artist, &-place {
+        width: 20rem;
+        height: 2.5rem;
+        box-shadow: none;
+    }
+}
+
+.close {
+    background: transparent;
+    outline: none;
+    border: none;
+    font-size: 2rem;
+}
+
+.admin-panel button {
+    background: transparent;
+    outline: none;
+    border: none;
+    color: $sg-color-dark-purple;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1rem;
+
+    &:hover {
+        color: $sg-color-lighter-purple;
+    }
+}
+
+.invitation-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    z-index: 200;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+
+    & button {
+        background: white;
+        opacity: 0.9;
+        padding: 0.5rem;
+        color: $sg-color-dark-purple;
+        font-weight: 600;
+        font-size: 1.2rem;
+        border-radius: 2rem;
+        border-style: none;
+    }
 }

@@ -17,6 +17,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <!-- <link rel="stylesheet" type="text/css" href="{{ url('css/app.css') }}"> -->
 </head>
 <body>
@@ -54,22 +55,21 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle link-primary" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                            <li class="nav-item">
+                                <a class="sg-nav-link" href="/profile" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ __('Моят Профил') }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                            </li>
+                            <li class="nav-item">
+                                <a class="sg-nav-link" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Изход') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
                         @endguest
                     </ul>

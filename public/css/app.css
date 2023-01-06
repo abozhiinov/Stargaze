@@ -11107,6 +11107,60 @@ body {
   display: block;
 }
 
+.invitation-dashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  max-width: 100%;
+  margin: 2rem auto 4rem auto;
+}
+.invitation-single {
+  width: 100%;
+  border-radius: 2rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(48, 48, 48);
+  position: relative;
+}
+.invitation-single-content {
+  bottom: 0;
+  left: 0;
+  padding: 1rem 1.75rem;
+  width: 100%;
+}
+.invitation-single-place-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 2rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0.4;
+}
+.invitation-single-title {
+  color: white;
+  text-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 200;
+}
+.invitation-single-message {
+  color: white;
+  text-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 200;
+}
+
 .my-profile-dashboard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -11134,6 +11188,7 @@ body {
 }
 .register input:not([type=checkbox]), .login input:not([type=checkbox]) {
   background: white;
+  color: black !important;
   height: 3rem;
   border-radius: 2rem;
   border-style: none;
@@ -11164,16 +11219,58 @@ body {
   background: rgb(163, 80, 202);
 }
 
-.button-add-new {
+.button-add-new-artist, .button-add-new-place {
   width: 20rem;
   height: 2.5rem;
   box-shadow: none;
 }
 
+.close {
+  background: transparent;
+  outline: none;
+  border: none;
+  font-size: 2rem;
+}
+
+.admin-panel button {
+  background: transparent;
+  outline: none;
+  border: none;
+  color: rgb(49, 22, 113);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.admin-panel button:hover {
+  color: rgb(163, 80, 202);
+}
+
+.invitation-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+  z-index: 200;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+}
+.invitation-buttons button {
+  background: white;
+  opacity: 0.9;
+  padding: 0.5rem;
+  color: rgb(49, 22, 113);
+  font-weight: 600;
+  font-size: 1.2rem;
+  border-radius: 2rem;
+  border-style: none;
+}
+
 .form-container {
   background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
   border-radius: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
 }
 .form-container input, .form-container select {
@@ -11187,6 +11284,31 @@ body {
   outline: none;
 }
 
+.edit-form-container {
+  background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
+  border-radius: 2rem;
+  margin-bottom: 4rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  width: 80%;
+}
+.edit-form-container input:not([type=file]), .edit-form-container select {
+  width: 100%;
+  height: 3rem;
+  border-radius: 2rem;
+  margin-bottom: 1rem;
+  border-style: none;
+  font-size: 1rem;
+  color: black;
+}
+.edit-form-container input:not([type=file]):focus, .edit-form-container select:focus {
+  outline: none;
+}
+.edit-form-container button {
+  width: 60%;
+  height: 3rem;
+}
+
 .artist-container, .place-container {
   border-radius: 2rem;
   margin-bottom: 2rem;
@@ -11196,11 +11318,6 @@ body {
   justify-content: center;
   background-color: rgb(48, 48, 48);
   position: relative;
-}
-.artist-container .single-artist, .artist-container .single-place, .place-container .single-artist, .place-container .single-place {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 .artist-container .single-artist-thumbnail, .artist-container .single-place-thumbnail, .place-container .single-artist-thumbnail, .place-container .single-place-thumbnail {
   width: 100%;
@@ -11262,6 +11379,10 @@ body {
   z-index: 100;
   position: absolute;
   right: 2rem;
+}
+
+.artist-content {
+  margin: auto;
 }
 
 .artist-box, .place-box, .event-box {
@@ -11384,15 +11505,128 @@ body {
   color: rgb(49, 22, 113);
   font-size: 1rem;
 }
+.back a:hover {
+  color: rgb(163, 80, 202);
+}
 
-h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
+h2, .h2, h3, .h3, h4, .h4 {
   text-transform: uppercase;
   font-weight: 600;
   color: rgb(49, 22, 113);
+  text-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .my-artists, .my-places {
   padding: 2rem 0 0 2rem;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+}
+.section-heading a {
+  margin-right: 4rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: rgb(49, 22, 113);
+  font-size: 1rem;
+}
+.section-heading a:hover {
+  color: rgb(163, 80, 202);
+}
+
+.modal-header {
+  border: none !important;
+  color: white;
+  justify-content: space-between;
+}
+.modal-content {
+  background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
+  border-radius: 2rem;
+  margin-bottom: 4rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  width: 70rem;
+  border: none !important;
+}
+.modal-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-body label {
+  font-size: 1rem;
+}
+.modal-body input:not([type=file]), .modal-body select {
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  height: 3rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+.modal-body input:not([type=file])::-moz-placeholder, .modal-body select::-moz-placeholder {
+  color: white;
+}
+.modal-body input:not([type=file])::placeholder, .modal-body select::placeholder {
+  color: white;
+}
+.modal-body input:not([type=file]):focus, .modal-body input:not([type=file]) :active, .modal-body select:focus, .modal-body select :active {
+  background: transparent;
+  border-bottom: 3px solid white;
+  outline: none;
+}
+
+.form-control {
+  color: white !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.form-control:active {
+  color: black !important;
+}
+.form-control.edit {
+  color: black !important;
+}
+.form-control.edit:active {
+  color: black !important;
+}
+
+.input-group {
+  width: 90%;
+}
+
+.custom-file-button {
+  border-radius: 2rem !important;
+}
+.custom-file-button input[type=file] {
+  margin-left: -2px !important;
+}
+.custom-file-button input[type=file]::file-selector-button {
+  display: none;
+}
+.custom-file-button:hover label {
+  background-color: #dde0e3;
+  cursor: pointer;
+}
+
+.admin-panel {
+  margin-bottom: 2rem;
+}
+.admin-panel a {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: rgb(49, 22, 113);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.admin-panel a:hover {
+  color: rgb(163, 80, 202);
+}
+.admin-panel .active-page {
+  color: rgb(163, 80, 202);
+  border-bottom: 2px solid rgb(163, 80, 202);
 }
 
 .search-input-field {

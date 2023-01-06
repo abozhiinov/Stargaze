@@ -1,7 +1,7 @@
 .form-container {
     background: $sg-gradient;
     border-radius: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
 
     input, select {
@@ -17,6 +17,34 @@
     }
 }
 
+.edit-form-container {
+    background: $sg-gradient;
+    border-radius: 2rem;
+    margin-bottom: 4rem;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    width: 80%;
+
+    input:not([type="file"]), select {
+        width: 100%;
+        height: 3rem;
+        border-radius: 2rem;
+        margin-bottom: 1rem;
+        border-style: none;
+        font-size: 1rem;
+        color: black;
+        
+        &:focus{
+            outline: none;
+        }
+    }
+
+    button {
+        width: 60%;
+        height: 3rem;
+    }
+}
+
 .artist-container, .place-container {
     border-radius: 2rem;
     margin-bottom: 2rem;
@@ -29,9 +57,6 @@
 
     .single{
         &-artist, &-place {
-        display: flex;
-        justify-content: center;
-        align-items: center;
         
             &-thumbnail {
                 width: 100%;
@@ -102,6 +127,10 @@
             }
         }
     }
+}
+
+.artist-content {
+    margin: auto;
 }
 
 .artist, .place, .event{
@@ -236,15 +265,149 @@
         text-transform: uppercase;
         color: $sg-color-dark-purple;
         font-size: 1rem;
+    
+        &:hover {
+            color: $sg-color-lighter-purple;
+        }
     }
 }
 
-h2, h3, h4, h5 {
+h2, h3, h4 {
     text-transform: uppercase;
     font-weight: 600;
     color: $sg-color-dark-purple;
+    text-shadow: $text-shadow-main;
 }
 
 .my-artists, .my-places {
     padding: 2rem 0 0 2rem;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+
+    & a {
+        margin-right: 4rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: $sg-color-dark-purple;
+        font-size: 1rem;
+    
+        &:hover {
+            color: $sg-color-lighter-purple;
+        }
+    }
+}
+
+.modal {
+
+    &-header {
+        border: none !important;
+        color: white;
+        justify-content: space-between;
+    }
+
+    &-content{
+        background: $sg-gradient;
+        border-radius: 2rem;
+        margin-bottom: 4rem;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+        width: 70rem;
+        border: none !important;
+    }
+
+    &-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & label {
+            font-size: 1rem;
+        }
+
+        & input:not([type="file"]), select {
+            &::placeholder {
+                color: white;
+            }
+            border: 0;
+            border-bottom: 1px solid #e5e5e5; 
+            border-radius: 0;
+            outline: 0;
+            background: transparent;
+            height: 3rem;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            
+            &:focus, :active{
+                background: transparent;
+                border-bottom: 3px solid white;
+                outline: none;
+            }
+        }
+    }
+}
+
+.form-control {
+    color: white !important;
+    box-shadow: none !important;
+    outline: none !important;
+    &:active {
+        color: black !important;
+    }
+
+    &.edit {
+        color: black !important;
+        &:active {
+            color: black !important;
+        }
+    }
+}
+
+.input-group {
+    width: 90%;
+}
+
+.custom-file-button {
+
+    border-radius: 2rem !important;
+
+	input[type="file"] {
+		margin-left: -2px !important;
+
+		&::-webkit-file-upload-button {
+			display: none;
+		}
+		&::file-selector-button {
+			display: none;
+		}
+	}
+
+	&:hover {
+		label {
+			background-color: #dde0e3;
+			cursor: pointer;
+		}
+	}
+}
+
+.admin-panel {
+    margin-bottom: 2rem;
+
+    & a {
+        text-decoration: none;
+        text-transform: uppercase;
+        color: $sg-color-dark-purple;
+        font-size: 1rem;
+        font-weight: 600;
+    
+        &:hover {
+            color: $sg-color-lighter-purple;
+        }
+    }
+
+    & .active-page {
+        color: $sg-color-lighter-purple;
+        border-bottom: 2px solid $sg-color-lighter-purple;
+    }
 }
