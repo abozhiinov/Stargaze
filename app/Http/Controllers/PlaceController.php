@@ -15,13 +15,18 @@ class PlaceController extends Controller
 	}
 
 	// Get the single view for an artist
-	public function getPlaceView( $name ) {
-		return view('single-place', [ 'name' => $name ] );
+	public function getPlaceView( $username ) {
+		return view('single-place', [ 'username' => $username ] );
 	}
 
 	// Get artist's data
-	public function getPlaceData( $name ) {
-		return Place::where( 'name', $name )->get();
+	public function getPlaceData( $username ) {
+		return Place::where( 'username', $username )->get();
+	}
+
+	// Get artist's data
+	public function getPlaceDataById( $id ) {
+		return Place::where( 'id', $id )->get();
 	}
 
 	// Get artist's data
@@ -72,6 +77,10 @@ class PlaceController extends Controller
 	}
 
 	public function getAllLocations() {
-		return DB::table( 'locations' )->get();
+		return DB::table( 'locations' )->orderBy( 'name', 'ASC' )->get();
+	}
+
+	public function getPopularPlaces() {
+		return DB::table( 'places' )->orderBy( 'likes', 'DESC' )->limit( 3 )->get();
 	}
 }

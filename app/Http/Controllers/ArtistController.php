@@ -11,12 +11,40 @@ class ArtistController extends Controller {
 	// Get all artists.
 	public function allArtists() {
 		return Artist::all();
-		//return DB::table( 'artists' )->orderBy( 'likes', 'asc' )->get();
 	}
 
 	// Get the single view for an artist.
 	public function getArtistView( $username ) {
 		return view('single-artist', [ 'username' => $username ] );
+	}
+
+	// Get the dashboard for artist's invitations.
+	public function getArtistInvitationsView( $username ) {
+		return view('single-artist-invitations', [ 'username' => $username ] );
+	}
+
+	public function getArtistPendingInvitations( $id ) {
+		return DB::table( 'invitations' )
+		->where([
+			[ 'artist_id', '=', $id ],
+			[ 'status', '=', 0 ],
+		])->get();
+	}
+
+	public function getArtistApprovedInvitations( $id ) {
+		return DB::table( 'invitations' )
+		->where([
+			[ 'artist_id', '=', $id ],
+			[ 'status', '=', 1 ],
+		])->get();
+	}
+
+	public function getArtistDisapprovedInvitations( $id ) {
+		return DB::table( 'invitations' )
+		->where([
+			[ 'artist_id', '=', $id ],
+			[ 'status', '=', -1 ],
+		])->get();
 	}
 
 	// Get artist's data.
@@ -74,6 +102,11 @@ class ArtistController extends Controller {
 	}
 
 	public function getAllGenres () {
-		return DB::table('genres')->get();
+		return DB::table( 'genres' )->orderBy( 'name', 'ASC' )->get();
 	}
+
+	public function getPopularArtists() {
+		return DB::table( 'artists' )->orderBy( 'likes', 'DESC' )->limit( 3 )->get();
+	}
+
 }
