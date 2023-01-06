@@ -18,8 +18,10 @@
 			</select>
 			<select class="search-input-field order-dashboard places" id="order-dashboard">
 				<option value="no-sort" selected>По подразбиране</option>
-				<option value="alphabet">По азбучен ред</option>
-				<option value="popular">По популярност</option>
+				<option value="alphabet-start">{{_('По азбучен ред - възходящо')}}</option>
+				<option value="alphabet-end">{{_('По азбучен ред - низходящо')}}</option>
+				<option value="popular">{{_('По популярност - низходящо')}}</option>
+				<option value="unpopular">{{_('По популярност - възходящо')}}</option>
 			</select>
 		</div>
 	</form>
