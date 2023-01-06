@@ -1,10 +1,12 @@
+@php use App\Http\Controllers\EventController; @endphp
+
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
 	<h2 class="text-center dashboard-title">Събития</h2>
 	<form>
-		<div class="row main-container d-flex justify-content-around p-4 mt-5">
+		<div class="form-container d-flex justify-content-around p-4 mt-5">
 			<input type="text" class="search-input-field" placeholder="Търси събитие...">
 			<select class="search-input-field">
 				<option value="" disabled selected>Филтри</option>
@@ -17,12 +19,24 @@
 		</div>
 	</form>
 
-	<div class="dashboard justify-content-start align-items-center">
-	<?php for ( $count = 0; $count < 12; $count++ ) : ?>
-		<div class="main-container col-sm-3 mb-4 dashboard-box">
-			<img src="{{url('/images/megami.jpg')}}" class="dashboard-thumbnail">
-		</div>
-	<?php endfor; ?>
+	@php $events = EventController::allEvents(); @endphp
+	<div class="event-dashboard">
+	@if(count($events) > 0)
+		@foreach($events as $event)
+			<div class="event-box">
+				<a>
+				<div class="event-box-content">
+					<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
+					{{-- <div class="event-info"> --}}
+						<p class="event-title">{{$event["title"]}}</p>
+						<p class="event-date">{{$event["event_date"]}}</p>
+					{{-- </div> --}}
+					<button class="event-book button-custom">Запази</button>
+				</div>
+				</a>
+			</div>
+		@endforeach
+	@endif
 	</div>
 </div>
 @endsection
