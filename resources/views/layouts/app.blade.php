@@ -22,59 +22,60 @@
 </head>
 <body>
     <div id="app">
-        <header>
-            <nav class="">
-                <div class="header nav d-flex justify-content-between p-4">
-                    <a class="navbar-logo" href="{{ url('/') }}">
-                        <img src="{{url('/images/stargaze-logo.png')}}" class="img-responsive stargaze-logo">
-                    </a>
-                    <ul id='navbar' class="d-flex justify-between gap-4 p-2 list-unstyled">
-                        <li id="navbar-home" class="nav-item">
-                            <a class="sg-nav-link" href="/">{{ __('Начало') }}</a>
-                        </li>
-                        <li id="navbar-artists" class="nav-item">
-                            <a class="sg-nav-link" href="/artists">{{ __('Изпълнители') }}</a>
-                        </li> 
-                        <li id="navbar-places" class="nav-item">
-                            <a class="sg-nav-link" href="/places">{{ __('Заведения') }}</a>
-                        </li>
-                        <li id="navbar-events" class="nav-item">
-                            <a class="sg-nav-link" href="/events">{{ __('Събития') }}</a>
-                        </li>
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="sg-nav-link" href="{{ route('login') }}">{{ __('Вход') }}</a>
-                                </li>
-                            @endif
+        <header class="site-header">
+            <div class="site-header-inner-wrapper">
+                <a class="navbar-logo" href="{{ url('/') }}">
+                    <img src="{{url('/images/stargaze-logo.png')}}" class="img-responsive stargaze-logo">
+                </a>
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="sg-nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
-                                </li>
-                            @endif
-                        @else
+                <button class="site-header" hidden></button>
+
+                <ul id='navbar' class="primary-menu list-unstyled">
+                    <li id="navbar-home" class="nav-item">
+                        <a class="sg-nav-link" href="/">{{ __('Начало') }}</a>
+                    </li>
+                    <li id="navbar-artists" class="nav-item">
+                        <a class="sg-nav-link" href="/artists">{{ __('Изпълнители') }}</a>
+                    </li> 
+                    <li id="navbar-places" class="nav-item">
+                        <a class="sg-nav-link" href="/places">{{ __('Заведения') }}</a>
+                    </li>
+                    <li id="navbar-events" class="nav-item">
+                        <a class="sg-nav-link" href="/events">{{ __('Събития') }}</a>
+                    </li>
+                    <!-- Authentication Links -->
+                    @guest
+                        @if (Route::has('login'))
                             <li class="nav-item">
-                                <a class="sg-nav-link" href="/profile" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ __('Моят Профил') }}
+                                <a class="sg-nav-link" href="{{ route('login') }}">{{ __('Вход') }}</a>
+                            </li>
+                        @endif
+
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="sg-nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
+                            </li>
+                        @endif
+                    @else
+                        <li class="nav-item">
+                            <a class="sg-nav-link" href="/profile" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ __('Моят Профил') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="sg-nav-link" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Изход') }}
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="sg-nav-link" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                        document.getElementById('logout-form').submit();">
-                                        {{ __('Изход') }}
-                                    </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </nav>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    @endguest
+                </ul>
+            </div>
         </header>
 
         <main class="py-4">
