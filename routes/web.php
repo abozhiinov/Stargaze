@@ -54,15 +54,21 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get( '/dashboardGenreSort/{type}/{id}/{order?}/{search?}', '\App\Http\Controllers\AjaxController@dashboardGenreSort' );
-Route::get( '/dashboardOrder/{type}/{order}/{id?}/{search?}', '\App\Http\Controllers\AjaxController@dashboardOrder' );
-Route::get( '/dashboardSearch/{type}/{search}/{id?}/{order?}', '\App\Http\Controllers\AjaxController@dashboardSearch' );
+Route::get( '/dashboardFilter', '\App\Http\Controllers\AjaxController@dashboardFilter' );
 
-Route::get( '/addNewArtist/{admin_id}/{name}/{username}/{genre_id}/{profile_pic}/{cover_pic}/{facebook?}/{instagram?}/{youtube?}', '\App\Http\Controllers\AjaxController@addNewArtist' );
-Route::get( '/editArtist/{admin_id}/{name}/{username}/{genre_id}/{profile_pic}/{cover_pic}/{facebook?}/{instagram?}/{youtube?}', '\App\Http\Controllers\AjaxController@updateEditedArtist' );
-Route::get( '/addNewPlace/{admin_id}/{name}/{username}/{genre_id}/{location_id}/{profile_pic}/{cover_pic}/{facebook?}/{instagram?}/{youtube?}', '\App\Http\Controllers\AjaxController@addNewPlace' );
+Route::get( '/addNewArtist', '\App\Http\Controllers\AjaxController@addNewArtist' );
+Route::get( '/editArtist', '\App\Http\Controllers\AjaxController@updateEditedArtist' );
+Route::get( '/addNewPlace', '\App\Http\Controllers\AjaxController@addNewPlace' );
+Route::get( '/editPlace', '\App\Http\Controllers\AjaxController@updateEditedPlace' );
 
 Route::get( '/artistInvitations/{username}', '\App\Http\Controllers\AjaxController@loadArtistInvitations' );
-Route::get( '/artistEdit/{username}', '\App\Http\Controllers\AjaxController@editArtist' );
+Route::get( '/placeInvitations/{username}', '\App\Http\Controllers\AjaxController@loadPlaceInvitations' );
+Route::get( '/artistEdit', '\App\Http\Controllers\AjaxController@editArtist' );
 Route::get( '/artistDelete/{username}', '\App\Http\Controllers\AjaxController@deleteArtist' );
 Route::get( '/placeDelete/{username}', '\App\Http\Controllers\AjaxController@deletePlace' );
+
+Route::get( '/statusInvitation', '\App\Http\Controllers\AjaxController@statusInvitation' );
+Route::get( '/deleteInvitation', '\App\Http\Controllers\AjaxController@deleteInvitation' );
+
+Route::get( '/inviteArtist', '\App\Http\Controllers\AjaxController@inviteArtist' );
+Route::get( '/createEvent', '\App\Http\Controllers\AjaxController@createEvent' );
