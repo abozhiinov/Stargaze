@@ -8,211 +8,88 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Models\Place;
+use Carbon\Carbon;
+use Psr\Http\Message\RequestInterface;
 
 class AjaxController extends Controller {
 
 	// $type Dashboard Filters.
+	public function dashboardFilter( Request $request ) {
+		$query  = DB::table( $request->type );
+		$s_type = substr( $request->type, 0, -1 );
 
-	/**
-	 * Sort by genre.
-	 */
-	public function dashboardGenreSort( $type, $id, $order = null, $search = null ) {
-		$query  = DB::table( $type );
-		$s_type = substr( $type, 0, -1 );
-
-		if ( $search && 'empty-search' !== $search ) {
-			$query->where( 'name', 'like', "%{$search}%" );
+		if ( ! empty( $request->search ) && 'empty-search' !== $request->search ) {
+			$query = $query->where( 'name', 'like', "%{$request->search}%" );
 		}
 
-		if ( 'artists' === $type ) {
-			if ( 'all-genres' !== $id ) {
-				$query->where( 'genre_id', $id );
-			}
-		} elseif ( 'places' === $type ) {
-			if ( 'all-places' !== $id ) {
-				$query->where( 'location_id', $id );
+		if ( $request->genre ) {
+			if ( 'artists' === $request->type ) {
+				if ( 'all-genres' !== $request->genre ) {
+					$query->where( 'genre_id', $request->genre );
+				}
+			} elseif ( 'places' === $request->type ) {
+				if ( 'all-places' !== $request->genre ) {
+					$query->where( 'location_id', $request->genre );
+				}
 			}
 		}
 
-		if ( 'alphabet-start' === $order ) {
+		if ( $request->order && 'alphabet-start' === $request->order ) {
 			$query = $query->orderBy( 'name', 'ASC' );
-		} elseif ( 'alphabet-end' === $order ) {
+		} elseif ( $request->order && 'alphabet-end' === $request->order ) {
 			$query = $query->orderBy( 'name', 'DESC' );
-		} elseif ( 'popular' === $order ) {
+		} elseif ( $request->order && 'popular' === $request->order ) {
 			$query = $query->orderBy( 'likes', 'DESC' );
-		} elseif ( 'unpopular' === $order ) {
+		} elseif ( $request->order && 'unpopular' === $request->order ) {
 			$query = $query->orderBy( 'likes', 'ASC' );
 		}
 
 		$query  = $query->get();
-		$response = '';
+
 		if ( count( $query ) > 0 ) :
-			foreach ( $query as $q ) :
-				$response .= "<div class='$s_type-box'>
-					<a href='/$s_type/$q->username'>
-						<img src='images/$q->profile_picture' class='$s_type-thumbnail'>
-						<div class='$s_type-box-likes'>
-							<img class='$s_type-likes' src='/images/likes.svg'>
-							<p class='$s_type-likes-count'>$q->likes</p>
+			foreach ( $query as $q ) : ?>
+				<div class='<?php echo $s_type; ?>-box'>
+					<a href='/<?php echo $s_type; ?>/<?php echo $q->username; ?>'>
+						<img src='images/<?php echo $q->profile_picture; ?>' class='<?php echo $s_type; ?>-thumbnail'>
+						<div class='<?php echo $s_type; ?>-box-likes'>
+							<img class='<?php echo $s_type; ?>-likes' src='/images/likes.svg'>
+							<p class='<?php echo $s_type; ?>-likes-count'><?php echo $q->likes; ?></p>
 						</div>
-						<div class='$s_type-box-content'>
-							<p class='$s_type-title'>
-								$q->name
+						<div class='<?php echo $s_type; ?>-box-content'>
+							<p class='<?php echo $s_type; ?>-title'>
+								<?php echo $q->name; ?>
 								<span>
-								";
-				if ( $q->verified == 1 ) {
-					$response .= "<img class='$s_type-verified' src='/images/verified.svg'>";
-				}
-				$response .= "</span>
+				<?php if ( $q->verified == 1 ) { ?>
+					<img class='<?php echo $s_type; ?>-verified' src='/images/verified.svg'>
+				<?php } ?>
+								</span>
 							</p>
 						</div>
 					</a>
-				</div>";
+				</div>
+		<?php
 			endforeach;
 		else :
-			$response .= '<h4>Няма намерени резултати.</h4>';
+		?>
+			<h4>Няма намерени резултати.</h4>
+		<?php
 		endif;
-		return $response;
-	}
-
-	/**
-	 * Order
-	 */
-	public function dashboardOrder( $type, $order, $sort_id = null, $search = null ) {
-		$query  = DB::table( $type );
-		$s_type = substr( $type, 0, -1 );
-
-		if ( ! empty( $search ) && 'empty-search' !== $search ) {
-			$query = $query->where( 'name', 'like', "%{$search}%" );
-		}
-
-		if ( 'alphabet-start' === $order ) {
-			$query = $query->orderBy( 'name', 'ASC' );
-		} elseif ( 'alphabet-end' === $order ) {
-			$query = $query->orderBy( 'name', 'DESC' );
-		} elseif ( 'popular' === $order ) {
-			$query = $query->orderBy( 'likes', 'DESC' );
-		} elseif ( 'unpopular' === $order ) {
-			$query = $query->orderBy( 'likes', 'ASC' );
-		}
-
-		if ( $sort_id ) {
-			if ( 'artists' === $type ) {
-				if ( 'all-genres' !== $sort_id ) {
-					$query->where( 'genre_id', $sort_id );
-				}
-			} elseif ( 'places' === $type ) {
-				if ( 'all-places' !== $sort_id ) {
-					$query->where( 'location_id', $sort_id );
-				}
-			}
-		}
-		$query  = $query->get();
-		$response = '';
-		if ( count( $query ) > 0 ) :
-			foreach ( $query as $q ) :
-				$response .= "<div class='$s_type-box'>
-					<a href='/$s_type/$q->username'>
-						<img src='images/$q->profile_picture' class='$s_type-thumbnail'>
-						<div class='$s_type-box-likes'>
-							<img class='$s_type-likes' src='/images/likes.svg'>
-							<p class='$s_type-likes-count'>$q->likes</p>
-						</div>
-						<div class='$s_type-box-content'>
-							<p class='$s_type-title'>
-								$q->name
-								<span>
-								";
-				if ( $q->verified == 1 ) {
-					$response .= "<img class='$s_type-verified' src='/images/verified.svg'>";
-				}
-				$response .= "</span>
-							</p>
-						</div>
-					</a>
-				</div>";
-			endforeach;
-		else :
-			$response .= '<h4>Няма намерени резултати.</h4>';
-		endif;
-		return $response;
-	}
-
-	public function dashboardSearch( $type, $search, $sort_id = null, $order = null ) {
-		$query  = DB::table( $type );
-		$s_type = substr( $type, 0, -1 );
-
-		if ( ! empty( $search ) && 'empty-search' !== $search ) {
-			$query = $query->where( 'name', 'like', "%{$search}%" );
-		}
-
-		if ( $sort_id ) {
-			if ( 'artists' === $type ) {
-				if ( 'all-genres' !== $sort_id ) {
-					$query->where( 'genre_id', $sort_id );
-				}
-			} elseif ( 'places' === $type ) {
-				if ( 'all-places' !== $sort_id ) {
-					$query->where( 'location_id', $sort_id );
-				}
-			}
-		}
-
-		if ( $order && 'alphabet-start' === $order ) {
-			$query = $query->orderBy( 'name', 'ASC' );
-		} elseif ( $order && 'alphabet-end' === $order ) {
-			$query = $query->orderBy( 'name', 'DESC' );
-		} elseif ( $order && 'popular' === $order ) {
-			$query = $query->orderBy( 'likes', 'DESC' );
-		} elseif ( $order && 'unpopular' === $order ) {
-			$query = $query->orderBy( 'likes', 'ASC' );
-		}
-
-		$query  = $query->get();
-		$response = '';
-		if ( count( $query ) > 0 ) :
-			foreach ( $query as $q ) :
-				$response .= "<div class='$s_type-box'>
-					<a href='/$s_type/$q->username'>
-						<img src='images/$q->profile_picture' class='$s_type-thumbnail'>
-						<div class='$s_type-box-likes'>
-							<img class='$s_type-likes' src='/images/likes.svg'>
-							<p class='$s_type-likes-count'>$q->likes</p>
-						</div>
-						<div class='$s_type-box-content'>
-							<p class='$s_type-title'>
-								$q->name
-								<span>
-								";
-				if ( $q->verified == 1 ) {
-					$response .= "<img class='$s_type-verified' src='/images/verified.svg'>";
-				}
-				$response .= "</span>
-							</p>
-						</div>
-					</a>
-				</div>";
-			endforeach;
-		else :
-			$response .= '<h4>Няма намерени резултати.</h4>';
-		endif;
-		return $response;
 	}
 
 	// Adding new data to DB.
 
-	public function addNewArtist( $admin_id, $name, $username, $genre_id, $profile_pic, $cover_pic, $facebook = '', $instagram = '', $youtube = '' ) {
+	public function addNewArtist( Request $request  ) {
 		$artist_data = array(
-			'admin_id'        => $admin_id,
-			'name'            => $name,
-			'username'        => $username,
-			'genre_id'        => $genre_id,
-			'profile_picture' => $profile_pic,
-			'cover_picture'   => $cover_pic,
-			'facebook'        => $facebook,
-			'instagram'       => $instagram,
-			'youtube'         => $youtube,
+			'admin_id'        => $request->id,
+			'name'            => $request->name,
+			'username'        => $request->username,
+			'genre_id'        => $request->genre_id,
+			'profile_picture' => $request->profile_pic,
+			'cover_picture'   => $request->cover_pic,
+			'facebook'        => $request->facebook,
+			'instagram'       => $request->instagram,
+			'youtube'         => $request->youtube,
 			'verified'        => 0,
 			'likes'           => 0,
 		);
@@ -220,18 +97,18 @@ class AjaxController extends Controller {
 		DB::table( 'artists' )->insert( $artist_data );
 	}
 
-	public function addNewPlace( $admin_id, $name, $username, $genre_id, $location_id, $profile_pic, $cover_pic, $facebook = '', $instagram = '', $youtube = '' ) {
+	public function addNewPlace( Request $request ) {
 		$place_data = array(
-			'admin_id'        => $admin_id,
-			'name'            => $name,
-			'username'        => $username,
-			'genre_id'        => $genre_id,
-			'location_id'     => $location_id,
-			'profile_picture' => $profile_pic,
-			'cover_picture'   => $cover_pic,
-			'facebook'        => $facebook,
-			'instagram'       => $instagram,
-			'youtube'         => $youtube,
+			'admin_id'        => $request->id,
+			'name'            => $request->name,
+			'username'        => $request->username,
+			'genre_id'        => $request->genre_id,
+			'location_id'     => $request->location_id,
+			'profile_picture' => $request->profile_pic,
+			'cover_picture'   => $request->cover_pic,
+			'facebook'        => $request->facebook,
+			'instagram'       => $request->instagram,
+			'youtube'         => $request->youtube,
 			'verified'        => 0,
 			'likes'           => 0,
 		);
@@ -245,60 +122,182 @@ class AjaxController extends Controller {
 		$approved_invitations    = ArtistController::getArtistApprovedInvitations( $artist->id );
 		$disapproved_invitations = ArtistController::getArtistDisapprovedInvitations( $artist->id );
 
-		$response = '';
-
-		$response .= '<h3 class="invitations text-center my-4">Покани</h3>';
-		if ( count( $pending_invitations ) ) :
-			$response .= "<h4>Активни</h4>
-			<div class='invitation-dashboard'> ";
+		?>
+		<h3 class="invitations text-center my-4">Покани</h3>
+		<?php if ( count( $pending_invitations ) ) : ?>
+			<h4>Активни</h4>
+			<div class='invitation-dashboard pending'>
+			<?php
 			foreach ( $pending_invitations as $inv ) :
-				$place = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$response .= "<div class='invitation-single'>
-				<div class='invitation-single-content'>
-					<img class='invitation-single-place-thumbnail' src='/images/$place->cover_picture'>
-					<p class='invitation-single-title'>$place->name, $inv->date</p>
-					<p class='invitation-single-message'>$inv->message</p>
-					<div class='invitation-buttons'>
-						<button class='invitation-single-button'>Приеми</button>
-						<button class='invitation-single-button'>Отхвърли</button>
+				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $place->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<button class='invitation-single-see-more'>Виж повече ▼ </button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<div class='invitation-buttons' data-id=<?php echo $inv->id; ?>>
+							<button type="button" class='invitation-status' data-status=1>Приеми</button>
+							<button type="button" class='invitation-status' data-status=-1>Отхвърли</button>
+						</div>
 					</div>
 				</div>
-			</div>";
-			endforeach;
-			$response .= '</div>';
+			<?php endforeach; ?>
+			</div>
+		<?php
 		endif;
 
-		if ( count( $approved_invitations ) ) :
-			$response .= " <h4>Одобрени</h4><div class='invitation-dashboard'>";
+		if ( count( $approved_invitations ) ) : ?>
+			<h4>Одобрени</h4>
+			<div class='invitation-dashboard approved'>
+			<?php
 			foreach ( $approved_invitations as $inv ) :
-				$place = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$response .= "<div class='invitation-single'>
-				<div class='invitation-single-content'>
-					<img class='invitation-single-place-thumbnail' src='/images/$place->cover_picture'>
-					<p class='invitation-single-title'>$place->name, $inv->date</p>
-					<p class='invitation-single-message'>$inv->message</p>
+				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $place->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<div class='invitation-buttons' data-event-id=<?php echo $inv->id; ?>>
+							<button class='invitation-single-create-event' data-date="<?php echo $inv->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $inv->id; ?>>Създай събитие</button>
+						</div>
+						<button class='invitation-single-see-more'>Виж повече ▼</button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+					</div>
 				</div>
-			</div>";
-			endforeach;
-			$response .= '</div>';
+			<?php endforeach; ?>
+			</div>
+		<?php
 		endif;
 
-		if ( count( $disapproved_invitations ) ) :
-			$response .= "<h4>Отхвърлени</h4><div class='invitation-dashboard'>";
+		if ( count( $disapproved_invitations ) ) : ?>
+			<h4>Отхвърлени</h4>
+			<div class='invitation-dashboard disapproved'>
+			<?php
 			foreach ( $disapproved_invitations as $inv ) :
-				$place = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$response .= "<div class='invitation-single'>
-				<div class='invitation-single-content'>
-					<img class='invitation-single-place-thumbnail' src='/images/$place->cover_picture'>
-					<p class='invitation-single-title'>$place->name, $inv->date</p>
-					<p class='invitation-single-message'>$inv->message</p>
+				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $place->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<div class='invitation-buttons' data-delete-id=<?php echo $inv->id; ?>>
+							<button class='invitation-single-delete'>Изтрий</button>
+						</div>
+						<button class='invitation-single-see-more'>Виж повече ▼</button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+					</div>
 				</div>
-			</div>";
-			endforeach;
-			$response .= '</div>';
+			<?php endforeach; ?>
+			</div>
+		<?php
+		endif;
+	}
+
+	public function loadPlaceInvitations( $username ) {
+		$place                  = PlaceController::getPlaceData( $username )[0];
+		$pending_invitations     = PlaceController::getPlacePendingInvitations( $place->id );
+		$approved_invitations    = PlaceController::getPlaceApprovedInvitations( $place->id );
+		$disapproved_invitations = PlaceController::getPlaceDisapprovedInvitations( $place->id );
+
+		?>
+		<h3 class="invitations text-center my-4">Покани</h3>
+		<?php if ( count( $pending_invitations ) ) : ?>
+			<h4>Активни</h4>
+			<div class='invitation-dashboard pending'>
+			<?php
+			foreach ( $pending_invitations as $inv ) :
+				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<button class='invitation-single-see-more'>Виж повече ▼ </button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<div class='invitation-buttons' data-delete-id=<?php echo $inv->id; ?>>
+							<button type="button" class='invitation-single-delete'>Изтрий покана</button>
+						</div>
+					</div>
+				</div>
+			<?php endforeach; ?>
+			</div>
+		<?php
 		endif;
 
-		return $response;
+		if ( count( $approved_invitations ) ) : ?>
+			<h4>Одобрени</h4>
+			<div class='invitation-dashboard approved'>
+			<?php
+			foreach ( $approved_invitations as $inv ) :
+				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<button class='invitation-single-see-more'>Виж повече ▼ </button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<div class='invitation-buttons' data-event-id=<?php echo $inv->id; ?>>
+							<button class='invitation-single-create-event' data-date="<?php echo $inv->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $inv->id; ?>>Създай събитие</button>
+						</div>
+					</div>
+				</div>
+			<?php endforeach; ?>
+			</div>
+		<?php
+		endif;
+
+		if ( count( $disapproved_invitations ) ) : ?>
+			<h4>Отхвърлени</h4>
+			<div class='invitation-dashboard disapproved'>
+			<?php
+			foreach ( $disapproved_invitations as $inv ) :
+				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<button class='invitation-single-see-more'>Виж повече ▼ </button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<div class='invitation-buttons' data-delete-id=<?php echo $inv->id; ?>>
+							<button class='invitation-single-delete'>Изтрий</button>
+						</div>
+					</div>
+				</div>
+			<?php endforeach; ?>
+			</div>
+		<?php
+		endif;
 	}
 
 	public function deleteArtist( $username ) {
@@ -313,74 +312,80 @@ class AjaxController extends Controller {
 		return '<p>Заведението беше изтрито успешно!</p>';
 	}
 
-	public function editArtist( $username ) {
-		$artist = ArtistController::getArtistData( $username )[0];
-		$genres = ArtistController::getAllGenres();
-
-		$current_genre = ArtistController::getArtistGenre( $artist->genre_id );
-
-		?>
-		<div class="edit-form-container">
-		<form method="post" action="" id="form-edit-artist" onsubmit="return false">
-			<div class="row justify-content-around align-items-center">
-				<input type="hidden" name="_token" id="token" value="' . csrf_token() . '">
-				<input type="hidden" name="id" id="id" value="' . $artist->id . '">
-				<div class="form-group col-sm-5 mb-4">
-				<input type="text" class="form-control edit" id="edit-artist-name" value="<?php echo  $artist->name; ?>" placeholder="Име на изпълнителя">
-				</div>
-				<div class="form-group col-sm-5 mb-4">
-					<input type="text" class="form-control edit" id="edit-artist-username" value="<?php echo $artist->username; ?>" placeholder="Потребителско име на изпълнителя">
-				</div>
-				<div class="form-group col-sm-5 mb-4">
-					<select class="form-control edit" id="edit-artist-genre">
-						<option class="genre-option" value="<?php echo $artist->genre_id; ?>" selected><?php echo $current_genre->name; ?></option>
-		<?php 
-		foreach ( $genres as $genre ) :
-			if ( $genre->id !== $artist->genre_id ) :
-				?>
-				<option class="genre-option" value="' . $genre->id . '"><?php echo $genre->name; ?></option>
-		<?php
-			endif;
-		endforeach;
-		?>
-					</select>
-				</div>
-				<div class="form-group col-sm-5 mb-4">
-				<input type="url" class="form-control edit" id="edit-artist-facebook" value="<?php echo $artist->facebook; ?>" placeholder="Facebook">
-				</div>
-				<div class="form-group col-sm-5 mb-4">
-				<input type="url" class="form-control edit" id="edit-artist-instagram" value="<?php echo $artist->instagram; ?>" placeholder="Instagram">
-				</div>
-				<div class="form-group col-sm-5 mb-4">
-				<input type="url" class="form-control edit" id="edit-artist-youtube" value="<?php echo $artist->youtube; ?>" placeholder="YouTube">
-				</div>
-				<div class="input-group custom-file-button col-sm-5 mb-4">
-					<label class="input-group-text" for="edit-artist-profile-pic">Профилна снимка</label>
-					<input type="file" class="form-control edit" id="edit-artist-profile-pic">
-				</div>
-				<div class="input-group custom-file-button col-sm-5 mb-4">
-					<label class="input-group-text" for="edit-artist-cover-pic">Корица</label>
-					<input type="file" class="form-control edit" id="edit-artist-cover-pic">
-				</div>
-				<button type="submit" class="button-custom" id="submit-edit-artist">Запази</button>
-				</div>
-			</form>
-		</div>
-		<?php
-	}
-
-	public function updateEditedArtist( $id, $name, $username, $genre_id, $profile_pic, $cover_pic, $facebook = '', $instagram = '', $youtube = '' ) {
+	public function updateEditedArtist( Request $request ) {
 		$artist_data = array(
-			'name'            => $name,
-			'username'        => $username,
-			'genre_id'        => $genre_id,
-			'profile_picture' => $profile_pic,
-			'cover_picture'   => $cover_pic,
-			'facebook'        => $facebook,
-			'instagram'       => $instagram,
-			'youtube'         => $youtube,
+			'name'      => $request->name,
+			'username'  => $request->username,
+			'genre_id'  => $request->genre_id,
+			'facebook'  => $request->facebook,
+			'instagram' => $request->instagram,
+			'youtube'   => $request->youtube,
 		);
 
-		DB::table( 'artists' )->where( 'id', '=', $id )->update( $artist_data );
+		if ( ! empty( $request->profile_pic ) ) {
+			$artist_data += [ 'profile_picture' => $request->profile_pic ];
+		}
+
+		if ( ! empty( $request->cover_pic ) ) {
+			$artist_data += [ 'cover_picture' => $request->cover_pic ];
+		}
+
+		DB::table( 'artists' )->where( 'id', '=', $request->id )->update( $artist_data );
+	}
+
+	public function updateEditedPlace( Request $request ) {
+		$place_data = array(
+			'name'        => $request->name,
+			'username'    => $request->username,
+			'genre_id'    => $request->genre_id,
+			'location_id' => $request->location_id,
+			'facebook'    => $request->facebook,
+			'instagram'   => $request->instagram,
+		);
+
+		if ( ! empty( $request->profile_pic ) ) {
+			$place_data += [ 'profile_picture' => $request->profile_pic ];
+		}
+
+		if ( ! empty( $request->cover_pic ) ) {
+			$place_data += [ 'cover_picture' => $request->cover_pic ];
+		}
+
+		DB::table( 'places' )->where( 'id', '=', $request->id )->update( $place_data );
+	}
+
+	public function statusInvitation( Request $request ) {
+		$status_update = [ 'status' => $request->status ];
+		DB::table( 'invitations' )->where( 'id', $request->id )->update( $status_update );
+	}
+
+	public function deleteInvitation( Request $request ) {
+		DB::table( 'invitations' )->where( 'id', $request->id )->delete();
+	}
+
+	public function inviteArtist( Request $request ) {
+		$invitation = array(
+			'artist_id'  => $request->id,
+			'place_id'   => $request->place,
+			'message'    => $request->message,
+			'date'       => $request->date,
+			'start_hour' => $request->start_hour,
+			'end_hour'   => $request->end_hour,
+			'status'     => 0,
+		);
+
+		DB::table( 'invitations' )->insert( $invitation );
+	}
+
+	public function createEvent( Request $request ) {
+		$event = array(
+			'artist_id' => $request->artist_id,
+			'club_id'   => $request->place_id,
+			'date'      => $request->date,
+			'title'     => $request->title,
+			'poster'    => $request->poster,
+		);
+
+		DB::table( 'events' )->insert( $event );
 	}
 }
