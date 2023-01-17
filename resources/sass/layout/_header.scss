@@ -2,25 +2,53 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
-.header {
-    .stargaze-logo {
-        height: 3rem;
+.site-header {
+
+    &-inner-wrapper{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
     }
 
-    .sg-nav-link {
-        color: $sg-color-medium-purple;
-        text-decoration: none;
-        text-transform: uppercase;
-        transition: 0.15s ease-in-out;
-        font-size: 1rem;
-        font-weight: 500;
-
-        &:hover{
-            color: $sg-color-lighter-purple;
+        .stargaze-logo {
+            height: 3rem;
         }
-    }
 
-    #navbar {
-        gap: 2.5rem !important;
-    }
+        .sg-nav-link {
+            color: $sg-color-medium-purple;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.15s ease-in-out;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 1rem;
+
+           
+
+            &:hover{
+                color: $sg-color-lighter-purple;
+            }
+        }
+
+        .primary-menu {
+            display: flex;
+            margin-bottom: 0;
+
+            .nav-item {
+                &:not(:last-of-type) {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+
+        @media (max-width: 1080px) {
+            .primary-menu {
+                gap: 1.25rem;
+            }     
+        }
+
+        @include media-breakpoint-down(lg) { 
+            
+        }
 }
