@@ -21,20 +21,20 @@
 		</div>
 
 		@auth
-		@if( $is_current_admin ) 
-		<div class="admin-panel d-flex justify-content-around">
-			<button class="artist-see-invitations" data-username={{$username}}>{{_('Виж покани')}}</button>
-			<button class="artist-edit" data-username={{$username}}>{{_('Редактирай изпълнител')}}</button>
-			<button class="artist-delete">{{_('Изтрий изпълнител')}}</button>
-		</div>
-		@else
-			@php $has_places = PlaceController::getAdminPlaces( auth()->user()->id ); @endphp
-			@if ( count($has_places) )
+			@if( $is_current_admin ) 
 			<div class="admin-panel d-flex justify-content-around">
-				<button class="artist-invite">{{_('Покани изпълнител')}}</button>
+				<button class="artist-see-invitations" data-username={{$username}}>{{_('Виж покани')}}</button>
+				<button class="artist-edit" data-username={{$username}}>{{_('Редактирай изпълнител')}}</button>
+				<button class="artist-delete">{{_('Изтрий изпълнител')}}</button>
 			</div>
+			@else
+				@php $manager_places = PlaceController::getAdminPlaces( auth()->user()->id ); @endphp
+				@if ( count($manager_places) )
+				<div class="admin-panel d-flex justify-content-around">
+					<button class="artist-invite">{{_('Покани изпълнител')}}</button>
+				</div>
+				@endif
 			@endif
-		@endif
 		@endauth
 
 		<div class="artist-container">
@@ -105,18 +105,196 @@
 			</div>
 		</div>
 
+		{{-- Create Event Modal --}}
+		<div class="modal modal-danger fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class=""></div>
+						<h5 class="modal-title" id="createEventModalLabel">Създаване на събитие</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form method="" action="" id="form-create-event" onsubmit="return false">
+							<input type="hidden" name="_token" id="token" value="<?php echo csrf_token(); ?>">
+							<input type="hidden" name="data" id="create-event-data" data-artist data-place data-invitation>
+							<div class="form-group">
+								<input type="text" class="form-control edit" id="create-event-title" placeholder="Заглавие на събитието">
+							</div>
+							<div class="input-group custom-file-button">
+								<label class="input-group-text" for="create-event-poster">Постер на събитието</label>
+								<input type="file" class="form-control edit" id="create-event-poster">
+							</div>
+							<button type="submit" class="button-submit button-custom" id="submit-create-event">Създай</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{-- Event success message --}}
+		<div class="modal modal-danger fade" id="successfulEventModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h5 id="successful-event-text" class="text-center text-white ">Събитието беше създадено успешно!</h5>
+						<button id="successful-event-ok" class="button-custom">ОК!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{-- Invitation success message --}}
+		<div class="modal modal-danger fade" id="successfulInvitationModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h5 id="successful-invitation-text" class="text-center text-white ">Поканата беше изпратена успешно!</h5>
+						<button id="successful-invitation-ok" class="button-custom">ОК!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	<!-- Edit Artist Modal -->
+	@php
+		$genres = ArtistController::getAllGenres();
+		$current_genre = ArtistController::getArtistGenre( $artist->genre_id ); 
+	@endphp
+	<div class="modal modal-lg modal-danger fade" id="editArtistModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class=""></div>
+					<h5 class="modal-title" id="editArtistModalLabel">Редактирай изпълнител</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="" action="" id="form-edit-artist" onsubmit="return false">
+						<div class="row align-items-center">
+							<input type="hidden" name="_token" id="token" value="<?php echo csrf_token(); ?>">
+							<input type="hidden" name="id" id="id" value="<?php echo $artist->id; ?>" data-id="<?php echo $artist->id; ?>">
+							<div class="form-group col-sm-6">
+								<input type="text" class="form-control edit" id="edit-artist-name" value="<?php echo  $artist->name; ?>" data-name="<?php echo  $artist->name; ?>" placeholder="Име на изпълнителя">
+							</div>
+							<div class="form-group col-sm-6">
+								<input type="text" class="form-control edit" id="edit-artist-username" value="<?php echo $artist->username; ?>" data-username="<?php echo $artist->username; ?>" placeholder="Потребителско име на изпълнителя">
+							</div>
+							<div class="form-group col-sm-6">
+								<select class="form-control edit select" id="edit-artist-genre">
+									<option class="genre-option" data-genre="<?php echo $artist->genre_id; ?>" value="<?php echo $artist->genre_id; ?>" selected><?php echo $current_genre->name; ?></option>
+									<?php foreach ( $genres as $genre ) : if ( $genre->id !== $artist->genre_id ) : ?>
+										<option class="genre-option" value="<?php echo $genre->id; ?>"><?php echo $genre->name; ?></option>
+									<?php endif; endforeach; ?>
+								</select>
+							</div>
+							<div class="form-group col-sm-6">
+							<input type="url" class="form-control edit" id="edit-artist-facebook" value="<?php echo $artist->facebook; ?>" data-facebook="<?php echo $artist->facebook; ?>" placeholder="Facebook">
+							</div>
+							<div class="form-group col-sm-6">
+							<input type="url" class="form-control edit" id="edit-artist-instagram" value="<?php echo $artist->instagram; ?>" placeholder="Instagram">
+							</div>
+							<div class="form-group col-sm-6">
+							<input type="url" class="form-control edit" id="edit-artist-youtube" value="<?php echo $artist->youtube; ?>" placeholder="YouTube">
+							</div>
+							<div class="input-group custom-file-button col-sm-5">
+								<label class="input-group-text" for="edit-artist-profile-pic">Профилна снимка</label>
+								<input type="file" class="form-control edit" id="edit-artist-profile-pic" value="<?php echo $artist->profile_picture; ?>" data-profile_pic="<?php echo $artist->profile_picture; ?>">
+							</div>
+							<div class="input-group custom-file-button col-sm-5">
+								<label class="input-group-text" for="edit-artist-cover-pic">Корица</label>
+								<input type="file" class="form-control edit" id="edit-artist-cover-pic" value="<?php echo $artist->cover_picture; ?>" data-cover_pic="<?php echo $artist->cover_picture; ?>">
+							</div>
+							<button type="submit" class="button-submit button-custom col-sm-5" id="submit-edit-artist">Запази</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{-- Invite artist modal --}}
+		<div class="modal modal-lg modal-danger fade" id="inviteArtistModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class=""></div>
+						<h5 class="modal-title" id="inviteArtistModalLabel">Покани изпълнител</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form method="" action="" id="form-invite-artist" onsubmit="return false">
+							<input type="hidden" name="_token" id="token" value="<?php echo csrf_token(); ?>">
+							<input type="hidden" name="id" id="artist-id" value="<?php echo $artist->id; ?>">
+							<div class="form-group">
+								<select class="form-control select" id="invite-artist-place">
+									<option class="place-option" selected>Място на събитието</option>
+									<?php if ( isset( $manager_places ) ) : foreach ( $manager_places as $manager_place ) : ?>
+										<option class="place-option" value="<?php echo $manager_place->id; ?>"><?php echo $manager_place->name; ?></option>
+									<?php endforeach; endif; ?>
+								</select>
+							</div>
+							<div class="form-group">
+								<textarea rows="5" type="textarea" class="form-control edit" id="invite-artist-message" placeholder="Съобщение"></textarea>
+							</div>
+							<div class="form-group">
+								<input type="text" onfocus="(this.type='date')" id="invite-artist-date" class="form-control edit" placeholder="Дата на събитието">
+							</div>
+							<div class="form-group d-flex justify-content-between gap-4">
+								<select class="form-control select" id="invite-artist-start-hour">
+									<option class="start-option" value="" selected>Начален час</option>
+									@for ( $i = 0; $i < 24; $i++ )
+									<option class="start-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}</option>
+									<option class="start-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}</option>
+									@endfor
+								</select>
+								<select class="form-control select" id="invite-artist-end-hour">
+									<option class="end-option" value="" selected>Краен час</option>
+									@for ( $i = 0; $i < 24; $i++ )
+									<option class="end-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}</option>
+									<option class="end-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}</option>
+									@endfor
+								</select>
+							</div>
+							<div class="form-group">
+								<input type="number" class="form-control edit" id="invite-artist-fee" placeholder="Хонорар">
+							</div>
+							<button type="submit" class="button-submit button-custom" id="submit-invite-artist">Изпрати покана</button>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		<div class="artist-content">
 			@php 
 			$events = ArtistController::getArtistEvents( $artist->id );
 			@endphp
 			@if( ! empty( $events ) )
 			<h4 class="mx-4">Предстоящи изяви</h4>
-			<div class="upcoming-events">
+			<div class="event-dashboard">
 				@foreach( $events as $event )
 				<div class="event-box">
 					<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
-					<button class="event-book button-custom">Запази</button>
-					<div class="event-info">
+					<div class="event-box-content">
+						{{-- <button class="event-book button-custom">Запази</button> --}}
 						<p class="event-title">{{$event["title"]}}</p>
 						<p class="event-date">{{$event["event_date"]}}</p>
 					</div>
