@@ -1,6 +1,8 @@
 @php use App\Http\Controllers\ArtistController; @endphp
 @php use App\Http\Controllers\PlaceController; @endphp
 
+@php use Carbon\Carbon; @endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -36,6 +38,99 @@
             </div>
         @endforeach
         </div>
+        @php 
+        $pending_invitations     = ArtistController::getManagerPendingInvitations( $user->id );
+		$approved_invitations    = ArtistController::getManagerApprovedInvitations( $user->id );
+		$disapproved_invitations = ArtistController::getManagerDisapprovedInvitations( $user->id ); 
+        @endphp
+
+		<h3 class="invitations text-center mt-5">Покани</h3>
+		<?php if ( count( $pending_invitations ) ) : ?>
+			<h4>Активни</h4>
+			<div class='invitation-dashboard pending'>
+			<?php
+			foreach ( $pending_invitations as $inv ) :
+                $artist   = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<button class='invitation-single-see-more'>Виж повече ▼ </button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<div class='invitation-buttons' data-id=<?php echo $inv->id; ?>>
+							<button type="button" class='invitation-status' data-status=1>Приеми</button>
+							<button type="button" class='invitation-status' data-status=-1>Отхвърли</button>
+						</div>
+					</div>
+				</div>
+			<?php endforeach; ?>
+			</div>
+		<?php
+		endif;
+
+		if ( count( $approved_invitations ) ) : ?>
+			<h4>Одобрени</h4>
+			<div class='invitation-dashboard approved'>
+			<?php
+			foreach ( $approved_invitations as $inv ) :
+                $artist   = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<div class='invitation-buttons' data-event-id=<?php echo $inv->id; ?>>
+							<button class='invitation-single-create-event' data-date="<?php echo $inv->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $inv->id; ?>>Създай събитие</button>
+						</div>
+						<button class='invitation-single-see-more'>Виж повече ▼</button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+					</div>
+				</div>
+			<?php endforeach; ?>
+			</div>
+		<?php
+		endif;
+
+		if ( count( $disapproved_invitations ) ) : ?>
+			<h4>Отхвърлени</h4>
+			<div class='invitation-dashboard disapproved'>
+			<?php
+			foreach ( $disapproved_invitations as $inv ) :
+                $artist   = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				?>
+				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+					<div class='invitation-single-content'>
+						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
+						<div class='invitation-buttons' data-delete-id=<?php echo $inv->id; ?>>
+							<button class='invitation-single-delete'>Изтрий</button>
+						</div>
+						<button class='invitation-single-see-more'>Виж повече ▼</button>
+						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+					</div>
+				</div>
+			<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
         @else
         <h4>Няма налични изпълнители.</h4>
         @endif
@@ -96,7 +191,7 @@
                     </div>
                     <div class="form-group">
                         @php $genres = ArtistController::getAllGenres(); @endphp
-                        <select class="form-control" id="new-artist-genre">
+                        <select class="form-control select" id="new-artist-genre">
                             <option class="genre-option" value="" disabled selected>Жанр*</option>
                             @foreach ( $genres as $genre )
                             <option class="genre-option" value="{{$genre->id}}">{{$genre->name}}</option>
@@ -120,7 +215,7 @@
                         <label class="input-group-text" for="new-artist-cover-pic">Корица</label>
                         <input type="file" class="form-control" id="new-artist-cover-pic">
                     </div>
-                    <button type="submit" class="button-custom" id="submit-new-artist">Добави</button>
+                    <button type="submit" class="button-custom button-submit" id="submit-new-artist">Добави</button>
                 </form>
             </div>
             </div>
@@ -149,22 +244,22 @@
                     </div>
                     <div class="form-group">
                         @php $genres = ArtistController::getAllGenres(); @endphp
-                        <select class="form-control" id="new-place-genre">
+                        <select class="form-control select" id="new-place-genre">
                             <option class="genre-option" value="all-genres" selected>Жанр*</option>
                             @foreach ( $genres as $genre )
                             <option class="genre-option" value="{{$genre->id}}">{{$genre->name}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="d-flex justify-content-between gap-4">
-                        <select class="form-control" id="new-place-opening-hour">
+                    <div class="d-flex justify-content-between gap-3">
+                        <select class="form-control select" id="new-place-opening-hour">
                             <option class="opening-option" value="" selected>Отваря в</option>
                             @for ( $i = 0; $i < 24; $i++ )
                             <option class="opening-option" value="{{$i}}">@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}</option>
                             <option class="opening-option" value="{{$i.':30'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}</option>
                             @endfor
                         </select>
-                        <select class="form-control" id="new-place-closing-hour">
+                        <select class="form-control select" id="new-place-closing-hour">
                             <option class="closing-option" value="" selected>Затваря в</option>
                             @for ( $i = 0; $i < 24; $i++ )
                             <option class="closing-option" value="{{$i}}">@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}</option>
@@ -174,7 +269,7 @@
                     </div>
                     <div class="form-group">
                         @php $locations = PlaceController::getAllLocations(); @endphp
-                        <select class="form-control" id="new-place-location">
+                        <select class="form-control select" id="new-place-location">
                             <option class="location-option" value="all-locations" selected>Локация</option>
                             @foreach ( $locations as $location )
                             <option class="loacation-option" value="{{$location->id}}">{{$location->name}}</option>
@@ -198,7 +293,7 @@
                         <label class="input-group-text" for="new-place-profile-pic">Корица</label>
                         <input type="file" class="form-control" id="new-place-cover-pic">
                     </div>
-                    <button type="submit" class="button-custom">Добави</button>
+                    <button type="submit" class="button-custom button-submit">Добави</button>
                 </form>
             </div>
             </div>
