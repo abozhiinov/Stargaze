@@ -76,11 +76,39 @@ class PlaceController extends Controller
 		return Place::where( 'admin_id', $admin_id )->get();
 	}
 
+	public function getSingleLocation( $id ) {
+		return DB::table( 'locations' )->where( 'id', $id )->get();
+	}
+
 	public function getAllLocations() {
 		return DB::table( 'locations' )->orderBy( 'name', 'ASC' )->get();
 	}
 
 	public function getPopularPlaces() {
 		return DB::table( 'places' )->orderBy( 'likes', 'DESC' )->limit( 3 )->get();
+	}
+
+	public function getPlacePendingInvitations( $id ) {
+		return DB::table( 'invitations' )
+		->where([
+			[ 'place_id', '=', $id ],
+			[ 'status', '=', 0 ],
+		])->get();
+	}
+
+	public function getPlaceApprovedInvitations( $id ) {
+		return DB::table( 'invitations' )
+		->where([
+			[ 'place_id', '=', $id ],
+			[ 'status', '=', 1 ],
+		])->get();
+	}
+
+	public function getPlaceDisapprovedInvitations( $id ) {
+		return DB::table( 'invitations' )
+		->where([
+			[ 'place_id', '=', $id ],
+			[ 'status', '=', -1 ],
+		])->get();
 	}
 }

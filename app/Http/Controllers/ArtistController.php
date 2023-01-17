@@ -47,9 +47,34 @@ class ArtistController extends Controller {
 		])->get();
 	}
 
+	public function getManagerPendingInvitations( $manager_id ) {
+		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
+		return DB::table( 'invitations' )
+		->whereIn( 'artist_id', $artists )
+		->where( 'status', '=', 0 )->get();
+	}
+
+	public function getManagerApprovedInvitations( $manager_id ) {
+		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
+		return DB::table( 'invitations' )
+		->whereIn( 'artist_id', $artists )
+		->where( 'status', '=', 1 )->get();
+	}
+
+	public function getManagerDisapprovedInvitations( $manager_id ) {
+		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
+		return DB::table( 'invitations' )
+		->whereIn( 'artist_id', $artists )
+		->where( 'status', '=', -1 )->get();
+	}
+
 	// Get artist's data.
 	public function getArtistData( $username ) {
 		return Artist::where( 'username', $username )->get();
+	}
+
+	public function getArtistDataById( $id ) {
+		return Artist::where( 'id', $id )->get();
 	}
 
 	// Get artist's data.
