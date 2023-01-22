@@ -23,6 +23,10 @@ class ArtistController extends Controller {
 		return view('single-artist-invitations', [ 'username' => $username ] );
 	}
 
+	public function hasInvitations( $id ) {
+		return count( DB::table( 'invitations' )->where( 'artist_id', $id )->get() );
+	}
+
 	public function getArtistPendingInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
@@ -84,8 +88,12 @@ class ArtistController extends Controller {
 
 	public function getArtistEvents( $id ) {
 		$get_events = DB::table( 'events' )
-			->where( 'artist_id', $id )
-			->get();
+		->where(
+			[
+				[ 'artist_id', '=', $id ],
+				[ 'date', '>=', date( 'Y-m-d' ) ],
+			]
+		)->get();
 		$upcoming_events = array();
 		foreach ( $get_events as $event ) :
 			$date   = Carbon::createFromFormat( 'Y-m-d', $event->date );
@@ -124,6 +132,12 @@ class ArtistController extends Controller {
 	// Get admin's artists.
 	public function getAdminArtists ( $admin_id ) {
 		return Artist::where( 'admin_id', $admin_id )->get();
+	}
+
+	public function getArtistAdminEmail( $artist_id ) {
+		$artist = DB::table( 'artists' )->where( 'id', $artist_id )->get()[0];
+		$email  = DB::table( 'users' )->where( 'id', $artist->admin_id )->get( 'email' );
+		return $email;
 	}
 
 	public function getAllGenres () {

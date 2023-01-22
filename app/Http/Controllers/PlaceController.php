@@ -111,4 +111,25 @@ class PlaceController extends Controller
 			[ 'status', '=', -1 ],
 		])->get();
 	}
+
+	public function getManagerPendingInvitations( $manager_id ) {
+		$places = Place::where( 'admin_id', $manager_id )->get( 'id' );
+		return DB::table( 'invitations' )
+		->whereIn( 'place_id', $places )
+		->where( 'status', '=', 0 )->get();
+	}
+
+	public function getManagerApprovedInvitations( $manager_id ) {
+		$places = Place::where( 'admin_id', $manager_id )->get( 'id' );
+		return DB::table( 'invitations' )
+		->whereIn( 'place_id', $places )
+		->where( 'status', '=', 1 )->get();
+	}
+
+	public function getManagerDisapprovedInvitations( $manager_id ) {
+		$places = Place::where( 'admin_id', $manager_id )->get( 'id' );
+		return DB::table( 'invitations' )
+		->whereIn( 'place_id', $places )
+		->where( 'status', '=', -1 )->get();
+	}
 }
