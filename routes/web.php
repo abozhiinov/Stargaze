@@ -55,6 +55,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get( '/dashboardFilter', '\App\Http\Controllers\AjaxController@dashboardFilter' );
+Route::get( '/eventsFilter', '\App\Http\Controllers\AjaxController@eventsFilter' );
 
 Route::get( '/addNewArtist', '\App\Http\Controllers\AjaxController@addNewArtist' );
 Route::get( '/editArtist', '\App\Http\Controllers\AjaxController@updateEditedArtist' );
@@ -72,3 +73,5 @@ Route::get( '/deleteInvitation', '\App\Http\Controllers\AjaxController@deleteInv
 
 Route::get( '/inviteArtist', '\App\Http\Controllers\AjaxController@inviteArtist' );
 Route::get( '/createEvent', '\App\Http\Controllers\AjaxController@createEvent' );
+
+Route::get( '/sendemail', '\App\Http\Controllers\MailController@index' );
