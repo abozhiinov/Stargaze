@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\FileUploadController;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Place;
 use Carbon\Carbon;
 use Psr\Http\Message\RequestInterface;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ArtistInvitation;
 
 class AjaxController extends Controller {
 
@@ -72,6 +76,81 @@ class AjaxController extends Controller {
 			endforeach;
 		else :
 		?>
+			<h4 class="text-center">Няма намерени резултати.</h4>
+		<?php
+		endif;
+	}
+
+	public function eventsFilter( Request $request ) {
+		$query = DB::table( 'events' )->where( 'date', '>=', date( 'Y-m-d' ) );
+
+		if ( ! empty( $request->search_artist ) && 'empty-search' !== $request->search_artist ) {
+			$artists    = DB::table( 'artists' )->where( 'name', 'like', "%{$request->search_artist}%" )->get( 'id' );
+			$artists_id = array();
+			foreach ( $artists as $key => $artist ) {
+				$artists_id[ $key ] = $artist->id;
+			}
+			$query = $query->whereIn( 'artist_id', $artists_id );
+		}
+
+		if ( ! empty( $request->search_place ) && 'empty-search' !== $request->search_place ) {
+			$places    = DB::table( 'places' )->where( 'name', 'like', "%{$request->search_place}%" )->get( 'id' );
+			$places_id = array();
+			foreach ( $places as $key => $place ) {
+				$places_id[ $key ] = $place->id;
+			}
+			$query = $query->whereIn( 'club_id', $places_id );
+		}
+
+		if ( ! empty( $request->search_date ) ) {
+			$query = $query->where( 'date', $request->search_date );
+		}
+
+		if ( ! empty( $request->location ) && 'all-locations' !== $request->location ) {
+			$location  = PlaceController::getSingleLocation( $request->location )[0];
+			if ( $location ) :
+				$places    = DB::table( 'places' )->where( 'location_id', $location->id )->get( 'id' );
+				$places_id = array();
+				foreach ( $places as $key => $place ) {
+					$places_id[ $key ] = $place->id;
+				}
+				$query = $query->whereIn( 'club_id', $places_id );
+			endif;
+		}
+
+		if ( ! empty( $request->genre ) && 'all-genres' !== $request->genre ) {
+			$genre = DB::table( 'genres' )->where( 'id', $request->genre )->first();
+			if ( $genre ) :
+				$places    = DB::table( 'places' )->where( 'genre_id', $genre->id )->get( 'id' );
+				$places_id = array();
+				foreach ( $places as $key => $place ) {
+					$places_id[ $key ] = $place->id;
+				}
+				$query = $query->whereIn( 'club_id', $places_id );
+			endif;
+		}
+
+		if ( $request->order && 'alphabet-start' === $request->order ) {
+			$query = $query->orderBy( 'title', 'ASC' );
+		} elseif ( $request->order && 'alphabet-end' === $request->order ) {
+			$query = $query->orderBy( 'title', 'DESC' );
+		}
+
+		$query = $query->get();
+
+		if ( count( $query ) > 0 ) :
+			foreach ( $query as $q ) : ?>
+				<div class="event-box">
+				<img src='images/<?php echo $q->poster; ?>' class="event-thumbnail">
+				<div class="event-box-content">
+					<p class="event-title"><?php echo $q->title; ?></p>
+					<p class="event-date"><?php echo $q->date; ?></p>
+				</div>
+			</div>
+		<?php
+			endforeach;
+		else :
+		?>
 			<h4>Няма намерени резултати.</h4>
 		<?php
 		endif;
@@ -99,7 +178,7 @@ class AjaxController extends Controller {
 
 	public function addNewPlace( Request $request ) {
 		$place_data = array(
-			'admin_id'        => $request->id,
+			'admin_id'        => $request->admin_id,
 			'name'            => $request->name,
 			'username'        => $request->username,
 			'genre_id'        => $request->genre_id,
@@ -108,7 +187,6 @@ class AjaxController extends Controller {
 			'cover_picture'   => $request->cover_pic,
 			'facebook'        => $request->facebook,
 			'instagram'       => $request->instagram,
-			'youtube'         => $request->youtube,
 			'verified'        => 0,
 			'likes'           => 0,
 		);
@@ -364,6 +442,7 @@ class AjaxController extends Controller {
 	}
 
 	public function inviteArtist( Request $request ) {
+		$email      = ArtistController::getArtistAdminEmail( $request->id );
 		$invitation = array(
 			'artist_id'  => $request->id,
 			'place_id'   => $request->place,
@@ -375,6 +454,22 @@ class AjaxController extends Controller {
 		);
 
 		DB::table( 'invitations' )->insert( $invitation );
+
+		$artist = ArtistController::getArtistDataById( $request->id )[0];
+		$place  = PlaceController::getPlaceDataById( $request->place )[0];
+
+		$data = array(
+			'artist'  => $artist->name,
+			'place'   => $place->name,
+			'message' => $request->message,
+			'date'    => $request->date,
+		);
+		try {
+			Mail::to( $email )->send( new ArtistInvitation( $data ) );
+			return 'success' . $email;
+		} catch ( \Throwable $th ) {
+			return 'fail' . $email;
+		}
 	}
 
 	public function createEvent( Request $request ) {
