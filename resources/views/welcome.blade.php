@@ -1,26 +1,44 @@
 @php 
 use App\Http\Controllers\ArtistController; 
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\EventController;
 @endphp
 
 @extends('layouts.app')
 
 @section('content')
-<div class="container homepage">
-	<div id="homepage_search-box" class="row p-5 form-container">
-		<form method="" onsubmit="return false">
-			<div id="homepage_search-row" class="row justify-content-around align-items-center">
-				<input type="text" class="col-sm-5 mb-4" placeholder="Търси изпълнител...">
-				<input type="text" class="col-sm-5 mb-4" placeholder="Търси място...">
-				<div class="w-100"></div>
-				<input type="text" onfocus="(this.type='date')" class="col-sm-5 mb-4" placeholder="Търси по дата...">
-				<select class="col-sm-5 mb-4">
-					<option value="" disabled selected>Търси по жанр...</option>
-				</select>
-				<input type="submit" value="Търси" class="button-custom w-50">
-			</div>
-		</form>
+<div class="welcome-banner">
+	<img src="{{url('/images/homepage-party.jpg')}}">
+	<div class="banner-content">
+		<p class="banner-title">Това е STARGAZE</p>
+		<p class="banner-body">
+			Твоят помощник в организацията на 
+			<span>най-добрите</span> музикални събития
+		</p>
+		<a class="banner-button" href="/register">Създай своя мениджър профил</a>
+		<a class="banner-bottom-text" href="/events">или разгледай събития</a>
 	</div>
+</div>
+<div class="container homepage">
+	@php $events = EventController::getTodayEvents(); @endphp
+	@if ( count( $events ) )
+	<div class="section-heading">
+		<h2 class="dashboard-title">Събитията днес</h2>
+		<a href="{{ url('/events') }}">Виж всички ></a>
+	</div>
+	<div class="event-dashboard">
+		@foreach($events as $event)
+			<div class="event-box">
+				<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
+				<div class="event-box-content">
+					<p class="event-title">{{$event["title"]}}</p>
+					<p class="event-date">{{$event["event_date"]}}</p>
+					{{-- <button class="event-book button-custom">Запази</button> --}}
+				</div>
+			</div>
+		@endforeach
+	</div>
+	@endif
 
 	@php $artists = ArtistController::getPopularArtists() @endphp
 	<div class="section-heading">
