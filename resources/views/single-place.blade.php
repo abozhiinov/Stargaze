@@ -205,7 +205,7 @@
 				@endforeach
 		</div>
 		@else
-			<h5 class="no-events">В {{$place->name}} няма предстоящи събития за момента.</h5>
+			<h4 class="no-events">В {{$place->name}} няма предстоящи събития за момента.</h4>
 		@endif
 
 		
