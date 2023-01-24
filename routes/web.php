@@ -52,7 +52,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get( '/home', [App\Http\Controllers\HomeController::class, 'index'] )->name( 'home' );
 
 Route::get( '/dashboardFilter', '\App\Http\Controllers\AjaxController@dashboardFilter' );
 Route::get( '/eventsFilter', '\App\Http\Controllers\AjaxController@eventsFilter' );
@@ -75,3 +75,5 @@ Route::get( '/inviteArtist', '\App\Http\Controllers\AjaxController@inviteArtist'
 Route::get( '/createEvent', '\App\Http\Controllers\AjaxController@createEvent' );
 
 Route::get( '/sendemail', '\App\Http\Controllers\MailController@index' );
+
+Route::post( '/storeImage', '\App\Http\Controllers\FileUploadController@store' );
