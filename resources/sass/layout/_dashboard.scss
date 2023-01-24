@@ -6,12 +6,19 @@
     width: calc(100% - 8rem);
     margin: 4rem auto;
 
+    @media (max-width: 991px) {
+        gap: 2rem;
+        width: calc(100% - 4rem);
+        margin: 2rem auto;
+    }
+
     @media (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
     }
 
     @media (max-width: 640px) {
         grid-template-columns: 1fr;
+        width: calc(100% - 8rem);
     }
 }
 
@@ -22,7 +29,7 @@
         gap: 4rem;
         max-width: 100%;
         width: calc(100% - 5rem);
-        margin: 2rem auto;
+        margin: 4rem auto;
 
         @media (max-width: 768px) {
             grid-template-columns: 1fr;
@@ -107,6 +114,20 @@
         &:hover .event-book{ 
             display: block;
         }
+
+        @media (max-width: 991px) {
+            &-content {
+                padding: 0.75rem 1.25rem;
+            }
+
+            .event-title {
+                font-size: 1rem;
+            }
+
+            .event-date {
+                font-size: 0.75rem;
+            }
+        }
     }
 }
 
@@ -117,6 +138,10 @@
         gap: 4rem;
         max-width: 100%;
         margin: 2rem auto 4rem auto;
+
+        @media (max-width: 991px) {
+            gap: 2rem;
+        }
     }
 
     &-single {
@@ -156,6 +181,20 @@
             margin-bottom: -0.5rem;
             position: relative;
             z-index: 200;
+            text-decoration: none;
+
+            &-link {
+                text-decoration: none;
+                color: white;
+            }
+
+            &-link:hover {
+                color: rgb(230, 230, 230);
+            }
+
+            @media (max-width: 991px) {
+                font-size: 1.25rem;
+            }
         }
 
         &-see-more {
@@ -187,6 +226,10 @@
             color: white;
             font-weight: 500;
             font-size: 1.25rem;
+
+            @media (max-width: 991px) {
+                font-size: 1rem;
+            }
         }
 
         &-message {
@@ -198,6 +241,10 @@
             position: relative;
             z-index: 200;
             display: none;
+
+            @media (max-width: 991px) {
+                font-size: 1rem;
+            }
         }
     }
 
@@ -211,4 +258,18 @@
     max-width: 100%;
     width: calc(100% - 8rem);
     margin: 2rem auto;
+
+    @media (max-width: 991px) {
+        gap: 2rem;
+        width: 100%;
+        margin: 1rem auto;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
 }

@@ -1,6 +1,7 @@
 // Body
 $body-bg: #E3E3E3;
 $sg-gradient: linear-gradient(90deg, rgba(49,22,113,1) 0%, rgba(74,32,117,1) 49%, rgba(118,69,140,1) 100%);
+$sg-gradient-2: linear-gradient(90deg, rgb(84, 37, 192) 0%, rgb(117, 51, 182)49%, rgb(185, 110, 219) 100%);
 $sg-color-dark-purple: rgb(49,22,113);
 $sg-color-medium-purple: rgb(74,32,117);
 $sg-color-light-purple: rgb(98, 50, 121);
@@ -17,3 +18,6 @@ $font-family-roboto: 'Roboto', sans-serif;
 $font-family-montserrat: 'Montserrat', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+//Breakpoints
+$breakpoint-tablet: 991px;

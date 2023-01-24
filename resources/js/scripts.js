@@ -1,20 +1,16 @@
 const { countBy } = require("lodash");
 const { provide } = require("vue");
 
+import { Swiper, Parallax, Navigation} from 'swiper'
+Swiper.use([ Parallax, Navigation ])
+
 $(function () {
     $('.button-add-new-artist').on('click', function(e){
         $('#addArtistModal').modal('show');
     })
 
     $('.close').on('click', function(e){
-        $('#addArtistModal').modal('hide');
-        $('#addPlaceModal').modal('hide');
-        $('#deleteArtistModal').modal('hide');
-        $('#deletePlaceModal').modal('hide');
-        $('#editArtistModal').modal('hide');
-        $('#inviteArtistModal').modal('hide');
-        $('#editPlaceModal').modal('hide');
-        $('#createEventModal').modal('hide');
+        $(this).closest('.modal-header').closest('.modal-content').closest('.modal-dialog').closest('.modal').modal('hide');
     })
 
     $('.button-add-new-place').on('click', function(e){
@@ -31,6 +27,31 @@ $(function () {
         var facebook = $('#new-artist-facebook').val();
         var instagram = $('#new-artist-instagram').val();
         var youtube = $('#new-artist-youtube').val();
+
+        var formData = new FormData;
+        formData.append( 'profile_picture', $('#new-artist-profile-pic')[0].files[0] );
+        formData.append( 'cover_picture', $('#new-artist-cover-pic')[0].files[0] );
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: '/storeImage',
+            data: formData, 
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);
+            }
+        });
+
         $.ajax({
             type: "get",
             url: '/addNewArtist',
@@ -44,7 +65,7 @@ $(function () {
                 cover_pic: coverPic,
                 facebook: facebook,
                 instagram: instagram,
-                youtube: youtube
+                youtube: youtube,
             },
             success: function(response) {
                 $(location).prop('href', '/artist/' + username);
@@ -67,6 +88,55 @@ $(function () {
         var facebook = $('#new-place-facebook').val();
         var instagram = $('#new-place-instagram').val();
         var youtube = $('#new-place-youtube').val();
+
+        var formData = new FormData;
+        formData.append( 'profile_picture', $('#new-place-profile-pic')[0].files[0] );
+        formData.append( 'cover_picture', $('#new-place-cover-pic')[0].files[0] );
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: '/storeImage',
+            data: formData, 
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);/*
+                Carousel
+            */
+            $('#carousel-example').on('slide.bs.carousel', function (e) {
+                /*
+                    CC 2.0 License Iatek LLC 2018 - Attribution required
+                */
+                var $e = $(e.relatedTarget);
+                var idx = $e.index();
+                var itemsPerSlide = 5;
+                var totalItems = $('.carousel-item').length;
+             
+                if (idx >= totalItems-(itemsPerSlide-1)) {
+                    var it = itemsPerSlide - (totalItems - idx);
+                    for (var i=0; i<it; i++) {
+                        // append slides to end
+                        if (e.direction=="left") {
+                            $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                        }
+                        else {
+                            $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                        }
+                    }
+                }
+            });
+            }
+        });
+
         $.ajax({
             type: "get",
             url: '/addNewPlace',
@@ -178,8 +248,7 @@ $(function () {
                 status: status, 
             },
             success: function(response) {
-                jQuery('#inv-' + invitationId).slideUp(500);
-                console.log(response);
+                $(location).prop('href', '/profile');
             },
             error: function(response) {
                 console.log('ERROR:');
@@ -211,6 +280,30 @@ $(function () {
         var artistId = $('#create-event-data').data('artist');
         var placeId = $('#create-event-data').data('place');
         var date = $('#create-event-data').data('date');
+
+        var formData = new FormData;
+        formData.append( 'event_thumbnail', $('#create-event-poster')[0].files[0] );
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: '/storeImage',
+            data: formData, 
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);
+            }
+        });
+
         $.ajax({
             type: "get",
             url: '/createEvent',
@@ -253,7 +346,31 @@ $(function () {
         var facebook = $('#edit-artist-facebook').val();
         var instagram = $('#edit-artist-instagram').val();
         var youtube = $('#edit-artist-youtube').val();
-        console.log( $('#edit-artist-profile-pic').val() );
+
+        var formData = new FormData;
+        formData.append( 'profile_picture', $('#edit-artist-profile-pic')[0].files[0] );
+        formData.append( 'cover_picture', $('#edit-artist-cover-pic')[0].files[0] );
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: '/storeImage',
+            data: formData, 
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);
+            }
+        });
+        
         $.ajax({
             type: "get",
             url: '/editArtist',
@@ -289,7 +406,31 @@ $(function () {
         var facebook = $('#edit-place-facebook').val();
         var instagram = $('#edit-place-instagram').val();
         var locationId = $('#edit-place-location').val();
-        console.log( $('#edit-place-profile-pic').val() );
+
+        var formData = new FormData;
+        formData.append( 'profile_picture', $('#edit-place-profile-pic')[0].files[0] );
+        formData.append( 'cover_picture', $('#edit-place-cover-pic')[0].files[0] );
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: '/storeImage',
+            data: formData, 
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);
+            }
+        });
+
         $.ajax({
             type: "get",
             url: '/editPlace',
@@ -321,7 +462,7 @@ $(function () {
     })
 
     $(document).on('submit', '#form-invite-artist', function(e){
-        var id = $('#id').val() || $('#id').data('id');
+        var id = $('#artist-id').val();
         var place = $('#invite-artist-place').val();
         var message = $('#invite-artist-message').val();
         var date = $('#invite-artist-date').val();
@@ -383,7 +524,6 @@ $(function () {
                 $('#delete-artist-yes').hide();
                 $('#delete-artist-no').hide();
                 document.getElementById("delete-artist-ok").removeAttribute("hidden");
-                console.log(response);
             },
             error: function(response) {
                 console.log('ERROR:');
@@ -422,6 +562,87 @@ $(function () {
 
     $('#delete-place-ok').on('click', function(e){
         $(location).prop('href', '/profile');
+    })
+
+    function filterEvents(e) {
+        $('.event-dashboard').animate({'opacity':'0.5'}, 200);
+
+        let searchArtist;
+        if( $('#search-artist-events').val() != '' ){
+            searchArtist = $('#search-artist-events').val();
+        }
+
+        let searchPlace;
+        if( $('#search-place-events').val() != '' ){
+            searchPlace = $('#search-place-events').val();
+        }
+
+        let searchDate;
+        if( $('#search-date-events').val() != '' ){
+            searchDate = $('#search-date-events').val();
+        }
+
+        let location;
+        if ( $('#sort-location-events').val() != null ) {
+            location = $('#sort-location-events').val();
+        }
+
+        let genre;
+        if ( $('#sort-genres-events').val() != null ) {
+            genre = $('#sort-genres-events').val();
+        }
+
+        let order;
+        if ( $('#order-events').val() != null ) {
+            order = $('#order-events').val();
+        }
+
+        $.ajax({
+            type: "get",
+            url: '/eventsFilter',
+            data: {
+                _token: $('#token').val(),
+                search_artist: searchArtist,
+                search_place: searchPlace,
+                search_date: searchDate,
+                location: location,
+                genre: genre,
+                order: order
+
+            },
+            success: function(response) {
+                $('.event-dashboard').html(response);
+                $('.event-dashboard').animate({'opacity':'1.0'}, 200);
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);
+            }
+        });
+    }
+
+    $('#search-artist-events').on('keyup', function(e) {
+        filterEvents(e);
+	});
+
+    $('#search-place-events').on('keyup', function(e) {
+        filterEvents(e);
+	});
+
+    $('#search-date-events').on('change', function(e) {
+        filterEvents(e);
+	});
+
+    $('#sort-genres-events').on('change', function(e) {
+        filterEvents(e);
+    });
+
+    $('#sort-location-events').on('change', function(e) {
+        filterEvents(e);
+    });
+
+    $('#order-events').on('change', function(e) {
+        filterEvents(e);
     })
 
     function filterDashboard(e) {
@@ -481,4 +702,44 @@ $(function () {
     $('#order-dashboard').on('change', function(e) {
         filterDashboard(e);
     })
+
+    $('.first-button').on('click', function () {
+        $('.animated-icon1').toggleClass('open');
+        $('.header-overlay').toggleClass('is-active');
+
+
+        if($('.animated-icon1').hasClass('open')) {
+            $('#burger-menu').slideDown(400);
+        } else {
+            $('#burger-menu').slideUp(400);
+        }
+    });
+
+    $('.header-overlay').on('click', function(){
+        $('.animated-icon1').toggleClass('open');
+        $('.header-overlay').toggleClass('is-active');
+
+
+        if($('.animated-icon1').hasClass('open')) {
+            $('#burger-menu').slideDown(400);
+        } else {
+            $('#burger-menu').slideUp(400);
+        }
+    })
+
+
+    const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        slidesPerView: 2,
+        setWrapperSize: true,
+        direction: 'horizontal',
+        loop: false,
+        observer: true,
+        observeParents: true,
+        parallax:true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
 });

@@ -64,5 +64,15 @@
         font-size: 1.2rem;
         border-radius: 2rem;
         border-style: none;
+
+        @media (max-width: 991px) {
+            font-size: 1rem;
+        }
     }
+}
+
+.button-create-event {
+    width: 20rem;
+    height: 2.5rem;
+    box-shadow: none;
 }
