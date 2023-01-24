@@ -152,7 +152,7 @@
 
 	<div class="place-container">
 		@if(!empty($place->cover_picture))
-		<img src="{{ url('images/' . $place->cover_picture) }}" class="single-place-thumbnail">
+		<img src="{{ url('images/cover-pictures/' . $place->cover_picture) }}" class="single-place-thumbnail">
 		@else
 		<div class="single-place-no-cover">
 		@endif
@@ -192,17 +192,35 @@
 		@endphp
 		@if( ! empty( $events ) )
 		<h4 class="mx-4">Предстоящи събития</h4>
-		<div class="event-dashboard">
-			@foreach( $events as $event )
-				<div class="event-box">
-					<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
-					{{-- <button class="event-book button-custom">Запази</button> --}}
-					<div class="event-box-content">
-						<p class="event-title">{{$event["title"]}}</p>
-						<p class="event-date">{{$event["event_date"]}}</p>
+		<div class="event-swiper">
+			<div class="swiper">
+				<div class="swiper-wrapper">
+					@foreach($events as $event)
+					<div class="swiper-slide p-4">
+						<div class="event-box">
+							<img src="{{ url('images/event-thumbnails/' . $event['poster']  ) }}" class="event-thumbnail">
+							{{-- <button class="event-book button-custom">Запази</button> --}}
+							<div class="event-box-content">
+								<p class="event-title">{{$event["title"]}}</p>
+								<p class="event-date">{{$event["event_date"]}}</p>
+							</div>
+						</div>
 					</div>
+					@endforeach
 				</div>
-				@endforeach
+			</div>
+			@if ( count($events) > 2 )
+				<div class="swiper-button-prev">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left" viewBox="0 0 16 16">
+						<path d="M10 12.796V3.204L4.519 8 10 12.796zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753z"/>
+					</svg>
+				</div>
+				<div class="swiper-button-next">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+						<path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+					</svg>
+				</div>
+			@endif
 		</div>
 		@else
 			<h4 class="no-events">В {{$place->name}} няма предстоящи събития за момента.</h4>
@@ -216,7 +234,7 @@
 			@foreach($places as $place)
 				<div class="place-box">
 					<a href="/place/{{$place->username}}">
-						<img src="{{ url('images/' . $place->profile_picture) }}" class="place-thumbnail">
+						<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">
 						<div class="place-box-content">
 							<p class="place-title">
 								{{$place->name}}

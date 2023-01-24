@@ -8,7 +8,7 @@
 	@php $locations = PlaceController::getAllLocations(); @endphp
 	<form onsubmit="return false">
 		<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-		<div class="form-container d-flex justify-content-around p-4 mt-5">
+		<div class="form-container d-flex justify-content-around p-4">
 			<input type="text" class="search-input-field search-dashboard places" id="search-dashboard" placeholder="Търси заведение...">
 			<select class="search-input-field sort-genres-dashboard places" id="sort-genres-dashboard">
 				<option value="all-places" selected>Всички локации</option>
@@ -32,7 +32,7 @@
 		@foreach($places as $place)
 			<div class="place-box">
 				<a href="/place/{{$place->username}}">
-					<img src="{{ url('images/' . $place->profile_picture) }}" class="place-thumbnail">
+					<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">
 					<div class="place-box-likes">
 						<img class="place-likes" src="{{url('/images/likes.svg')}}">
 						<p class="place-likes-count"> {{$place->likes}}</p>

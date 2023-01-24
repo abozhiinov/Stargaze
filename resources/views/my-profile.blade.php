@@ -8,9 +8,12 @@
 @section('content')
 <div class="container">
     @php $user = auth()->user(); @endphp
-    <div id='my-profile_personal-info'>
-        <h2> {{$user->name}} </h2>
-        <h4> {{ __('Мениджър') }} </h4>
+    <div id='my-profile_personal-info' class='my-profile-top'>
+        <div class="user-info">
+            <h2> {{$user->name}} </h2>
+            <h4> {{ __('Мениджър') }} </h4>
+        </div>
+        {{-- <button class='button-create-event button-custom'>Създай ново събитие</button> --}}
     </div>
     @php $artists = ArtistController::getAdminArtists( $user->id ); @endphp
     <div id='my-profile_my-artists' class="my-artists">
@@ -23,7 +26,7 @@
         @foreach ( $artists as $artist ) 
             <div class="artist-box">
                 <a href="/artist/{{$artist->username}}">
-                    <img src="{{ url('images/' . $artist->profile_picture) }}" class="artist-thumbnail">
+                    <img src="{{ url('images/profile-pictures/' . $artist->profile_picture) }}" class="artist-thumbnail">
                     <div class="artist-box-content">
                         <p class="artist-title">
                             {{$artist->name}}
@@ -107,7 +110,7 @@
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
                             {{'Покана до '}}
                             <a class='invitation-single-title-link' href="/artist/<?php echo $artist->username; ?>">{{$artist->name}}</a>
@@ -142,7 +145,7 @@
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
                             {{'Покана до '}}
                             <a class='invitation-single-title-link' href="/artist/<?php echo $artist->username; ?>">{{$artist->name}}</a>
@@ -176,8 +179,7 @@
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
-                        <a class='invitation-single-title' href="/place/<?php echo $place->username; ?>"><?php echo 'Покана до ' . $artist->name . ' от ' . $place->name . ', ' . $location; ?></a>
+						<img class='invitation-single-place-thumbnail' src='images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
                             {{'Покана до '}}
                             <a class='invitation-single-title-link' href="/artist/<?php echo $artist->username; ?>">{{$artist->name}}</a>
@@ -212,7 +214,7 @@
             @foreach($places as $place)
 			<div class="place-box">
 				<a href="/place/{{$place->username}}">
-					<img src="{{ url('images/' . $place->profile_picture) }}" class="place-thumbnail">
+					<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">
 					<div class="place-box-content">
 						<p class="place-title">
 							{{$place->name}}
@@ -247,7 +249,7 @@
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
                             {{'Покана до '}}
                             <a class='invitation-single-title-link' href="/artist/<?php echo $artist->username; ?>">{{$artist->name}}</a>
@@ -280,7 +282,7 @@
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
                             {{'Покана до '}}
                             <a class='invitation-single-title-link' href="/artist/<?php echo $artist->username; ?>">{{$artist->name}}</a>
@@ -313,7 +315,7 @@
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
                             {{'Покана до '}}
                             <a class='invitation-single-title-link' href="/artist/<?php echo $artist->username; ?>">{{$artist->name}}</a>
@@ -380,7 +382,7 @@
                     </div>
                     <div class="input-group custom-file-button">
                         <label class="input-group-text" for="new-artist-profile-pic">Профилна снимка*</label>
-                        <input type="file" class="form-control" id="new-artist-profile-pic" name="new-artist-profile-pic">
+                        <input type="file" class="form-control" id="new-artist-profile-pic" name="file">
                     </div>
                     <div class="input-group custom-file-button">
                         <label class="input-group-text" for="new-artist-cover-pic">Корица</label>

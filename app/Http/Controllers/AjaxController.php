@@ -55,7 +55,7 @@ class AjaxController extends Controller {
 			foreach ( $query as $q ) : ?>
 				<div class='<?php echo $s_type; ?>-box'>
 					<a href='/<?php echo $s_type; ?>/<?php echo $q->username; ?>'>
-						<img src='images/<?php echo $q->profile_picture; ?>' class='<?php echo $s_type; ?>-thumbnail'>
+						<img src='images/profile-pictures/<?php echo $q->profile_picture; ?>' class='<?php echo $s_type; ?>-thumbnail'>
 						<div class='<?php echo $s_type; ?>-box-likes'>
 							<img class='<?php echo $s_type; ?>-likes' src='/images/likes.svg'>
 							<p class='<?php echo $s_type; ?>-likes-count'><?php echo $q->likes; ?></p>
@@ -139,12 +139,13 @@ class AjaxController extends Controller {
 		$query = $query->get();
 
 		if ( count( $query ) > 0 ) :
-			foreach ( $query as $q ) : ?>
+			foreach ( $query as $q ) : 
+				$date = Carbon::createFromFormat( 'Y-m-d', $q->date )->format( 'd M Y' ); ?>
 				<div class="event-box">
-				<img src='images/<?php echo $q->poster; ?>' class="event-thumbnail">
+				<img src='images/event-thumbnails/<?php echo $q->poster; ?>' class="event-thumbnail">
 				<div class="event-box-content">
 					<p class="event-title"><?php echo $q->title; ?></p>
-					<p class="event-date"><?php echo $q->date; ?></p>
+					<p class="event-date"><?php echo $date; ?></p>
 				</div>
 			</div>
 		<?php
@@ -214,7 +215,7 @@ class AjaxController extends Controller {
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $place->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
 						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
@@ -243,7 +244,7 @@ class AjaxController extends Controller {
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $place->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
 						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
@@ -271,7 +272,7 @@ class AjaxController extends Controller {
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $place->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
 						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
@@ -307,7 +308,7 @@ class AjaxController extends Controller {
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
@@ -334,7 +335,7 @@ class AjaxController extends Controller {
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
@@ -361,7 +362,7 @@ class AjaxController extends Controller {
 				?>
 				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
 					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/<?php echo $artist->cover_picture; ?>'>
+						<img class='invitation-single-place-thumbnail' src='/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>

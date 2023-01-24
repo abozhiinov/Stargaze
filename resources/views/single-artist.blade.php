@@ -23,7 +23,10 @@
 		@auth
 			@if( $is_current_admin ) 
 			<div class="admin-panel d-flex justify-content-around">
+				@php $has_invitations = ArtistController::hasInvitations( $artist->id ); @endphp
+				@if ( $has_invitations )
 				<button class="artist-see-invitations" data-username={{$username}}>{{_('Виж покани')}}</button>
+				@endif
 				<button class="artist-edit" data-username={{$username}}>{{_('Редактирай изпълнител')}}</button>
 				<button class="artist-delete">{{_('Изтрий изпълнител')}}</button>
 			</div>
@@ -39,7 +42,7 @@
 
 		<div class="artist-container">
 			@if( $artist->cover_picture )
-			<img src="{{ url('images/' . $artist->cover_picture) }}" class="single-artist-thumbnail">
+			<img src="{{ url('images/cover-pictures/' . $artist->cover_picture) }}" class="single-artist-thumbnail">
 			@else
 			<div class="single-artist-no-cover">
 			@endif
@@ -242,7 +245,7 @@
 					<div class="modal-body">
 						<form method="" action="" id="form-invite-artist" onsubmit="return false">
 							<input type="hidden" name="_token" id="token" value="<?php echo csrf_token(); ?>">
-							<input type="hidden" name="id" id="artist-id" value="<?php echo $artist->id; ?>">
+							<input type="hidden" name="artist-id" id="artist-id" value="<?php echo $artist->id; ?>">
 							<div class="form-group">
 								<select class="form-control select" id="invite-artist-place">
 									<option class="place-option" selected>Място на събитието</option>
@@ -289,17 +292,35 @@
 			@endphp
 			@if( ! empty( $events ) )
 			<h4 class="mx-4">Предстоящи изяви</h4>
-			<div class="event-dashboard">
-				@foreach( $events as $event )
-				<div class="event-box">
-					<img src="{{ url('images/' . $event['poster']  ) }}" class="event-thumbnail">
-					<div class="event-box-content">
-						{{-- <button class="event-book button-custom">Запази</button> --}}
-						<p class="event-title">{{$event["title"]}}</p>
-						<p class="event-date">{{$event["event_date"]}}</p>
+
+			<div class="event-swiper">
+				<div class="swiper">
+					<div class="swiper-wrapper">
+					@foreach( $events as $event )
+						<div class="swiper-slide p-4">
+							<div class="event-box">
+								<img src="{{ url('images/event-thumbnails/' . $event['poster']  ) }}" class="event-thumbnail">
+								<div class="event-box-content">
+									<p class="event-title">{{$event["title"]}}</p>
+									<p class="event-date">{{$event["event_date"]}}</p>
+								</div>
+							</div>
+						</div>
+					@endforeach
 					</div>
 				</div>
-				@endforeach
+				@if ( count($events) > 2 )
+				<div class="swiper-button-prev">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left" viewBox="0 0 16 16">
+						<path d="M10 12.796V3.204L4.519 8 10 12.796zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753z"/>
+					</svg>
+				</div>
+				<div class="swiper-button-next">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+						<path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+					</svg>
+				</div>
+				@endif
 			</div>
 			@else
 				<h4 class="no-events">{{$artist->name}} няма предстоящи изяви за момента.</h4>
@@ -313,7 +334,7 @@
 						@foreach($artists as $artist)
 						<div class="artist-box">
 							<a href="/artist/{{$artist->username}}">
-								<img src="{{ url('images/' . $artist->profile_picture) }}" class="artist-thumbnail">
+								<img src="{{ url('images/profile-pictures/' . $artist->profile_picture) }}" class="artist-thumbnail">
 								<div class="artist-box-likes">
 									<img class="artist-likes" src="{{url('/images/likes.svg')}}">
 									<p class="artist-likes-count"> {{$artist->likes}}</p>
@@ -337,4 +358,5 @@
 		</div>
 	@endif
 </div>
+
 @endsection
