@@ -13,7 +13,7 @@
             <h2> {{$user->name}} </h2>
             <h4> {{ __('Мениджър') }} </h4>
         </div>
-        {{-- <button class='button-create-event button-custom'>Създай ново събитие</button> --}}
+        <button class='button-create-event button-custom'>Създай ново събитие</button>
     </div>
     @php $artists = ArtistController::getAdminArtists( $user->id ); @endphp
     <div id='my-profile_my-artists' class="my-artists">
@@ -65,6 +65,38 @@
 								<input type="file" class="form-control edit" id="create-event-poster">
 							</div>
 							<button type="submit" class="button-submit button-custom" id="submit-create-event">Създай</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+        {{-- Create Event From Scratch Modal --}}
+		<div class="modal modal-danger fade" id="createNewEventModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class=""></div>
+						<h5 class="modal-title" id="createNewEventModalLabel">Създаване на събитие</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form method="" action="" id="form-create-new-event" onsubmit="return false">
+							<input type="hidden" name="_token" id="token" value="<?php echo csrf_token(); ?>">
+							<input type="hidden" name="data" id="create-new-event-data">
+							<div class="form-group">
+								<input type="text" class="form-control edit" id="create-new-event-title" placeholder="Заглавие на събитието">
+							</div>
+                            <div class="form-group">
+								<input type="text" onfocus="(this.type='date')" class="form-control edit" id="create-new-event-date" placeholder="Дата на събитието">
+							</div>
+							<div class="input-group custom-file-button">
+								<label class="input-group-text" for="create-new-event-poster">Постер на събитието</label>
+								<input type="file" class="form-control edit" id="create-new-event-poster">
+							</div>
+							<button type="submit" class="button-submit button-custom" id="submit-create-new-event">Създай</button>
 						</form>
 					</div>
 				</div>

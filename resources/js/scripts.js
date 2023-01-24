@@ -109,31 +109,7 @@ $(function () {
             },
             error: function(response) {
                 console.log('ERROR:');
-                console.log(response);/*
-                Carousel
-            */
-            $('#carousel-example').on('slide.bs.carousel', function (e) {
-                /*
-                    CC 2.0 License Iatek LLC 2018 - Attribution required
-                */
-                var $e = $(e.relatedTarget);
-                var idx = $e.index();
-                var itemsPerSlide = 5;
-                var totalItems = $('.carousel-item').length;
-             
-                if (idx >= totalItems-(itemsPerSlide-1)) {
-                    var it = itemsPerSlide - (totalItems - idx);
-                    for (var i=0; i<it; i++) {
-                        // append slides to end
-                        if (e.direction=="left") {
-                            $('.carousel-item').eq(i).appendTo('.carousel-inner');
-                        }
-                        else {
-                            $('.carousel-item').eq(0).appendTo('.carousel-inner');
-                        }
-                    }
-                }
-            });
+                console.log(response);
             }
         });
 
@@ -274,7 +250,7 @@ $(function () {
     })
 
     $(document).on('submit', '#form-create-event', function(e){
-        var id = $('#id').val() || $('#id').data('id');
+        var id = $('#id').val();
         var title = $('#create-event-title').val();
         var poster = $('#create-event-poster').val().replace(/^.*[\\\/]/, '');
         var artistId = $('#create-event-data').data('artist');
@@ -318,6 +294,57 @@ $(function () {
             },
             success: function(response) {
                 $('#createEventModal').modal('hide');
+                $('#successfulEventModal').modal('show');
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);
+            }
+        });
+    })
+
+    $('body').on('click', '.button-create-event', function(e){
+        $('#createNewEventModal').modal('show');
+    })
+
+    $(document).on('submit', '#form-create-new-event', function(e){
+        var title = $('#create-new-event-title').val();
+        var poster = $('#create-new-event-poster').val().replace(/^.*[\\\/]/, '');
+        var date = $('#create-new-event-date').val();
+
+        var formData = new FormData;
+        formData.append( 'event_thumbnail', $('#create-new-event-poster')[0].files[0] );
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: '/storeImage',
+            data: formData, 
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            },
+            error: function(response) {
+                console.log('ERROR:');
+                console.log(response);
+            }
+        });
+
+        $.ajax({
+            type: "get",
+            url: '/createNewEvent',
+            data: {
+                title: title,
+                poster: poster,
+                date: date,
+            },
+            success: function(response) {
+                $('#createNewEventModal').modal('hide');
                 $('#successfulEventModal').modal('show');
             },
             error: function(response) {

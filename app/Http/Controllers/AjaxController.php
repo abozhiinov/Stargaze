@@ -484,4 +484,14 @@ class AjaxController extends Controller {
 
 		DB::table( 'events' )->insert( $event );
 	}
+
+	public function createNewEvent( Request $request ) {
+		$event = array(
+			'date'   => $request->date,
+			'title'  => $request->title,
+			'poster' => $request->poster,
+		);
+
+		DB::table( 'events' )->insert( $event );
+	}
 }
