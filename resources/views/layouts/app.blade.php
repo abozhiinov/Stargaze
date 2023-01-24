@@ -18,6 +18,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <!-- <link rel="stylesheet" type="text/css" href="{{ url('css/app.css') }}"> -->
 </head>
 <body>
@@ -27,8 +28,6 @@
                 <a class="navbar-logo" href="{{ url('/') }}">
                     <img src="{{url('/images/stargaze-logo.png')}}" class="img-responsive stargaze-logo">
                 </a>
-
-                <button class="site-header" hidden></button>
 
                 <ul id='navbar' class="primary-menu list-unstyled">
                     <li id="navbar-home" class="nav-item">
@@ -75,10 +74,64 @@
                         </li>
                     @endguest
                 </ul>
+
+                <button class="navbar-toggler first-button navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#burger-menu"
+                    aria-controls="burger-menu" aria-expanded="false">
+                    <div class="animated-icon1"><span></span><span></span><span></span></div>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse burger-menu" id="burger-menu">
+                <ul class="navbar-nav nav">
+                    <li id="navbar-home" class="nav-item">
+                        <a class="sg-nav-link" href="/">{{ __('Начало') }}</a>
+                    </li>
+                    <li id="navbar-artists" class="nav-item">
+                        <a class="sg-nav-link" href="/artists">{{ __('Изпълнители') }}</a>
+                    </li> 
+                    <li id="navbar-places" class="nav-item">
+                        <a class="sg-nav-link" href="/places">{{ __('Заведения') }}</a>
+                    </li>
+                    <li id="navbar-events" class="nav-item">
+                        <a class="sg-nav-link" href="/events">{{ __('Събития') }}</a>
+                    </li>
+                    <!-- Authentication Links -->
+                    @guest
+                        @if (Route::has('login'))
+                            <li class="nav-item">
+                                <a class="sg-nav-link" href="{{ route('login') }}">{{ __('Вход') }}</a>
+                            </li>
+                        @endif
+    
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="sg-nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
+                            </li>
+                        @endif
+                    @else
+                        <li class="nav-item">
+                            <a class="sg-nav-link" href="/profile" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ __('Моят Профил') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="sg-nav-link" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Изход') }}
+                                </a>
+    
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    @endguest
+                </ul>
             </div>
         </header>
 
-        <main class="py-4">
+        <div class="header-overlay"></div>
+
+        <main class="site-body">
             @yield('content')
         </main>
 
