@@ -11925,6 +11925,15 @@ body {
     font-size: 1rem;
   }
 }
+.artist-location, .place-location {
+  color: white;
+  text-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1.25rem;
+  font-weight: normal;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 200;
+}
 .artist-verified, .place-verified {
   width: 1.5rem;
   height: 1.5rem;
@@ -12140,6 +12149,9 @@ h2, .h2, h3, .h3, h4, .h4 {
   outline: none;
 }
 .form-control.select:after, .form-control[type=file] {
+  color: black;
+}
+.form-control option {
   color: black;
 }
 

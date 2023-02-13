@@ -30,6 +30,7 @@
 	<div class="dashboard">
 	@if(count($places) > 0)
 		@foreach($places as $place)
+			@php $location = PlaceController::getSingleLocation( $place->location_id )[0]; @endphp
 			<div class="place-box">
 				<a href="/place/{{$place->username}}">
 					<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">
@@ -45,6 +46,9 @@
 								<img class="place-verified" src="{{url('/images/verified.svg')}}">
 							@endif
 							</span>
+						</p>
+						<p class="place-location">
+							{{$location->name}}
 						</p>
 					</div>
 				</a>
