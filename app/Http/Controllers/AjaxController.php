@@ -19,7 +19,7 @@ use App\Mail\ArtistInvitation;
 class AjaxController extends Controller {
 
 	// $type Dashboard Filters.
-	public function dashboardFilter( Request $request ) {
+	public static function dashboardFilter( Request $request ) {
 		$query  = DB::table( $request->type );
 		$s_type = substr( $request->type, 0, -1 );
 
@@ -64,11 +64,17 @@ class AjaxController extends Controller {
 							<p class='<?php echo $s_type; ?>-title'>
 								<?php echo $q->name; ?>
 								<span>
-				<?php if ( $q->verified == 1 ) { ?>
-					<img class='<?php echo $s_type; ?>-verified' src='/images/verified.svg'>
-				<?php } ?>
+								<?php if ( $q->verified == 1 ) { ?>
+									<img class='<?php echo $s_type; ?>-verified' src='/images/verified.svg'>
+								<?php } ?>
 								</span>
 							</p>
+							<?php if ( $s_type === 'place' ) : ?>
+								<?php $location = PlaceController::getSingleLocation( $q->location_id )[0]; ?>
+								<p class="place-location">
+									<?php echo $location->name; ?>
+								</p>
+							<?php endif; ?>
 						</div>
 					</a>
 				</div>
@@ -81,7 +87,7 @@ class AjaxController extends Controller {
 		endif;
 	}
 
-	public function eventsFilter( Request $request ) {
+	public static function eventsFilter( Request $request ) {
 		$query = DB::table( 'events' )->where( 'date', '>=', date( 'Y-m-d' ) );
 
 		if ( ! empty( $request->search_artist ) && 'empty-search' !== $request->search_artist ) {
@@ -159,7 +165,7 @@ class AjaxController extends Controller {
 
 	// Adding new data to DB.
 
-	public function addNewArtist( Request $request  ) {
+	public static function addNewArtist( Request $request  ) {
 		$artist_data = array(
 			'admin_id'        => $request->id,
 			'name'            => $request->name,
@@ -177,7 +183,7 @@ class AjaxController extends Controller {
 		DB::table( 'artists' )->insert( $artist_data );
 	}
 
-	public function addNewPlace( Request $request ) {
+	public static function addNewPlace( Request $request ) {
 		$place_data = array(
 			'admin_id'        => $request->admin_id,
 			'name'            => $request->name,
@@ -195,7 +201,7 @@ class AjaxController extends Controller {
 		DB::table( 'places' )->insert( $place_data );
 	}
 
-	public function loadArtistInvitations( $username ) {
+	public static function loadArtistInvitations( $username ) {
 		$artist                  = ArtistController::getArtistData( $username )[0];
 		$pending_invitations     = ArtistController::getArtistPendingInvitations( $artist->id );
 		$approved_invitations    = ArtistController::getArtistApprovedInvitations( $artist->id );
@@ -289,7 +295,7 @@ class AjaxController extends Controller {
 		endif;
 	}
 
-	public function loadPlaceInvitations( $username ) {
+	public static function loadPlaceInvitations( $username ) {
 		$place                  = PlaceController::getPlaceData( $username )[0];
 		$pending_invitations     = PlaceController::getPlacePendingInvitations( $place->id );
 		$approved_invitations    = PlaceController::getPlaceApprovedInvitations( $place->id );
@@ -379,19 +385,19 @@ class AjaxController extends Controller {
 		endif;
 	}
 
-	public function deleteArtist( $username ) {
+	public static function deleteArtist( $username ) {
 		DB::table( 'artists' )->where( 'username', $username )->delete();
 
 		return '<p>Изпълнителят беше изтрит успешно!</p>';
 	}
 
-	public function deletePlace( $username ) {
+	public static function deletePlace( $username ) {
 		DB::table( 'places' )->where( 'username', $username )->delete();
 
 		return '<p>Заведението беше изтрито успешно!</p>';
 	}
 
-	public function updateEditedArtist( Request $request ) {
+	public static function updateEditedArtist( Request $request ) {
 		$artist_data = array(
 			'name'      => $request->name,
 			'username'  => $request->username,
@@ -412,7 +418,7 @@ class AjaxController extends Controller {
 		DB::table( 'artists' )->where( 'id', '=', $request->id )->update( $artist_data );
 	}
 
-	public function updateEditedPlace( Request $request ) {
+	public static function updateEditedPlace( Request $request ) {
 		$place_data = array(
 			'name'        => $request->name,
 			'username'    => $request->username,
@@ -433,16 +439,16 @@ class AjaxController extends Controller {
 		DB::table( 'places' )->where( 'id', '=', $request->id )->update( $place_data );
 	}
 
-	public function statusInvitation( Request $request ) {
+	public static function statusInvitation( Request $request ) {
 		$status_update = [ 'status' => $request->status ];
 		DB::table( 'invitations' )->where( 'id', $request->id )->update( $status_update );
 	}
 
-	public function deleteInvitation( Request $request ) {
+	public static function deleteInvitation( Request $request ) {
 		DB::table( 'invitations' )->where( 'id', $request->id )->delete();
 	}
 
-	public function inviteArtist( Request $request ) {
+	public static function inviteArtist( Request $request ) {
 		$email      = ArtistController::getArtistAdminEmail( $request->id );
 		$invitation = array(
 			'artist_id'  => $request->id,
@@ -473,7 +479,7 @@ class AjaxController extends Controller {
 		}
 	}
 
-	public function createEvent( Request $request ) {
+	public static function createEvent( Request $request ) {
 		$event = array(
 			'artist_id' => $request->artist_id,
 			'club_id'   => $request->place_id,
@@ -485,7 +491,7 @@ class AjaxController extends Controller {
 		DB::table( 'events' )->insert( $event );
 	}
 
-	public function createNewEvent( Request $request ) {
+	public static function createNewEvent( Request $request ) {
 		$event = array(
 			'date'   => $request->date,
 			'title'  => $request->title,

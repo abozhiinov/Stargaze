@@ -9,25 +9,25 @@ use Carbon\Carbon;
 
 class ArtistController extends Controller {
 	// Get all artists.
-	public function allArtists() {
+	public static function allArtists() {
 		return Artist::all();
 	}
 
 	// Get the single view for an artist.
-	public function getArtistView( $username ) {
+	public static function getArtistView( $username ) {
 		return view('single-artist', [ 'username' => $username ] );
 	}
 
 	// Get the dashboard for artist's invitations.
-	public function getArtistInvitationsView( $username ) {
+	public static function getArtistInvitationsView( $username ) {
 		return view('single-artist-invitations', [ 'username' => $username ] );
 	}
 
-	public function hasInvitations( $id ) {
+	public static function hasInvitations( $id ) {
 		return count( DB::table( 'invitations' )->where( 'artist_id', $id )->get() );
 	}
 
-	public function getArtistPendingInvitations( $id ) {
+	public static function getArtistPendingInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
 			[ 'artist_id', '=', $id ],
@@ -35,7 +35,7 @@ class ArtistController extends Controller {
 		])->get();
 	}
 
-	public function getArtistApprovedInvitations( $id ) {
+	public static function getArtistApprovedInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
 			[ 'artist_id', '=', $id ],
@@ -43,7 +43,7 @@ class ArtistController extends Controller {
 		])->get();
 	}
 
-	public function getArtistDisapprovedInvitations( $id ) {
+	public static function getArtistDisapprovedInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
 			[ 'artist_id', '=', $id ],
@@ -51,21 +51,21 @@ class ArtistController extends Controller {
 		])->get();
 	}
 
-	public function getManagerPendingInvitations( $manager_id ) {
+	public static function getManagerPendingInvitations( $manager_id ) {
 		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
 		->whereIn( 'artist_id', $artists )
 		->where( 'status', '=', 0 )->get();
 	}
 
-	public function getManagerApprovedInvitations( $manager_id ) {
+	public static function getManagerApprovedInvitations( $manager_id ) {
 		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
 		->whereIn( 'artist_id', $artists )
 		->where( 'status', '=', 1 )->get();
 	}
 
-	public function getManagerDisapprovedInvitations( $manager_id ) {
+	public static function getManagerDisapprovedInvitations( $manager_id ) {
 		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
 		->whereIn( 'artist_id', $artists )
@@ -73,20 +73,20 @@ class ArtistController extends Controller {
 	}
 
 	// Get artist's data.
-	public function getArtistData( $username ) {
+	public static function getArtistData( $username ) {
 		return Artist::where( 'username', $username )->get();
 	}
 
-	public function getArtistDataById( $id ) {
+	public static function getArtistDataById( $id ) {
 		return Artist::where( 'id', $id )->get();
 	}
 
 	// Get artist's data.
-	public function getArtistGenre( $genre_id ) {
+	public static function getArtistGenre( $genre_id ) {
 		return DB::table( 'genres' )->find( $genre_id );
 	}
 
-	public function getArtistEvents( $id ) {
+	public static function getArtistEvents( $id ) {
 		$get_events = DB::table( 'events' )
 		->where(
 			[
@@ -118,7 +118,7 @@ class ArtistController extends Controller {
 	}
 
 	// Get other artists.
-	public function otherArtists( $artist_id, $genre_id ) {
+	public static function otherArtists( $artist_id, $genre_id ) {
 		return DB::table( 'artists' )
 		->where([
 			[ 'id', '!=', $artist_id ],
@@ -130,7 +130,7 @@ class ArtistController extends Controller {
 	}
 
 	// Get admin's artists.
-	public function getAdminArtists ( $admin_id ) {
+	public static function getAdminArtists ( $admin_id ) {
 		return Artist::where( 'admin_id', $admin_id )->get();
 	}
 
@@ -140,11 +140,11 @@ class ArtistController extends Controller {
 		return $email;
 	}
 
-	public function getAllGenres () {
+	public static function getAllGenres () {
 		return DB::table( 'genres' )->orderBy( 'name', 'ASC' )->get();
 	}
 
-	public function getPopularArtists() {
+	public static function getPopularArtists() {
 		return DB::table( 'artists' )->orderBy( 'likes', 'DESC' )->limit( 3 )->get();
 	}
 

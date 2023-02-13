@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class EventController extends Controller
 {
 	// Get all events.
-	public function allEvents() {
+	public static function allEvents() {
 		$events      = DB::table( 'events' )->where( 'date', '>=', date( 'Y-m-d' ) )->orderBy( 'date', 'asc' )->get();
 		$pass_events = array();
 
@@ -38,7 +38,7 @@ class EventController extends Controller
 		return $pass_events;
 	}
 
-	public function getEventData( $id ) {
+	public static function getEventData( $id ) {
 		$event = DB::table( 'events' )->where( 'id', $id )->get()[0];
 		$pass_event = array();
 
@@ -63,7 +63,7 @@ class EventController extends Controller
 		return $pass_event;
 	}
 
-	public function getTodayEvents() {
+	public static function getTodayEvents() {
 		$events = DB::table( 'events' )->where( 'date', '=', date( 'Y-m-d' ) )->get();
 		$pass_events = array();
 
