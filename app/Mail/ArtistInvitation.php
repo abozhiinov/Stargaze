@@ -28,6 +28,6 @@ class ArtistInvitation extends Mailable {
 	 */
 	public function build() {
 		return $this->from( 'stargazebulgaria@gmail.com', 'Stargaze' )
-		->subject( 'Нова покана' )->view( 'emails.index' )->with( 'data', $this->data );
+		->subject( 'Нова покана от ' . $this->data['place'] . ' до ' . $this->data['artist'] )->view( 'emails.index' )->with( 'data', $this->data );
 	}
 }
