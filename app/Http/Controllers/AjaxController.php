@@ -107,7 +107,8 @@ class AjaxController extends Controller {
 		}
 
 		if ( ! empty( $request->location ) && 'all-locations' !== $request->location ) {
-			$location  = PlaceController::getSingleLocation( $request->location )[0];
+			$place_controller = new PlaceController();
+			$location  = $place_controller->getSingleLocation( $request->location )[0];
 			if ( $location ) :
 				$places    = DB::table( 'places' )->where( 'location_id', $location->id )->get( 'id' );
 				$places_id = array();
@@ -196,10 +197,12 @@ class AjaxController extends Controller {
 	}
 
 	public function loadArtistInvitations( $username ) {
-		$artist                  = ArtistController::getArtistData( $username )[0];
-		$pending_invitations     = ArtistController::getArtistPendingInvitations( $artist->id );
-		$approved_invitations    = ArtistController::getArtistApprovedInvitations( $artist->id );
-		$disapproved_invitations = ArtistController::getArtistDisapprovedInvitations( $artist->id );
+		$artist_controller = new ArtistController();
+		$place_controller = new PlaceController();
+		$artist                  = $artist_controller->getArtistData( $username )[0];
+		$pending_invitations     = $artist_controller->getArtistPendingInvitations( $artist->id );
+		$approved_invitations    = $artist_controller->getArtistApprovedInvitations( $artist->id );
+		$disapproved_invitations = $artist_controller->getArtistDisapprovedInvitations( $artist->id );
 
 		?>
 		<h3 class="invitations text-center my-4">Покани</h3>
@@ -208,8 +211,8 @@ class AjaxController extends Controller {
 			<div class='invitation-dashboard pending'>
 			<?php
 			foreach ( $pending_invitations as $inv ) :
-				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
 				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
 				?>
@@ -237,8 +240,8 @@ class AjaxController extends Controller {
 			<div class='invitation-dashboard approved'>
 			<?php
 			foreach ( $approved_invitations as $inv ) :
-				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
 				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
 				?>
@@ -265,8 +268,8 @@ class AjaxController extends Controller {
 			<div class='invitation-dashboard disapproved'>
 			<?php
 			foreach ( $disapproved_invitations as $inv ) :
-				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
 				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
 				?>
@@ -290,10 +293,12 @@ class AjaxController extends Controller {
 	}
 
 	public function loadPlaceInvitations( $username ) {
-		$place                  = PlaceController::getPlaceData( $username )[0];
-		$pending_invitations     = PlaceController::getPlacePendingInvitations( $place->id );
-		$approved_invitations    = PlaceController::getPlaceApprovedInvitations( $place->id );
-		$disapproved_invitations = PlaceController::getPlaceDisapprovedInvitations( $place->id );
+		$artist_controller = new ArtistController();
+		$place_controller = new PlaceController();
+		$place                  = $place_controller->getPlaceData( $username )[0];
+		$pending_invitations     = $place_controller->getPlacePendingInvitations( $place->id );
+		$approved_invitations    = $place_controller->getPlaceApprovedInvitations( $place->id );
+		$disapproved_invitations = $place_controller->getPlaceDisapprovedInvitations( $place->id );
 
 		?>
 		<h3 class="invitations text-center my-4">Покани</h3>
@@ -302,7 +307,7 @@ class AjaxController extends Controller {
 			<div class='invitation-dashboard pending'>
 			<?php
 			foreach ( $pending_invitations as $inv ) :
-				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
 				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
 				?>
@@ -329,7 +334,7 @@ class AjaxController extends Controller {
 			<div class='invitation-dashboard approved'>
 			<?php
 			foreach ( $approved_invitations as $inv ) :
-				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
 				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
 				?>
@@ -356,7 +361,7 @@ class AjaxController extends Controller {
 			<div class='invitation-dashboard disapproved'>
 			<?php
 			foreach ( $disapproved_invitations as $inv ) :
-				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
+				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
 				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
 				?>
@@ -443,7 +448,10 @@ class AjaxController extends Controller {
 	}
 
 	public function inviteArtist( Request $request ) {
-		$email      = ArtistController::getArtistAdminEmail( $request->id );
+		$artist_controller = new ArtistController();
+		$place_controller = new PlaceController();
+		
+		$email      = $artist_controller->getArtistAdminEmail( $request->id );
 		$invitation = array(
 			'artist_id'  => $request->id,
 			'place_id'   => $request->place,
@@ -456,8 +464,8 @@ class AjaxController extends Controller {
 
 		DB::table( 'invitations' )->insert( $invitation );
 
-		$artist = ArtistController::getArtistDataById( $request->id )[0];
-		$place  = PlaceController::getPlaceDataById( $request->place )[0];
+		$artist = $artist_controller->getArtistDataById( $request->id )[0];
+		$place  = $place_controller->getPlaceDataById( $request->place )[0];
 
 		$data = array(
 			'artist'  => $artist->name,

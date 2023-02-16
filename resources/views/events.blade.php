@@ -10,8 +10,11 @@ use App\Http\Controllers\ArtistController;
 <div class="container">
 	<h2 class="text-center dashboard-title">Събития</h2>
 	@php 
-		$locations = PlaceController::getAllLocations(); 
-		$genres = ArtistController::getAllGenres();
+		$artist_controller = new ArtistController(); 
+		$place_controller = new PlaceController();
+		$event_controller = new EventController();
+		$locations = $place_controller->getAllLocations(); 
+		$genres = $artist_controller->getAllGenres();
 	@endphp
 	<form>
 		<form id="event-filter-form" onsubmit="return false">
@@ -45,7 +48,7 @@ use App\Http\Controllers\ArtistController;
 		</form>
 	</form>
 
-	@php $events = EventController::allEvents(); @endphp
+	@php $events = $event_controller->allEvents(); @endphp
 	<div class="event-dashboard">
 	@if(count($events) > 0)
 		@foreach($events as $event)

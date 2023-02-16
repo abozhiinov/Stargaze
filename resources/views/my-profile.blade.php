@@ -1,5 +1,6 @@
 @php use App\Http\Controllers\ArtistController; @endphp
 @php use App\Http\Controllers\PlaceController; @endphp
+@php use App\Http\Controllers\EventController; @endphp
 
 @php use Carbon\Carbon; @endphp
 
@@ -8,6 +9,11 @@
 @section('content')
 <div class="container">
     @php $user = auth()->user(); @endphp
+	@php 
+		$artist_controller = new ArtistController(); 
+		$place_controller = new PlaceController();
+		$event_controller = new EventController();
+	@endphp
     <div id='my-profile_personal-info' class='my-profile-top'>
         <div class="user-info">
             <h2> {{$user->name}} </h2>
@@ -15,7 +21,7 @@
         </div>
         <button class='button-create-event button-custom'>Създай ново събитие</button>
     </div>
-    @php $artists = ArtistController::getAdminArtists( $user->id ); @endphp
+    @php $artists = $artist_controller->getAdminArtists( $user->id ); @endphp
     <div id='my-profile_my-artists' class="my-artists">
         <div id='my-profile_my-artists_title' class='d-flex justify-content-between'>
             <h3> {{_('Моите изпълнители')}} </h3>
@@ -121,9 +127,9 @@
 		</div>
 
         @php 
-        $pending_invitations     = ArtistController::getManagerPendingInvitations( $user->id );
-		$approved_invitations    = ArtistController::getManagerApprovedInvitations( $user->id );
-		$disapproved_invitations = ArtistController::getManagerDisapprovedInvitations( $user->id ); 
+        $pending_invitations     = $artist_controller->getManagerPendingInvitations( $user->id );
+		$approved_invitations    = $artist_controller->getManagerApprovedInvitations( $user->id );
+		$disapproved_invitations = $artist_controller->getManagerDisapprovedInvitations( $user->id ); 
         @endphp
 
         @if ( count( $pending_invitations ) || count( $approved_invitations ) || count( $disapproved_invitations ) )
@@ -134,9 +140,9 @@
 			<div class='invitation-dashboard pending'>
 			<?php
 			foreach ( $pending_invitations as $inv ) :
-                $artist   = ArtistController::getArtistDataById( $inv->artist_id )[0];
-				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+                $artist   = $artist_controller->getArtistDataById( $inv->artist_id )[0];
+				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
 				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
 				?>
@@ -169,9 +175,9 @@
 			<div class='invitation-dashboard approved'>
 			<?php
 			foreach ( $approved_invitations as $inv ) :
-                $artist   = ArtistController::getArtistDataById( $inv->artist_id )[0];
-				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+                $artist   = $artist_controller->getArtistDataById( $inv->artist_id )[0];
+				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
 				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
 				?>
@@ -203,9 +209,9 @@
 			<div class='invitation-dashboard disapproved'>
 			<?php
 			foreach ( $disapproved_invitations as $inv ) :
-                $artist   = ArtistController::getArtistDataById( $inv->artist_id )[0];
-				$place    = PlaceController::getPlaceDataById( $inv->place_id )[0];
-				$location = PlaceController::getSingleLocation( $place->location_id )[0]->name;
+                $artist   = $artist_controller->getArtistDataById( $inv->artist_id )[0];
+				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
 				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
 				?>
@@ -235,7 +241,7 @@
         @endif
     </div>
 
-    @php $places = PlaceController::getAdminPlaces( $user->id ); @endphp
+    @php $places = $place_controller->getAdminPlaces( $user->id ); @endphp
     <div id='my-profile_my-places' class="my-places">
         <div id='my-profile_my-places_title' class='d-flex justify-content-between'>
             <h3> {{_('Моите заведения')}} </h3>
@@ -272,9 +278,9 @@
 
 
         @php 
-        $pending_invitations     = PlaceController::getManagerPendingInvitations( $user->id );
-		$approved_invitations    = PlaceController::getManagerApprovedInvitations( $user->id );
-		$disapproved_invitations = PlaceController::getManagerDisapprovedInvitations( $user->id ); 
+        $pending_invitations     = $place_controller->getManagerPendingInvitations( $user->id );
+		$approved_invitations    = $place_controller->getManagerApprovedInvitations( $user->id );
+		$disapproved_invitations = $place_controller->getManagerDisapprovedInvitations( $user->id ); 
         @endphp
 		<h3 class="invitations text-center my-4">Изпратени Покани</h3>
 		<?php if ( count( $pending_invitations ) ) : ?>
@@ -282,8 +288,8 @@
 			<div class='invitation-dashboard pending'>
 			<?php
 			foreach ( $pending_invitations as $inv ) :
-				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
-                $place  = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
+                $place  = $place_controller->getPlaceDataById( $inv->place_id )[0];
 				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
 				?>
@@ -315,8 +321,8 @@
 			<div class='invitation-dashboard approved'>
 			<?php
 			foreach ( $approved_invitations as $inv ) :
-				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
-                $place  = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
+                $place  = $place_controller->getPlaceDataById( $inv->place_id )[0];
 				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
 				?>
@@ -348,8 +354,8 @@
 			<div class='invitation-dashboard disapproved'>
 			<?php
 			foreach ( $disapproved_invitations as $inv ) :
-				$artist = ArtistController::getArtistDataById( $inv->artist_id )[0];
-                $place  = PlaceController::getPlaceDataById( $inv->place_id )[0];
+				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
+                $place  = $place_controller->getPlaceDataById( $inv->place_id )[0];
 				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
 				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
 				?>
@@ -403,7 +409,7 @@
                         <input type="text" class="form-control" id="new-artist-username" placeholder="Потребителско име на изпълнителя*">
                     </div>
                     <div class="form-group">
-                        @php $genres = ArtistController::getAllGenres(); @endphp
+                        @php $genres = $artist_controller->getAllGenres(); @endphp
                         <select class="form-control select" id="new-artist-genre">
                             <option class="genre-option" value="" disabled selected>Жанр*</option>
                             @foreach ( $genres as $genre )
@@ -457,7 +463,7 @@
                         <input type="text" class="form-control" id="new-place-username" placeholder="Потребителско име на заведението*">
                     </div>
                     <div class="form-group">
-                        @php $genres = ArtistController::getAllGenres(); @endphp
+                        @php $genres = $artist_controller->getAllGenres(); @endphp
                         <select class="form-control select" id="new-place-genre">
                             <option class="genre-option" value="all-genres" selected>Жанр*</option>
                             @foreach ( $genres as $genre )
@@ -482,7 +488,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        @php $locations = PlaceController::getAllLocations(); @endphp
+                        @php $locations = $place_controller->getAllLocations(); @endphp
                         <select class="form-control select" id="new-place-location">
                             <option class="location-option" value="all-locations" selected>Локация</option>
                             @foreach ( $locations as $location )

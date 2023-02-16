@@ -8,8 +8,10 @@
 @section('content')
 <div class="container">
 	@php 
-	$artist = ArtistController::getArtistData( $username )[0];
-	$artist_genre = ArtistController::getArtistGenre( $artist->genre_id );
+	$artist_controller = new ArtistController();
+	$place_controller = new PlaceController();
+	$artist = $artist_controller->getArtistData( $username )[0];
+	$artist_genre = $artist_controller->getArtistGenre( $artist->genre_id );
 	$is_current_admin = 0;
 	@endphp
 	@auth
@@ -23,7 +25,7 @@
 		@auth
 			@if( $is_current_admin ) 
 			<div class="admin-panel d-flex justify-content-around">
-				@php $has_invitations = ArtistController::hasInvitations( $artist->id ); @endphp
+				@php $has_invitations = $artist_controller->hasInvitations( $artist->id ); @endphp
 				@if ( $has_invitations )
 				<button class="artist-see-invitations" data-username={{$username}}>{{_('Виж покани')}}</button>
 				@endif
@@ -31,7 +33,7 @@
 				<button class="artist-delete">{{_('Изтрий изпълнител')}}</button>
 			</div>
 			@else
-				@php $manager_places = PlaceController::getAdminPlaces( auth()->user()->id ); @endphp
+				@php $manager_places = $place_controller->getAdminPlaces( auth()->user()->id ); @endphp
 				@if ( count($manager_places) )
 				<div class="admin-panel d-flex justify-content-around">
 					<button class="artist-invite">{{_('Покани изпълнител')}}</button>
@@ -174,8 +176,8 @@
 
 	<!-- Edit Artist Modal -->
 	@php
-		$genres = ArtistController::getAllGenres();
-		$current_genre = ArtistController::getArtistGenre( $artist->genre_id ); 
+		$genres = $artist_controller->getAllGenres();
+		$current_genre = $artist_controller->getArtistGenre( $artist->genre_id ); 
 	@endphp
 	<div class="modal modal-lg modal-danger fade" id="editArtistModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -288,7 +290,7 @@
 
 		<div class="artist-content">
 			@php 
-			$events = ArtistController::getArtistEvents( $artist->id );
+			$events = $artist_controller->getArtistEvents( $artist->id );
 			@endphp
 			@if( ! empty( $events ) )
 			<h4 class="mx-4">Предстоящи изяви</h4>
@@ -327,7 +329,7 @@
 			@endif
 
 			@if( ! $is_current_admin ) 
-				@php $artists = ArtistController::otherArtists( $artist->id, $artist->genre_id ) @endphp
+				@php $artists = $artist_controller->otherArtists( $artist->id, $artist->genre_id ) @endphp
 				@if(count($artists) > 0)
 					<h4 class="mx-4">Други изпълнители</h4>
 					<div class="other-artists">

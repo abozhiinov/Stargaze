@@ -8,8 +8,10 @@
 @section('content')
 <div class="container">
     @php 
-	$place = PlaceController::getPlaceData( $username )[0];
-	$place_genre = PlaceController::getPlaceGenre( $place->genre_id );
+	$artist_controller = new ArtistController();
+	$place_controller = new PlaceController();
+	$place = $place_controller->getPlaceData( $username )[0];
+	$place_genre = $place_controller->getPlaceGenre( $place->genre_id );
 	$is_current_admin = 0;
 	@endphp
 	@auth
@@ -84,12 +86,12 @@
 			</div>
 		</div>
 
-		<!-- Edit Artist Modal -->
+		<!-- Edit Place Modal -->
 		@php
-		$genres = ArtistController::getAllGenres();
-		$locations = PlaceController::getAllLocations();
-		$current_location = PlaceController::getSingleLocation( $place->location_id )[0];
-		$current_genre = PlaceController::getPlaceGenre( $place->genre_id ); 
+		$genres = $artist_controller->getAllGenres();
+		$locations = $place_controller->getAllLocations();
+		$current_location = $place_controller->getSingleLocation( $place->location_id )[0];
+		$current_genre = $place_controller->getPlaceGenre( $place->genre_id ); 
 		@endphp
 		<div class="modal modal-lg modal-danger fade" id="editPlaceModal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
@@ -188,7 +190,7 @@
 
 	<div class="place-content">
 		@php 
-		$events = PlaceController::getPlaceEvents( $place->id );
+		$events = $place_controller->getPlaceEvents( $place->id );
 		@endphp
 		@if( ! empty( $events ) )
 		<h4 class="mx-4">Предстоящи събития</h4>
@@ -227,7 +229,7 @@
 		@endif
 
 		
-		@php $places = PlaceController::otherPlaces( $place->id, $place->genre_id ) @endphp
+		@php $places = $place_controller->otherPlaces( $place->id, $place->genre_id ) @endphp
 		@if(count($places) > 0)
 		<h4 class="mx-4">Други заведения</h4>
 		<div class="other-artists">
