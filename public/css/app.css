@@ -11925,7 +11925,7 @@ body {
     font-size: 1rem;
   }
 }
-.artist-location, .place-location {
+.artist-location, .artist-genre, .place-location, .place-genre {
   color: white;
   text-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
   font-size: 1.25rem;

@@ -35,6 +35,7 @@
 	<div class="dashboard">
 		@if(count($artists) > 0)
 			@foreach($artists as $artist)
+			@php $genre = $artist_controller->getArtistGenre( $artist->genre_id ); @endphp
 				<div class="artist-box">
 					<a href="/artist/{{$artist->username}}">
 						<img src="{{ url('images/profile-pictures/' . $artist->profile_picture) }}" class="artist-thumbnail">
@@ -53,6 +54,9 @@
 								<img class="artist-verified" src="{{url('/images/verified.svg')}}">
 								@endif
 								</span>
+							</p>
+							<p class="artist-genre">
+								{{$genre->name}}
 							</p>
 						</div>
 					</a>
