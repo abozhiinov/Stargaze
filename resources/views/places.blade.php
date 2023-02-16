@@ -5,7 +5,10 @@
 @section('content')
 <div class="container">
 	<h2 class="text-center dashboard-title">Заведения</h2>
-	@php $locations = PlaceController::getAllLocations(); @endphp
+	@php 
+		$place_controller = new PlaceController();
+		$locations = $place_controller->getAllLocations(); 
+	@endphp
 	<form onsubmit="return false">
 		<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 		<div class="form-container d-flex justify-content-around p-4">
@@ -26,7 +29,7 @@
 		</div>
 	</form>
 
-	@php $places = PlaceController::allPlaces(); @endphp
+	@php $places = $place_controller->allPlaces(); @endphp
 	<div class="dashboard">
 	@if(count($places) > 0)
 		@foreach($places as $place)

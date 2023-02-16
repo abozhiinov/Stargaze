@@ -8,7 +8,11 @@
 @section('content')
 <div class="container">
 	<h2 class="dashboard-title text-center">Изпълнители</h2>
-	@php $genres = ArtistController::getAllGenres(); @endphp
+	@php 
+	$artist_controller = new ArtistController(); 
+	$artists = $artist_controller->allArtists(); 
+	$genres = $artist_controller->getAllGenres();
+	@endphp
 	<form onsubmit="return false">
 		<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 		<div class="form-container d-flex justify-content-around p-4">
@@ -28,7 +32,6 @@
 			</select>
 		</div>
 	</form>
-	@php $artists = ArtistController::allArtists() @endphp
 	<div class="dashboard">
 		@if(count($artists) > 0)
 			@foreach($artists as $artist)

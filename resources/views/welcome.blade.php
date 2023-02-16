@@ -22,7 +22,10 @@ use App\Http\Controllers\EventController;
 	</div>
 </div>
 <div class="container homepage">
-	@php $events = EventController::getTodayEvents(); @endphp
+	@php 
+	$event_controller = new EventController();
+	$events = $event_controller->getTodayEvents(); 
+	@endphp
 	@if ( count( $events ) )
 	<div class="section-heading">
 		<h2 class="dashboard-title">Събитията днес</h2>
@@ -59,7 +62,10 @@ use App\Http\Controllers\EventController;
 	</div>
 	@endif
 
-	@php $artists = ArtistController::getPopularArtists() @endphp
+	@php 
+	$artist_controller = new ArtistController(); 
+	$artists = $artist_controller->getPopularArtists(); 
+	@endphp
 	<div class="section-heading">
 		<h2 class="dashboard-title">Популярни изпълнители</h2>
 		<a href="{{ url('/artists') }}">Виж всички ></a>
@@ -90,7 +96,10 @@ use App\Http\Controllers\EventController;
 		@endif
 	</div>
 
-	@php $places = PlaceController::getPopularPlaces(); @endphp
+	@php 
+	$place_controller = new PlaceController();
+	$places = $place_controller->getPopularPlaces(); 
+	@endphp
 	<div class="section-heading">
 		<h2 class="dashboard-title">Популярни заведения</h2>
 		<a href="{{ url('/places') }}">Виж всички ></a>

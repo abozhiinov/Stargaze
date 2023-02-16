@@ -63,7 +63,7 @@ class EventController extends Controller
 		return $pass_event;
 	}
 
-	public function getTodayEvents() {
+	public static function getTodayEvents() {
 		$events      = DB::table( 'events' )->where( 'date', '=', date( 'Y-m-d' ) )->get();
 		$pass_events = array();
 
