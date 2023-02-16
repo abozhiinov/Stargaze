@@ -409,6 +409,16 @@
         }
     }
 
+    &-location {
+        color: white;
+        text-shadow: $text-shadow-main;
+        font-size: 1.25rem;
+        font-weight: normal;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 200;
+    }
+
     &-verified {
         width: 1.5rem;
         height: 1.5rem;
@@ -639,6 +649,10 @@ h2, h3, h4 {
     }
 
     &.select:after,&[type="file"] {
+        color: black;
+    }
+
+    option {
         color: black;
     }
 }

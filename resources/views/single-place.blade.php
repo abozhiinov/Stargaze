@@ -234,17 +234,25 @@
 		<h4 class="mx-4">Други заведения</h4>
 		<div class="other-artists">
 			@foreach($places as $place)
+				@php $location = PlaceController::getSingleLocation( $place->location_id )[0]; @endphp
 				<div class="place-box">
 					<a href="/place/{{$place->username}}">
 						<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">
+						<div class="place-box-likes">
+							<img class="place-likes" src="{{url('/images/likes.svg')}}">
+							<p class="place-likes-count"> {{$place->likes}}</p>
+						</div>
 						<div class="place-box-content">
 							<p class="place-title">
 								{{$place->name}}
 								<span>
 								@if($place->verified == 1)
-								<img class="place-verified" src="{{url('/images/verified.svg')}}">
+									<img class="place-verified" src="{{url('/images/verified.svg')}}">
 								@endif
 								</span>
+							</p>
+							<p class="place-location">
+								{{$location->name}}
 							</p>
 						</div>
 					</a>
