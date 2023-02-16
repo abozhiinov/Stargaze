@@ -10,31 +10,31 @@ use Carbon\Carbon;
 class PlaceController extends Controller
 {
     // Get all artists.
-	public static function allPlaces() {
+	public function allPlaces() {
 		return Place::all();
 	}
 
 	// Get the single view for an artist
-	public static function getPlaceView( $username ) {
+	public function getPlaceView( $username ) {
 		return view('single-place', [ 'username' => $username ] );
 	}
 
 	// Get artist's data
-	public static function getPlaceData( $username ) {
+	public function getPlaceData( $username ) {
 		return Place::where( 'username', $username )->get();
 	}
 
 	// Get artist's data
-	public static function getPlaceDataById( $id ) {
+	public function getPlaceDataById( $id ) {
 		return Place::where( 'id', $id )->get();
 	}
 
 	// Get artist's data
-	public static function getPlaceGenre( $genre_id ) {
+	public function getPlaceGenre( $genre_id ) {
 		return DB::table( 'genres' )->find( $genre_id );
 	}
 
-	public static function getPlaceEvents( $id ) {
+	public function getPlaceEvents( $id ) {
 		$get_events = DB::table( 'events' )->where( 'club_id', $id )->get();
 		$upcoming_events = array();
 		foreach ( $get_events as $event ) :
@@ -60,7 +60,7 @@ class PlaceController extends Controller
 	}
 
 	// Get other places.
-	public static function otherPlaces( $place_id, $genre_id ) {
+	public function otherPlaces( $place_id, $genre_id ) {
 		return DB::table( 'places' )
 		->where([
 			[ 'id', '!=', $place_id ],
@@ -72,23 +72,23 @@ class PlaceController extends Controller
 	}
 
 	// Get artists by admin
-	public static function getAdminPlaces( $admin_id ) {
+	public function getAdminPlaces( $admin_id ) {
 		return Place::where( 'admin_id', $admin_id )->get();
 	}
 
-	public static function getSingleLocation( $id ) {
+	public function getSingleLocation( $id ) {
 		return DB::table( 'locations' )->where( 'id', $id )->get();
 	}
 
-	public static function getAllLocations() {
+	public function getAllLocations() {
 		return DB::table( 'locations' )->orderBy( 'name', 'ASC' )->get();
 	}
 
-	public static function getPopularPlaces() {
+	public function getPopularPlaces() {
 		return DB::table( 'places' )->orderBy( 'likes', 'DESC' )->limit( 3 )->get();
 	}
 
-	public static function getPlacePendingInvitations( $id ) {
+	public function getPlacePendingInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
 			[ 'place_id', '=', $id ],
@@ -96,7 +96,7 @@ class PlaceController extends Controller
 		])->get();
 	}
 
-	public static function getPlaceApprovedInvitations( $id ) {
+	public function getPlaceApprovedInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
 			[ 'place_id', '=', $id ],
@@ -104,7 +104,7 @@ class PlaceController extends Controller
 		])->get();
 	}
 
-	public static function getPlaceDisapprovedInvitations( $id ) {
+	public function getPlaceDisapprovedInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
 			[ 'place_id', '=', $id ],
@@ -112,21 +112,21 @@ class PlaceController extends Controller
 		])->get();
 	}
 
-	public static function getManagerPendingInvitations( $manager_id ) {
+	public function getManagerPendingInvitations( $manager_id ) {
 		$places = Place::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
 		->whereIn( 'place_id', $places )
 		->where( 'status', '=', 0 )->get();
 	}
 
-	public static function getManagerApprovedInvitations( $manager_id ) {
+	public function getManagerApprovedInvitations( $manager_id ) {
 		$places = Place::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
 		->whereIn( 'place_id', $places )
 		->where( 'status', '=', 1 )->get();
 	}
 
-	public static function getManagerDisapprovedInvitations( $manager_id ) {
+	public function getManagerDisapprovedInvitations( $manager_id ) {
 		$places = Place::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
 		->whereIn( 'place_id', $places )
