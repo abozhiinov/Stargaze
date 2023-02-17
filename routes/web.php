@@ -42,7 +42,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get( '/artist/{username}', '\App\Http\Controllers\ArtistController@getArtistView' );
-Route::get( '/artist/{username}/invitations', '\App\Http\Controllers\ArtistController@getArtistInvitationsView' );
 Route::get( '/place/{username}', '\App\Http\Controllers\PlaceController@getPlaceView' );
 Route::get( '/dashboardFilter', '\App\Http\Controllers\AjaxController@dashboardFilter' );
 Route::get( '/eventsFilter', '\App\Http\Controllers\AjaxController@eventsFilter' );

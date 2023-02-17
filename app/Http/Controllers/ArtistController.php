@@ -18,11 +18,6 @@ class ArtistController extends Controller {
 		return view('single-artist', [ 'username' => $username ] );
 	}
 
-	// Get the dashboard for artist's invitations.
-	public function getArtistInvitationsView( $username ) {
-		return view('single-artist-invitations', [ 'username' => $username ] );
-	}
-
 	public function hasInvitations( $id ) {
 		return count( DB::table( 'invitations' )->where( 'artist_id', $id )->get() );
 	}
