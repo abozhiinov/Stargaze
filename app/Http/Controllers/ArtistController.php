@@ -18,10 +18,12 @@ class ArtistController extends Controller {
 		return view('single-artist', [ 'username' => $username ] );
 	}
 
+	// Check if artist has invitations
 	public function hasInvitations( $id ) {
 		return count( DB::table( 'invitations' )->where( 'artist_id', $id )->get() );
 	}
 
+	// Load artist's pending invitations
 	public function getArtistPendingInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
@@ -30,6 +32,7 @@ class ArtistController extends Controller {
 		])->get();
 	}
 
+	// Load artist's approved invitations
 	public function getArtistApprovedInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
@@ -38,6 +41,7 @@ class ArtistController extends Controller {
 		])->get();
 	}
 
+	// Load artist's disapproved invitations
 	public function getArtistDisapprovedInvitations( $id ) {
 		return DB::table( 'invitations' )
 		->where([
@@ -46,6 +50,7 @@ class ArtistController extends Controller {
 		])->get();
 	}
 
+	// Load manager's artists pending invitations
 	public function getManagerPendingInvitations( $manager_id ) {
 		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
@@ -53,6 +58,7 @@ class ArtistController extends Controller {
 		->where( 'status', '=', 0 )->get();
 	}
 
+	// Load manager's artists approved invitations
 	public function getManagerApprovedInvitations( $manager_id ) {
 		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
@@ -60,6 +66,7 @@ class ArtistController extends Controller {
 		->where( 'status', '=', 1 )->get();
 	}
 
+	// Load manager's artists dissaproved invitations
 	public function getManagerDisapprovedInvitations( $manager_id ) {
 		$artists = Artist::where( 'admin_id', $manager_id )->get( 'id' );
 		return DB::table( 'invitations' )
@@ -72,15 +79,17 @@ class ArtistController extends Controller {
 		return Artist::where( 'username', $username )->get();
 	}
 
+	// Get artist's data by ID
 	public function getArtistDataById( $id ) {
 		return Artist::where( 'id', $id )->get();
 	}
 
-	// Get artist's data.
+	// Get artist's genre.
 	public function getArtistGenre( $genre_id ) {
 		return DB::table( 'genres' )->find( $genre_id );
 	}
 
+	// Get artist's upcoming events
 	public function getArtistEvents( $id ) {
 		$get_events = DB::table( 'events' )
 		->where(
@@ -129,16 +138,19 @@ class ArtistController extends Controller {
 		return Artist::where( 'admin_id', $admin_id )->get();
 	}
 
+	// Get the artist's admin's email
 	public function getArtistAdminEmail( $artist_id ) {
 		$artist = DB::table( 'artists' )->where( 'id', $artist_id )->get()[0];
 		$email  = DB::table( 'users' )->where( 'id', $artist->admin_id )->get( 'email' );
 		return $email;
 	}
 
+	// Fetch all available genres
 	public function getAllGenres () {
 		return DB::table( 'genres' )->orderBy( 'name', 'ASC' )->get();
 	}
 
+	// Fetch top 3 most popular artists
 	public function getPopularArtists() {
 		return DB::table( 'artists' )->orderBy( 'likes', 'DESC' )->limit( 3 )->get();
 	}

@@ -59,5 +59,4 @@ Route::get( '/deleteInvitation', '\App\Http\Controllers\AjaxController@deleteInv
 Route::get( '/inviteArtist', '\App\Http\Controllers\AjaxController@inviteArtist' );
 Route::get( '/createEvent', '\App\Http\Controllers\AjaxController@createEvent' );
 Route::get( '/createNewEvent', '\App\Http\Controllers\AjaxController@createNewEvent' );
-Route::get( '/sendemail', '\App\Http\Controllers\MailController@index' );
 Route::post( '/storeImage', '\App\Http\Controllers\FileUploadController@store' );
