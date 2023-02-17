@@ -444,7 +444,7 @@ class AjaxController extends Controller {
 	}
 
 	public function deleteInvitation( Request $request ) {
-		DB::table( 'invitations' )->where( 'id', $request->id )->delete();
+		DB::table( 'invitations' )->delete( $request->id );
 	}
 
 	public function inviteArtist( Request $request ) {

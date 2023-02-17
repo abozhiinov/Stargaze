@@ -194,6 +194,7 @@ $(function () {
     $(document).on('click', '.invitation-single-delete', function(e){
         var invitationId = $(this).closest('.invitation-buttons').data('delete-id') ;
         var invitation = $(this).closest('.invitation-single-content').closest('.invitation-single');
+
         $.ajax({
             type: "get",
             url: '/deleteInvitation' ,
@@ -202,7 +203,7 @@ $(function () {
                 id: invitationId,
             },
             success: function(response) {
-                invitation.slideUp(500);
+                $(location).prop('href', '/profile');
             },
             error: function(response) {
                 console.log('ERROR:');
@@ -212,7 +213,7 @@ $(function () {
     })
 
     $('body').on('click', '.invitation-status', function(e){
-        var invitationId = $('.invitation-buttons').data('id') ;
+        var invitationId = $(this).closest('.invitation-buttons').data('id') ;
         var status = $(this).data('status') ;
         
         $.ajax({
