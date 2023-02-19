@@ -11434,55 +11434,6 @@ body {
   min-height: calc(100vh - 96px - 180px);
 }
 
-.register, .login {
-  background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
-  border-radius: 2rem;
-  color: white;
-  font-family: "Roboto", sans-serif;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-  margin: 5rem 0 8.4rem 0;
-}
-.register .card-header, .login .card-header {
-  margin-top: 1rem;
-  text-align: center;
-  background: none;
-  border-bottom: none;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-.register input:not([type=checkbox]), .login input:not([type=checkbox]) {
-  background: white;
-  color: black !important;
-  height: 3rem;
-  border-radius: 2rem;
-  border-style: none;
-  font-size: 1rem;
-}
-.register input:not([type=checkbox]):focus, .login input:not([type=checkbox]):focus {
-  outline: none;
-}
-.register .button-custom, .login .button-custom {
-  height: 3rem;
-  width: 50%;
-  margin-bottom: 1rem;
-}
-.register .btn-link, .login .btn-link {
-  color: white !important;
-}
-@media (max-width: 767px) {
-  .register .button-custom, .login .button-custom {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-@media (max-width: 767px) {
-  .login .button-custom {
-    width: 100%;
-  }
-}
-
 .button-custom {
   background: rgb(114, 26, 165);
   color: white;
@@ -12230,6 +12181,55 @@ h2, .h2, h3, .h3, h4, .h4 {
 .swiper-button-next svg {
   color: rgb(49, 22, 113);
   transform: scale(3);
+}
+
+.register, .login {
+  background: linear-gradient(90deg, rgb(49, 22, 113) 0%, rgb(74, 32, 117) 49%, rgb(118, 69, 140) 100%);
+  border-radius: 2rem;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  margin: 5rem 0 8.4rem 0;
+}
+.register .card-header, .login .card-header {
+  margin-top: 1rem;
+  text-align: center;
+  background: none;
+  border-bottom: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.register input:not([type=checkbox]), .login input:not([type=checkbox]) {
+  background: white;
+  color: black !important;
+  height: 3rem;
+  border-radius: 2rem;
+  border-style: none;
+  font-size: 1rem;
+}
+.register input:not([type=checkbox]):focus, .login input:not([type=checkbox]):focus {
+  outline: none;
+}
+.register .button-custom, .login .button-custom {
+  height: 3rem;
+  width: 50%;
+  margin-bottom: 1rem;
+}
+.register .btn-link, .login .btn-link {
+  color: white !important;
+}
+@media (max-width: 767px) {
+  .register .button-custom, .login .button-custom {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 767px) {
+  .login .button-custom {
+    width: 100%;
+  }
 }
 
 .homepage-hot-picks {

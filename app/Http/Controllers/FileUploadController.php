@@ -14,12 +14,6 @@ class FileUploadController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store( Request $request ) {
-		$validated_data = $request->validate(
-			[
-				'profile_picture' => 'required|image|max:10240|mimes:jpeg,jpg,gif,bmp,png8',
-			]
-		);
-
 		if ( $request->hasFile( 'profile_picture' ) ) {
 			$file = $request->file( 'profile_picture' );
 
