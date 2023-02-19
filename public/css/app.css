@@ -12232,26 +12232,6 @@ h2, .h2, h3, .h3, h4, .h4 {
   }
 }
 
-.homepage-hot-picks {
-  overflow-x: hidden;
-}
-.homepage-hot-pick {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-.homepage-hot-pick-image {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border-radius: 2rem;
-}
-.homepage-hot-pick-text {
-  color: white;
-}
-
 /**
  * Swiper 8.4.6
  * Most modern mobile touch slider and framework with hardware accelerated transitions
