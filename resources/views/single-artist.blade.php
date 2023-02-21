@@ -101,8 +101,8 @@
 							@method('DELETE')
 							<h5 id="delete-artist-text" class="text-center text-white ">Сигурни ли сте че искате да изтриете този изпълнител?</h5>
 							<input id="delete-artist-username" type="hidden">
-							<button id="delete-artist-yes" type="submit" class="btn btn-sm btn-danger">Да</button>
-							<button id="delete-artist-no" type="button" class="btn btn-secondary" data-dismiss="modal">Не</button>
+							<button id="delete-artist-yes" type="submit" class="button-submit button-custom">Да</button>
+							<button id="delete-artist-no" type="button" class="button-submit button-custom" data-dismiss="modal">Не</button>
 							<button id="delete-artist-ok" class="button-custom" hidden>ОК!</button>
 						</form>
 					</div>
