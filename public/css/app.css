@@ -11509,6 +11509,11 @@ body {
   box-shadow: none;
 }
 
+#form-delete-artist #delete-artist-yes {
+  margin-left: -2rem;
+  margin-right: 1rem;
+}
+
 .welcome-banner {
   width: 100%;
   height: 35rem;
