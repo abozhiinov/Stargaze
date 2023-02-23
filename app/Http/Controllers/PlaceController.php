@@ -36,7 +36,7 @@ class PlaceController extends Controller
 
 	// Get place's events
 	public function getPlaceEvents( $id ) {
-		$get_events = DB::table( 'events' )->where( 'club_id', $id )->get();
+		$get_events = DB::table( 'events' )->where( 'club_id', $id )->where( 'date', '>=', date( 'Y-m-d' ) )->get();
 		$upcoming_events = array();
 		foreach ( $get_events as $event ) :
 			$date   = Carbon::createFromFormat( 'Y-m-d', $event->date );
