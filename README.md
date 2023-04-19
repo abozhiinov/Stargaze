@@ -1,5 +1,4 @@
-<h1 align="center">Stargaze</h1>
-<h2 align="center">Александър Божинов</h2>
+<h1 align="center">Stargaze</br>Александър Божинов</h1>
 
 ## За Stargaze
 Stargaze е дипломен проект и уеб платформа за заведения/събития и артисти, помагаща им да организират своите събития. Разработена е на PHP Framework-a Laravel, а за потебителския интерфейс са използвани HTML, CSS (Sass & Bootstrap), JavaScript (jQuery, AJAX, Swiper.js)
