@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Illuminate\Http\Request;
@@ -17,15 +18,15 @@ class FileUploadController extends Controller
 		if ( $request->hasFile( 'profile_picture' ) ) {
 			$file = $request->file( 'profile_picture' );
 
-			$name = $request->file( 'profile_picture' )->getClientOriginalName();
-
+			$name =  $request->timestamp . $request->file( 'profile_picture' )->getClientOriginalName();
+			
 			$file->move( public_path() . '/images/profile-pictures/', $name );
 		}
 
 		if ( $request->hasFile( 'cover_picture' ) ) {
 			$file = $request->file( 'cover_picture' );
 
-			$name = $request->file( 'cover_picture' )->getClientOriginalName();
+			$name = $request->timestamp . $request->file( 'cover_picture' )->getClientOriginalName();
 
 			$file->move( public_path() . '/images/cover-pictures/', $name );
 		}
@@ -33,7 +34,7 @@ class FileUploadController extends Controller
 		if ( $request->hasFile( 'event_thumbnail' ) ) {
 			$file = $request->file( 'event_thumbnail' );
 
-			$name = $request->file( 'event_thumbnail' )->getClientOriginalName();
+			$name = $request->timestamp . $request->file( 'event_thumbnail' )->getClientOriginalName();
 
 			$file->move( public_path() . '/images/event-thumbnails/', $name );
 		}

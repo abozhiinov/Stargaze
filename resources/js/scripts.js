@@ -18,12 +18,15 @@ $(function () {
     })
 
     $('#form-new-artist').on('submit', function(e){
+
+        var currentTimestamp = Date.now();
+        
         var id = $('#admin-id').val();
         var name = $('#new-artist-name').val();
         var username = $('#new-artist-username').val();
         var genreId = $('#new-artist-genre').val();
-        var profilePic = $('#new-artist-profile-pic').val().replace(/^.*[\\\/]/, '');
-        var coverPic = $('#new-artist-cover-pic').val().replace(/^.*[\\\/]/, '');
+        var profilePic = currentTimestamp + $('#new-artist-profile-pic').val().replace(/^.*[\\\/]/, '');
+        var coverPic = currentTimestamp +  $('#new-artist-cover-pic').val().replace(/^.*[\\\/]/, '');
         var facebook = $('#new-artist-facebook').val();
         var instagram = $('#new-artist-instagram').val();
         var youtube = $('#new-artist-youtube').val();
@@ -31,6 +34,7 @@ $(function () {
         var formData = new FormData;
         formData.append( 'profile_picture', $('#new-artist-profile-pic')[0].files[0] );
         formData.append( 'cover_picture', $('#new-artist-cover-pic')[0].files[0] );
+        formData.append( 'timestamp', currentTimestamp );
 
         $.ajaxSetup({
             headers: {
@@ -78,13 +82,15 @@ $(function () {
     } )
 
     $('#form-new-place').on('submit', function(e){
+        var currentTimestamp = Date.now();
+
         var adminId = $('#admin-id').val();
         var name = $('#new-place-name').val();
         var username = $('#new-place-username').val();
         var genreId = $('#new-place-genre').val();
         var locationId = $('#new-place-location').val();
-        var profilePic = $('#new-place-profile-pic').val().replace(/^.*[\\\/]/, '');
-        var coverPic = $('#new-place-cover-pic').val().replace(/^.*[\\\/]/, '');
+        var profilePic = currentTimestamp + $('#new-place-profile-pic').val().replace(/^.*[\\\/]/, '');
+        var coverPic = currentTimestamp + $('#new-place-cover-pic').val().replace(/^.*[\\\/]/, '');
         var facebook = $('#new-place-facebook').val();
         var instagram = $('#new-place-instagram').val();
         var youtube = $('#new-place-youtube').val();
@@ -92,6 +98,7 @@ $(function () {
         var formData = new FormData;
         formData.append( 'profile_picture', $('#new-place-profile-pic')[0].files[0] );
         formData.append( 'cover_picture', $('#new-place-cover-pic')[0].files[0] );
+        formData.append( 'timestamp', currentTimestamp );
 
         $.ajaxSetup({
             headers: {
@@ -251,15 +258,18 @@ $(function () {
     })
 
     $(document).on('submit', '#form-create-event', function(e){
+        var currentTimestamp = Date.now();
+        
         var id = $('#id').val();
         var title = $('#create-event-title').val();
-        var poster = $('#create-event-poster').val().replace(/^.*[\\\/]/, '');
+        var poster = currentTimestamp + $('#create-event-poster').val().replace(/^.*[\\\/]/, '');
         var artistId = $('#create-event-data').data('artist');
         var placeId = $('#create-event-data').data('place');
         var date = $('#create-event-data').data('date');
 
         var formData = new FormData;
         formData.append( 'event_thumbnail', $('#create-event-poster')[0].files[0] );
+        formData.append( 'timestamp', currentTimestamp );
 
         $.ajaxSetup({
             headers: {
@@ -309,12 +319,15 @@ $(function () {
     })
 
     $(document).on('submit', '#form-create-new-event', function(e){
+        var currentTimestamp = Date.now();
+
         var title = $('#create-new-event-title').val();
-        var poster = $('#create-new-event-poster').val().replace(/^.*[\\\/]/, '');
+        var poster = currentTimestamp + $('#create-new-event-poster').val().replace(/^.*[\\\/]/, '');
         var date = $('#create-new-event-date').val();
 
         var formData = new FormData;
         formData.append( 'event_thumbnail', $('#create-new-event-poster')[0].files[0] );
+        formData.append( 'timestamp', currentTimestamp );
 
         $.ajaxSetup({
             headers: {
@@ -365,12 +378,14 @@ $(function () {
     })
 
     $(document).on('submit', '#form-edit-artist', function(e){
+        var currentTimestamp = Date.now();
+
         var id = $('#id').val() || $('#id').data('id');
         var name = $('#edit-artist-name').val();
         var username = $('#edit-artist-username').val();
         var genreId = $('#edit-artist-genre').val();
-        var profilePic = $('#edit-artist-profile-pic').val().replace(/^.*[\\\/]/, '');
-        var coverPic = $('#edit-artist-cover-pic').val().replace(/^.*[\\\/]/, '');
+        var profilePic = $('#edit-artist-profile-pic').val() != "" ? currentTimestamp + $('#edit-artist-profile-pic').val().replace(/^.*[\\\/]/, '') : '';
+        var coverPic = $('#edit-artist-cover-pic').val() != "" ? currentTimestamp + $('#edit-artist-cover-pic').val().replace(/^.*[\\\/]/, '') : '';
         var facebook = $('#edit-artist-facebook').val();
         var instagram = $('#edit-artist-instagram').val();
         var youtube = $('#edit-artist-youtube').val();
@@ -378,6 +393,7 @@ $(function () {
         var formData = new FormData;
         formData.append( 'profile_picture', $('#edit-artist-profile-pic')[0].files[0] );
         formData.append( 'cover_picture', $('#edit-artist-cover-pic')[0].files[0] );
+        formData.append( 'timestamp', currentTimestamp );
 
         $.ajaxSetup({
             headers: {
@@ -425,12 +441,14 @@ $(function () {
     })
 
     $(document).on('submit', '#form-edit-place', function(e){
+        var currentTimestamp = Date.now();
+
         var id = $('#id').val() || $('#id').data('id');
         var name = $('#edit-place-name').val();
         var username = $('#edit-place-username').val();
         var genreId = $('#edit-place-genre').val();
-        var profilePic = $('#edit-place-profile-pic').val().replace(/^.*[\\\/]/, '');
-        var coverPic = $('#edit-place-cover-pic').val().replace(/^.*[\\\/]/, '');
+        var profilePic = $('#edit-place-profile-pic').val() != "" ? currentTimestamp + $('#edit-place-profile-pic').val().replace(/^.*[\\\/]/, '') : '';
+        var coverPic = $('#edit-place-cover-pic').val() != "" ? currentTimestamp + $('#edit-place-cover-pic').val().replace(/^.*[\\\/]/, '') : '';
         var facebook = $('#edit-place-facebook').val();
         var instagram = $('#edit-place-instagram').val();
         var locationId = $('#edit-place-location').val();
@@ -438,6 +456,7 @@ $(function () {
         var formData = new FormData;
         formData.append( 'profile_picture', $('#edit-place-profile-pic')[0].files[0] );
         formData.append( 'cover_picture', $('#edit-place-cover-pic')[0].files[0] );
+        formData.append( 'timestamp', currentTimestamp );
 
         $.ajaxSetup({
             headers: {
