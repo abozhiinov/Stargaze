@@ -38,6 +38,7 @@ class EventController extends Controller
 		return $pass_events;
 	}
 
+	// Get single event data.
 	public function getEventData( $id ) {
 		$event = DB::table( 'events' )->where( 'id', $id )->get()[0];
 		$pass_event = array();
@@ -63,6 +64,7 @@ class EventController extends Controller
 		return $pass_event;
 	}
 
+	// Get events happening today
 	public static function getTodayEvents() {
 		$events      = DB::table( 'events' )->where( 'date', '=', date( 'Y-m-d' ) )->get();
 		$pass_events = array();

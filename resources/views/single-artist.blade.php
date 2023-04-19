@@ -101,8 +101,8 @@
 							@method('DELETE')
 							<h5 id="delete-artist-text" class="text-center text-white ">Сигурни ли сте че искате да изтриете този изпълнител?</h5>
 							<input id="delete-artist-username" type="hidden">
-							<button id="delete-artist-yes" type="submit" class="btn btn-sm btn-danger">Да</button>
-							<button id="delete-artist-no" type="button" class="btn btn-secondary" data-dismiss="modal">Не</button>
+							<button id="delete-artist-yes" type="submit" class="button-submit button-custom">Да</button>
+							<button id="delete-artist-no" type="button" class="button-submit button-custom" data-dismiss="modal">Не</button>
 							<button id="delete-artist-ok" class="button-custom" hidden>ОК!</button>
 						</form>
 					</div>
@@ -334,6 +334,7 @@
 					<h4 class="mx-4">Други изпълнители</h4>
 					<div class="other-artists">
 						@foreach($artists as $artist)
+						@php $genre = $artist_controller->getArtistGenre( $artist->genre_id ); @endphp
 						<div class="artist-box">
 							<a href="/artist/{{$artist->username}}">
 								<img src="{{ url('images/profile-pictures/' . $artist->profile_picture) }}" class="artist-thumbnail">
@@ -349,6 +350,9 @@
 										<img class="artist-verified" src="{{url('/images/verified.svg')}}">
 										@endif
 										</span>
+									</p>
+									<p class="artist-genre">
+										{{$genre->name}}
 									</p>
 								</div>
 							</a>

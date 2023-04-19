@@ -234,7 +234,7 @@
 		<h4 class="mx-4">Други заведения</h4>
 		<div class="other-artists">
 			@foreach($places as $place)
-				@php $location = PlaceController::getSingleLocation( $place->location_id )[0]; @endphp
+				@php $location = $place_controller->getSingleLocation( $place->location_id )[0]; @endphp
 				<div class="place-box">
 					<a href="/place/{{$place->username}}">
 						<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">

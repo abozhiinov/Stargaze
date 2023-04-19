@@ -409,7 +409,7 @@
         }
     }
 
-    &-location {
+    &-location, &-genre {
         color: white;
         text-shadow: $text-shadow-main;
         font-size: 1.25rem;
@@ -743,5 +743,62 @@ h2, h3, h4 {
     & svg {
         color: $sg-color-dark-purple;
         transform: scale(3);
+    }
+}
+
+.register, .login{
+    background: $sg-gradient;
+    border-radius: $border-radius-main;
+    color: white;
+    font-family: $font-family-roboto;
+    box-shadow: $box-shadow-main;
+    margin: 5rem 0 8.4rem 0;
+
+    .card-header {
+        margin-top: 1rem;
+        text-align: center;
+        background: none;
+        border-bottom: none;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    input:not([type="checkbox"]) {
+        background: white;
+        color: black !important;
+        height: 3rem;
+        border-radius: 2rem;
+        border-style: none;
+        font-size: 1rem;
+        
+        &:focus{
+            outline: none;
+        }
+    }
+
+    .button-custom {
+        height: 3rem;
+        width: 50%;
+        margin-bottom: 1rem;
+    }
+
+    .btn-link {
+        color: white !important;
+    }
+
+    @media (max-width: 767px) {
+        .button-custom {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}
+
+.login {
+    @media (max-width: 767px) {
+        .button-custom {
+            width: 100%;
+        }
     }
 }

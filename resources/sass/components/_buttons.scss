@@ -76,3 +76,10 @@
     height: 2.5rem;
     box-shadow: none;
 }
+
+#form-delete-artist {
+    & #delete-artist-yes {
+        margin-left: -2rem;
+        margin-right: 1rem;
+    }
+}

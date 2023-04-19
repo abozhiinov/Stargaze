@@ -30,9 +30,14 @@
         @if ( count($artists) > 0 )
         <div class="my-profile-dashboard">
         @foreach ( $artists as $artist ) 
+			@php $genre = $artist_controller->getArtistGenre( $artist->genre_id ); @endphp
             <div class="artist-box">
                 <a href="/artist/{{$artist->username}}">
                     <img src="{{ url('images/profile-pictures/' . $artist->profile_picture) }}" class="artist-thumbnail">
+					<div class="artist-box-likes">
+						<img class="artist-likes" src="{{url('/images/likes.svg')}}">
+						<p class="artist-likes-count"> {{$artist->likes}}</p>
+					</div>
                     <div class="artist-box-content">
                         <p class="artist-title">
                             {{$artist->name}}
@@ -42,6 +47,9 @@
                             @endif
                             </span>
                         </p>
+						<p class="artist-genre">
+							{{$genre->name}}
+						</p>
                     </div>
                 </a>
             </div>
@@ -250,7 +258,7 @@
         @if ( count($places) > 0 )
         <div class="my-profile-dashboard">
             @foreach($places as $place)
-				@php $location = PlaceController::getSingleLocation( $place->location_id )[0]; @endphp
+				@php $location = $place_controller->getSingleLocation( $place->location_id )[0]; @endphp
 				<div class="place-box">
 					<a href="/place/{{$place->username}}">
 						<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">

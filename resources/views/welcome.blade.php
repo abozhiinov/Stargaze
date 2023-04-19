@@ -73,6 +73,7 @@ use App\Http\Controllers\EventController;
 	<div class="dashboard">
 		@if(count($artists) > 0)
 			@foreach($artists as $artist)
+			@php $genre = $artist_controller->getArtistGenre( $artist->genre_id ); @endphp
 				<div class="artist-box">
 					<a href="/artist/{{$artist->username}}">
 						<img src="{{ url('images/profile-pictures/' . $artist->profile_picture) }}" class="artist-thumbnail">
@@ -88,6 +89,9 @@ use App\Http\Controllers\EventController;
 								<img class="artist-verified" src="{{url('/images/verified.svg')}}">
 								@endif
 								</span>
+							</p>
+							<p class="artist-genre">
+								{{$genre->name}}
 							</p>
 						</div>
 					</a>
@@ -107,7 +111,7 @@ use App\Http\Controllers\EventController;
 	<div class="dashboard">
 	@if(count($places) > 0)
 		@foreach($places as $place)
-			@php $location = PlaceController::getSingleLocation( $place->location_id )[0]; @endphp
+			@php $location = $place_controller->getSingleLocation( $place->location_id )[0]; @endphp
 			<div class="place-box">
 				<a href="/place/{{$place->username}}">
 					<img src="{{ url('images/profile-pictures/' . $place->profile_picture) }}" class="place-thumbnail">

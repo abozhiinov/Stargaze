@@ -524,7 +524,7 @@
                                         <table cellpadding="0" cellspacing="0" border="0" style="width:100%;" class="mw100">
                                           <tbody>
                                             <tr>
-                                              <td align="center" style=""><a href="#"><img alt="Allbirds" width="600" border="0" style="display:block;outline:0;border:0;padding:0;padding-bottom: 20px;max-width:200px; height:auto; width:100%;" src="images/stargaze-logo.png" /></a></td>
+                                              <td align="center" style=""><a href="#"><img alt="logo" width="600" border="0" style="display:block;outline:0;border:0;padding:0;padding-bottom:20px;max-width:200px;height:auto;width:100%;" src="" /></a></td>
                                             </tr>
                                           </tbody>
                                         </table>
@@ -560,10 +560,10 @@
               <table border="0" cellpadding="0" cellspacing="0" class="mw100" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; width: 100%; max-width: 600px; background-color: #f6f6f6;" width="100%" bgcolor="#f6f6f6">
                 <tbody>
                   <tr>
-                    <td align="center" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"><a target="_blank" href="/place/megamiclub" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: inherit !important; text-decoration: none !important;"><img alt="Face Masks" border="0" style="-ms-interpolation-mode: bicubic; text-decoration: none; display: block; outline: 0; border: 0; max-width: 600px; height: auto; max-width: 600px; height: 100px; object-fit: cover;" width="1200" src="images/cover-pictures/megami_cover.jpg"></a></td>
+                    <td align="center" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"><a target="_blank" href="/place/megamiclub" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: inherit !important; text-decoration: none !important;"><img alt="Face Masks" border="0" style="-ms-interpolation-mode: bicubic; text-decoration: none; display: block; outline: 0; border: 0; max-width: 600px; height: auto; max-width: 600px; height: 100px; object-fit: cover;" width="1200" src="/images/cover-pictures/megami_cover.jpg"></a></td>
                   </tr>
                   <tr>
-                    <td align="center" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"><a target="_blank" href="/artist/galena1" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: inherit !important; text-decoration: none !important;"><img alt="Face Masks" border="0" style="-ms-interpolation-mode: bicubic; text-decoration: none; display: block; outline: 0; border: 0; max-width: 600px; height: auto; max-width: 600px; height: 100px; object-fit: cover;" width="1200" src="images/cover-pictures/galena_cover.png"></a></td>
+                    <td align="center" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"><a target="_blank" href="/artist/galena1" style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: inherit !important; text-decoration: none !important;"><img alt="Face Masks" border="0" style="-ms-interpolation-mode: bicubic; text-decoration: none; display: block; outline: 0; border: 0; max-width: 600px; height: auto; max-width: 600px; height: 100px; object-fit: cover;" width="1200" src="/images/cover-pictures/galena_cover.png"></a></td>
                   </tr>
                 </tbody>
               </table> <!-- /LOGO -->
