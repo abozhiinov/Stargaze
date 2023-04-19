@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\PlaceController;
@@ -161,345 +162,371 @@ class AjaxController extends Controller {
 	// Adding new data to DB.
 
 	public function addNewArtist( Request $request  ) {
-		$artist_data = array(
-			'admin_id'        => $request->id,
-			'name'            => $request->name,
-			'username'        => $request->username,
-			'genre_id'        => $request->genre_id,
-			'profile_picture' => $request->profile_pic,
-			'cover_picture'   => $request->cover_pic,
-			'facebook'        => $request->facebook,
-			'instagram'       => $request->instagram,
-			'youtube'         => $request->youtube,
-			'verified'        => 0,
-			'likes'           => 0,
-		);
-
-		DB::table( 'artists' )->insert( $artist_data );
+		if( Auth::check() ) {
+			$artist_data = array(
+				'admin_id'        => $request->id,
+				'name'            => $request->name,
+				'username'        => $request->username,
+				'genre_id'        => $request->genre_id,
+				'profile_picture' => $request->profile_pic,
+				'cover_picture'   => $request->cover_pic,
+				'facebook'        => $request->facebook,
+				'instagram'       => $request->instagram,
+				'youtube'         => $request->youtube,
+				'verified'        => 0,
+				'likes'           => 0,
+			);
+	
+			DB::table( 'artists' )->insert( $artist_data );
+		}
 	}
 
 	public function addNewPlace( Request $request ) {
-		$place_data = array(
-			'admin_id'        => $request->admin_id,
-			'name'            => $request->name,
-			'username'        => $request->username,
-			'genre_id'        => $request->genre_id,
-			'location_id'     => $request->location_id,
-			'profile_picture' => $request->profile_pic,
-			'cover_picture'   => $request->cover_pic,
-			'facebook'        => $request->facebook,
-			'instagram'       => $request->instagram,
-			'verified'        => 0,
-			'likes'           => 0,
-		);
+		if( Auth::check() ) {
+			$place_data = array(
+				'admin_id'        => $request->admin_id,
+				'name'            => $request->name,
+				'username'        => $request->username,
+				'genre_id'        => $request->genre_id,
+				'location_id'     => $request->location_id,
+				'profile_picture' => $request->profile_pic,
+				'cover_picture'   => $request->cover_pic,
+				'facebook'        => $request->facebook,
+				'instagram'       => $request->instagram,
+				'verified'        => 0,
+				'likes'           => 0,
+			);
 
-		DB::table( 'places' )->insert( $place_data );
+			DB::table( 'places' )->insert( $place_data );
+		}
 	}
 
 	public function loadArtistInvitations( $username ) {
-		$artist_controller = new ArtistController();
-		$place_controller = new PlaceController();
-		$artist                  = $artist_controller->getArtistData( $username )[0];
-		$pending_invitations     = $artist_controller->getArtistPendingInvitations( $artist->id );
-		$approved_invitations    = $artist_controller->getArtistApprovedInvitations( $artist->id );
-		$disapproved_invitations = $artist_controller->getArtistDisapprovedInvitations( $artist->id );
+		if( Auth::check() ) {
+			$artist_controller = new ArtistController();
+			$place_controller = new PlaceController();
+			$artist                  = $artist_controller->getArtistData( $username )[0];
+			$pending_invitations     = $artist_controller->getArtistPendingInvitations( $artist->id );
+			$approved_invitations    = $artist_controller->getArtistApprovedInvitations( $artist->id );
+			$disapproved_invitations = $artist_controller->getArtistDisapprovedInvitations( $artist->id );
 
-		?>
-		<h3 class="invitations text-center my-4">Покани</h3>
-		<?php if ( count( $pending_invitations ) ) : ?>
-			<h4>Активни</h4>
-			<div class='invitation-dashboard pending'>
-			<?php
-			foreach ( $pending_invitations as $single_invitation ) :
-				$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
-				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
-				$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
-				$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
-				?>
-				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
-					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
-						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
-						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-id=<?php echo $single_invitation->id; ?>>
-							<button type="button" class='invitation-status' data-status=1>Приеми</button>
-							<button type="button" class='invitation-status' data-status=-1>Отхвърли</button>
+			?>
+			<h3 class="invitations text-center my-4">Покани</h3>
+			<?php if ( count( $pending_invitations ) ) : ?>
+				<h4>Активни</h4>
+				<div class='invitation-dashboard pending'>
+				<?php
+				foreach ( $pending_invitations as $single_invitation ) :
+					$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
+					$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
+					$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+					$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
+					?>
+					<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
+						<div class='invitation-single-content'>
+							<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
+							<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<div class='invitation-buttons' data-id=<?php echo $single_invitation->id; ?>>
+								<button type="button" class='invitation-status' data-status=1>Приеми</button>
+								<button type="button" class='invitation-status' data-status=-1>Отхвърли</button>
+							</div>
 						</div>
 					</div>
+				<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
-			</div>
-		<?php
-		endif;
-
-		if ( count( $approved_invitations ) ) : ?>
-			<h4>Одобрени</h4>
-			<div class='invitation-dashboard approved'>
 			<?php
-			foreach ( $approved_invitations as $single_invitation ) :
-				$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
-				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
-				$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
-				$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
-				?>
-				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
-					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
-						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
-						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-						<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
-							<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
-						</div>
-						<button class='invitation-single-see-more'>Виж повече ▼</button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-					</div>
-				</div>
-			<?php endforeach; ?>
-			</div>
-		<?php
-		endif;
+			endif;
 
-		if ( count( $disapproved_invitations ) ) : ?>
-			<h4>Отхвърлени</h4>
-			<div class='invitation-dashboard disapproved'>
-			<?php
-			foreach ( $disapproved_invitations as $single_invitation ) :
-				$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
-				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
-				$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
-				$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
-				?>
-				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
-					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
-						<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
-						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-						<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
-							<button class='invitation-single-delete'>Изтрий</button>
+			if ( count( $approved_invitations ) ) : ?>
+				<h4>Одобрени</h4>
+				<div class='invitation-dashboard approved'>
+				<?php
+				foreach ( $approved_invitations as $single_invitation ) :
+					$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
+					$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
+					$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+					$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
+					?>
+					<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
+						<div class='invitation-single-content'>
+							<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
+							<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+							<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
+								<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
+							</div>
+							<button class='invitation-single-see-more'>Виж повече ▼</button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
 						</div>
-						<button class='invitation-single-see-more'>Виж повече ▼</button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
 					</div>
+				<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
-			</div>
-		<?php
-		endif;
+			<?php
+			endif;
+
+			if ( count( $disapproved_invitations ) ) : ?>
+				<h4>Отхвърлени</h4>
+				<div class='invitation-dashboard disapproved'>
+				<?php
+				foreach ( $disapproved_invitations as $single_invitation ) :
+					$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
+					$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
+					$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+					$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
+					?>
+					<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
+						<div class='invitation-single-content'>
+							<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $place->cover_picture; ?>'>
+							<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
+							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+							<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
+								<button class='invitation-single-delete'>Изтрий</button>
+							</div>
+							<button class='invitation-single-see-more'>Виж повече ▼</button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						</div>
+					</div>
+				<?php endforeach; ?>
+				</div>
+			<?php
+			endif;
+		}
 	}
 
 	public function loadPlaceInvitations( $username ) {
-		$artist_controller = new ArtistController();
-		$place_controller = new PlaceController();
-		$place                  = $place_controller->getPlaceData( $username )[0];
-		$pending_invitations     = $place_controller->getPlacePendingInvitations( $place->id );
-		$approved_invitations    = $place_controller->getPlaceApprovedInvitations( $place->id );
-		$disapproved_invitations = $place_controller->getPlaceDisapprovedInvitations( $place->id );
+		if( Auth::check() ) {
+			$artist_controller = new ArtistController();
+			$place_controller = new PlaceController();
+			$place                  = $place_controller->getPlaceData( $username )[0];
+			$pending_invitations     = $place_controller->getPlacePendingInvitations( $place->id );
+			$approved_invitations    = $place_controller->getPlaceApprovedInvitations( $place->id );
+			$disapproved_invitations = $place_controller->getPlaceDisapprovedInvitations( $place->id );
 
-		?>
-		<h3 class="invitations text-center my-4">Покани</h3>
-		<?php if ( count( $pending_invitations ) ) : ?>
-			<h4>Активни</h4>
-			<div class='invitation-dashboard pending'>
-			<?php
-			foreach ( $pending_invitations as $single_invitation ) :
-				$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
-				$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
-				$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
-				?>
-				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
-					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
-						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
-						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
-							<button type="button" class='invitation-single-delete'>Изтрий покана</button>
+			?>
+			<h3 class="invitations text-center my-4">Покани</h3>
+			<?php if ( count( $pending_invitations ) ) : ?>
+				<h4>Активни</h4>
+				<div class='invitation-dashboard pending'>
+				<?php
+				foreach ( $pending_invitations as $single_invitation ) :
+					$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+					$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+					$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
+					?>
+					<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
+						<div class='invitation-single-content'>
+							<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
+							<p class='invitation-single-title'><?php echo $artist->name; ?></p>
+							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
+								<button type="button" class='invitation-single-delete'>Изтрий покана</button>
+							</div>
 						</div>
 					</div>
+				<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
-			</div>
-		<?php
-		endif;
-
-		if ( count( $approved_invitations ) ) : ?>
-			<h4>Одобрени</h4>
-			<div class='invitation-dashboard approved'>
 			<?php
-			foreach ( $approved_invitations as $single_invitation ) :
-				$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
-				$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
-				$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
-				?>
-				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
-					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
-						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
-						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
-							<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
+			endif;
+
+			if ( count( $approved_invitations ) ) : ?>
+				<h4>Одобрени</h4>
+				<div class='invitation-dashboard approved'>
+				<?php
+				foreach ( $approved_invitations as $single_invitation ) :
+					$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+					$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+					$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
+					?>
+					<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
+						<div class='invitation-single-content'>
+							<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
+							<p class='invitation-single-title'><?php echo $artist->name; ?></p>
+							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
+								<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
+							</div>
 						</div>
 					</div>
+				<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
-			</div>
-		<?php
-		endif;
-
-		if ( count( $disapproved_invitations ) ) : ?>
-			<h4>Отхвърлени</h4>
-			<div class='invitation-dashboard disapproved'>
 			<?php
-			foreach ( $disapproved_invitations as $single_invitation ) :
-				$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
-				$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
-				$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
-				?>
-				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
-					<div class='invitation-single-content'>
-						<img class='invitation-single-place-thumbnail' src='/cover-pictures/<?php echo $artist->cover_picture; ?>'>
-						<p class='invitation-single-title'><?php echo $artist->name; ?></p>
-						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
-							<button class='invitation-single-delete'>Изтрий</button>
+			endif;
+
+			if ( count( $disapproved_invitations ) ) : ?>
+				<h4>Отхвърлени</h4>
+				<div class='invitation-dashboard disapproved'>
+				<?php
+				foreach ( $disapproved_invitations as $single_invitation ) :
+					$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+					$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+					$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
+					?>
+					<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
+						<div class='invitation-single-content'>
+							<img class='invitation-single-place-thumbnail' src='/cover-pictures/<?php echo $artist->cover_picture; ?>'>
+							<p class='invitation-single-title'><?php echo $artist->name; ?></p>
+							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
+							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
+								<button class='invitation-single-delete'>Изтрий</button>
+							</div>
 						</div>
 					</div>
+				<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
-			</div>
-		<?php
-		endif;
+			<?php
+			endif;
+		}
 	}
 
 	public function deleteArtist( $username ) {
-		DB::table( 'artists' )->where( 'username', $username )->delete();
+		if( Auth::check() ) {
+			DB::table( 'artists' )->where( 'username', $username )->delete();
 
-		return '<p>Изпълнителят беше изтрит успешно!</p>';
+			return '<p>Изпълнителят беше изтрит успешно!</p>';
+		}
 	}
 
 	public function deletePlace( $username ) {
-		DB::table( 'places' )->where( 'username', $username )->delete();
+		if( Auth::check() ) {
+			DB::table( 'places' )->where( 'username', $username )->delete();
 
-		return '<p>Заведението беше изтрито успешно!</p>';
+			return '<p>Заведението беше изтрито успешно!</p>';
+		}
 	}
 
 	public function updateEditedArtist( Request $request ) {
-		$artist_data = array(
-			'name'      => $request->name,
-			'username'  => $request->username,
-			'genre_id'  => $request->genre_id,
-			'facebook'  => $request->facebook,
-			'instagram' => $request->instagram,
-			'youtube'   => $request->youtube,
-		);
+		if( Auth::check() ) {
+			$artist_data = array(
+				'name'      => $request->name,
+				'username'  => $request->username,
+				'genre_id'  => $request->genre_id,
+				'facebook'  => $request->facebook,
+				'instagram' => $request->instagram,
+				'youtube'   => $request->youtube,
+			);
 
-		if ( ! empty( $request->profile_pic ) ) {
-			$artist_data += [ 'profile_picture' => $request->profile_pic ];
+			if ( ! empty( $request->profile_pic ) ) {
+				$artist_data += [ 'profile_picture' => $request->profile_pic ];
+			}
+
+			if ( ! empty( $request->cover_pic ) ) {
+				$artist_data += [ 'cover_picture' => $request->cover_pic ];
+			}
+
+			DB::table( 'artists' )->where( 'id', '=', $request->id )->update( $artist_data );
 		}
-
-		if ( ! empty( $request->cover_pic ) ) {
-			$artist_data += [ 'cover_picture' => $request->cover_pic ];
-		}
-
-		DB::table( 'artists' )->where( 'id', '=', $request->id )->update( $artist_data );
 	}
 
 	public function updateEditedPlace( Request $request ) {
-		$place_data = array(
-			'name'        => $request->name,
-			'username'    => $request->username,
-			'genre_id'    => $request->genre_id,
-			'location_id' => $request->location_id,
-			'facebook'    => $request->facebook,
-			'instagram'   => $request->instagram,
-		);
+		if( Auth::check() ) {
+			$place_data = array(
+				'name'        => $request->name,
+				'username'    => $request->username,
+				'genre_id'    => $request->genre_id,
+				'location_id' => $request->location_id,
+				'facebook'    => $request->facebook,
+				'instagram'   => $request->instagram,
+			);
 
-		if ( ! empty( $request->profile_pic ) ) {
-			$place_data += [ 'profile_picture' => $request->profile_pic ];
+			if ( ! empty( $request->profile_pic ) ) {
+				$place_data += [ 'profile_picture' => $request->profile_pic ];
+			}
+
+			if ( ! empty( $request->cover_pic ) ) {
+				$place_data += [ 'cover_picture' => $request->cover_pic ];
+			}
+
+			DB::table( 'places' )->where( 'id', '=', $request->id )->update( $place_data );
 		}
-
-		if ( ! empty( $request->cover_pic ) ) {
-			$place_data += [ 'cover_picture' => $request->cover_pic ];
-		}
-
-		DB::table( 'places' )->where( 'id', '=', $request->id )->update( $place_data );
 	}
 
 	public function statusInvitation( Request $request ) {
-		$status_update = [ 'status' => $request->status ];
-		DB::table( 'invitations' )->where( 'id', $request->id )->update( $status_update );
+		if( Auth::check() ) {
+			$status_update = [ 'status' => $request->status ];
+			DB::table( 'invitations' )->where( 'id', $request->id )->update( $status_update );
+		}
 	}
 
 	public function deleteInvitation( Request $request ) {
-		DB::table( 'invitations' )->delete( $request->id );
+		if( Auth::check() ) {
+			DB::table( 'invitations' )->delete( $request->id );
+		}
 	}
 
 	public function inviteArtist( Request $request ) {
-		$artist_controller = new ArtistController();
-		$place_controller = new PlaceController();
-		
-		$email      = $artist_controller->getArtistAdminEmail( $request->id );
-		$invitation = array(
-			'artist_id'  => $request->id,
-			'place_id'   => $request->place,
-			'message'    => $request->message,
-			'date'       => $request->date,
-			'start_hour' => $request->start_hour,
-			'end_hour'   => $request->end_hour,
-			'status'     => 0,
-		);
+		if( Auth::check() ) {
+			$artist_controller = new ArtistController();
+			$place_controller = new PlaceController();
+			
+			$email      = $artist_controller->getArtistAdminEmail( $request->id );
+			$invitation = array(
+				'artist_id'  => $request->id,
+				'place_id'   => $request->place,
+				'message'    => $request->message,
+				'date'       => $request->date,
+				'start_hour' => $request->start_hour,
+				'end_hour'   => $request->end_hour,
+				'status'     => 0,
+			);
 
-		DB::table( 'invitations' )->insert( $invitation );
+			DB::table( 'invitations' )->insert( $invitation );
 
-		$artist = $artist_controller->getArtistDataById( $request->id )[0];
-		$place  = $place_controller->getPlaceDataById( $request->place )[0];
+			$artist = $artist_controller->getArtistDataById( $request->id )[0];
+			$place  = $place_controller->getPlaceDataById( $request->place )[0];
 
-		$data = array(
-			'artist'  => $artist->name,
-			'place'   => $place->name,
-			'message' => $request->message,
-			'date'    => $request->date,
-		);
-		try {
-			Mail::to( $email )->send( new ArtistInvitation( $data ) );
-			return 'success' . $email;
-		} catch ( \Throwable $th ) {
-			return 'fail' . $email;
+			$data = array(
+				'artist'  => $artist->name,
+				'place'   => $place->name,
+				'message' => $request->message,
+				'date'    => $request->date,
+			);
+			try {
+				Mail::to( $email )->send( new ArtistInvitation( $data ) );
+				return 'success' . $email;
+			} catch ( \Throwable $th ) {
+				return 'fail' . $email;
+			}
 		}
 	}
 
 	public function createEvent( Request $request ) {
-		$event = array(
-			'artist_id' => $request->artist_id,
-			'club_id'   => $request->place_id,
-			'date'      => $request->date,
-			'title'     => $request->title,
-			'poster'    => $request->poster,
-		);
+		if( Auth::check() ) {
+			$event = array(
+				'artist_id' => $request->artist_id,
+				'club_id'   => $request->place_id,
+				'date'      => $request->date,
+				'title'     => $request->title,
+				'poster'    => $request->poster,
+			);
 
-		DB::table( 'events' )->insert( $event );
+			DB::table( 'events' )->insert( $event );
+		}
 	}
 
 	public function createNewEvent( Request $request ) {
-		$event = array(
-			'date'   => $request->date,
-			'title'  => $request->title,
-			'poster' => $request->poster,
-		);
+		if( Auth::check() ) {
+			$event = array(
+				'date'   => $request->date,
+				'title'  => $request->title,
+				'poster' => $request->poster,
+			);
 
-		DB::table( 'events' )->insert( $event );
+			DB::table( 'events' )->insert( $event );
+		}
 	}
 }
