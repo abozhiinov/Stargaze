@@ -16,6 +16,8 @@ use Carbon\Carbon;
 use Psr\Http\Message\RequestInterface;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ArtistInvitation;
+use Error;
+use Exception;
 
 class AjaxController extends Controller {
 
@@ -228,8 +230,10 @@ class AjaxController extends Controller {
 							<p class='invitation-single-title'><?php echo $place->name . ', ' . $location; ?></p>
 							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+							<?php if ( ! empty( $single_invitation->message ) ) : ?>
 							<button class='invitation-single-see-more'>Виж повече ▼ </button>
 							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php endif; ?>
 							<div class='invitation-buttons' data-id=<?php echo $single_invitation->id; ?>>
 								<button type="button" class='invitation-status' data-status=1>Приеми</button>
 								<button type="button" class='invitation-status' data-status=-1>Отхвърли</button>
@@ -260,8 +264,10 @@ class AjaxController extends Controller {
 							<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
 								<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
 							</div>
-							<button class='invitation-single-see-more'>Виж повече ▼</button>
-							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php if ( ! empty( $single_invitation->message ) ) : ?>
+								<button class='invitation-single-see-more'>Виж повече ▼</button>
+								<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php endif; ?>
 						</div>
 					</div>
 				<?php endforeach; ?>
@@ -288,8 +294,10 @@ class AjaxController extends Controller {
 							<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
 								<button class='invitation-single-delete'>Изтрий</button>
 							</div>
-							<button class='invitation-single-see-more'>Виж повече ▼</button>
-							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php if ( ! empty( $single_invitation->message ) ) : ?>
+								<button class='invitation-single-see-more'>Виж повече ▼</button>
+								<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php endif; ?>
 						</div>
 					</div>
 				<?php endforeach; ?>
@@ -325,8 +333,10 @@ class AjaxController extends Controller {
 							<p class='invitation-single-title'><?php echo $artist->name; ?></p>
 							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-							<button class='invitation-single-see-more'>Виж повече ▼ </button>
-							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php if ( ! empty( $single_invitation->message ) ) : ?>
+								<button class='invitation-single-see-more'>Виж повече ▼ </button>
+								<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php endif; ?>
 							<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
 								<button type="button" class='invitation-single-delete'>Изтрий покана</button>
 							</div>
@@ -352,8 +362,10 @@ class AjaxController extends Controller {
 							<p class='invitation-single-title'><?php echo $artist->name; ?></p>
 							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-							<button class='invitation-single-see-more'>Виж повече ▼ </button>
-							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php if ( ! empty( $single_invitation->message ) ) : ?>
+								<button class='invitation-single-see-more'>Виж повече ▼ </button>
+								<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php endif; ?>
 							<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
 								<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
 							</div>
@@ -379,8 +391,10 @@ class AjaxController extends Controller {
 							<p class='invitation-single-title'><?php echo $artist->name; ?></p>
 							<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
 							<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
-							<button class='invitation-single-see-more'>Виж повече ▼ </button>
-							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php if ( ! empty( $single_invitation->message ) ) : ?>
+								<button class='invitation-single-see-more'>Виж повече ▼ </button>
+								<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+							<?php endif; ?>
 							<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
 								<button class='invitation-single-delete'>Изтрий</button>
 							</div>
@@ -481,6 +495,7 @@ class AjaxController extends Controller {
 				'date'       => $request->date,
 				'start_hour' => $request->start_hour,
 				'end_hour'   => $request->end_hour,
+				'fee'        => $request->fee,
 				'status'     => 0,
 			);
 

@@ -1,11 +1,13 @@
 const { countBy } = require("lodash");
 const { provide } = require("vue");
 
+import { fake } from 'laravel-mix/src/Log';
 import { Swiper, Parallax, Navigation} from 'swiper'
 Swiper.use([ Parallax, Navigation ])
 
 $(function () {
     $('.button-add-new-artist').on('click', function(e){
+        $('.new-artist-error').attr('hidden', true);
         $('#addArtistModal').modal('show');
     })
 
@@ -14,6 +16,7 @@ $(function () {
     })
 
     $('.button-add-new-place').on('click', function(e){
+        $('.new-place-error').attr('hidden', true);
         $('#addPlaceModal').modal('show');
     })
 
@@ -25,8 +28,8 @@ $(function () {
         var name = $('#new-artist-name').val();
         var username = $('#new-artist-username').val();
         var genreId = $('#new-artist-genre').val();
-        var profilePic = currentTimestamp + $('#new-artist-profile-pic').val().replace(/^.*[\\\/]/, '');
-        var coverPic = currentTimestamp +  $('#new-artist-cover-pic').val().replace(/^.*[\\\/]/, '');
+        var profilePic = $('#new-artist-profile-pic').val() ? currentTimestamp + $('#new-artist-profile-pic').val().replace(/^.*[\\\/]/, '') : '';
+        var coverPic = $('#new-artist-cover-pic').val() ? currentTimestamp + $('#new-artist-cover-pic').val().replace(/^.*[\\\/]/, '') : '';
         var facebook = $('#new-artist-facebook').val();
         var instagram = $('#new-artist-instagram').val();
         var youtube = $('#new-artist-youtube').val();
@@ -75,8 +78,10 @@ $(function () {
                 $(location).prop('href', '/artist/' + username);
             },
             error: function(response) {
-                console.log('ERROR:');
-                console.log(response);
+                name == "" ? $('#error-new-artist-name').attr('hidden', false) : $('#error-new-artist-name').attr('hidden', true);
+                username == "" ? $('#error-new-artist-username').attr('hidden', false) : $('#error-new-artist-username').attr('hidden', true);
+                genreId == null ? $('#error-new-artist-genre').attr('hidden', false) : $('#error-new-artist-genre').attr('hidden', true);
+                profilePic == "" ? $('#error-new-artist-profile-pic').attr('hidden', false) : $('#error-new-artist-profile-pic').attr('hidden', true);
             }
         });
     } )
@@ -89,8 +94,8 @@ $(function () {
         var username = $('#new-place-username').val();
         var genreId = $('#new-place-genre').val();
         var locationId = $('#new-place-location').val();
-        var profilePic = currentTimestamp + $('#new-place-profile-pic').val().replace(/^.*[\\\/]/, '');
-        var coverPic = currentTimestamp + $('#new-place-cover-pic').val().replace(/^.*[\\\/]/, '');
+        var profilePic = $('#new-place-profile-pic').val() != "" ? currentTimestamp + $('#new-place-profile-pic').val().replace(/^.*[\\\/]/, '') : '';
+        var coverPic = $('#new-place-cover-pic').val() != "" ? currentTimestamp + $('#new-place-cover-pic').val().replace(/^.*[\\\/]/, '') : '';
         var facebook = $('#new-place-facebook').val();
         var instagram = $('#new-place-instagram').val();
         var youtube = $('#new-place-youtube').val();
@@ -140,8 +145,11 @@ $(function () {
                 $(location).prop('href', '/place/' + username);
             },
             error: function(response) {
-                console.log('ERROR:');
-                console.log(response);
+                name == "" ? $('#error-new-place-name').attr('hidden', false) : $('#error-new-place-name').attr('hidden', true);
+                username == "" ? $('#error-new-place-username').attr('hidden', false) : $('#error-new-place-username').attr('hidden', true);
+                genreId =="all-genres" ? $('#error-new-place-genre').attr('hidden', false) : $('#error-new-place-genre').attr('hidden', true);
+                locationId == "all-locations" ? $('#error-new-place-location').attr('hidden', false) : $('#error-new-place-location').attr('hidden', true); 
+                profilePic == "" ? $('#error-new-place-profile-pic').attr('hidden', false) : $('#error-new-place-profile-pic').attr('hidden', true);
             }
         });
     } )
@@ -254,6 +262,8 @@ $(function () {
         modal.setAttribute('data-invitation', invitation);
         modal.setAttribute('data-date', date);
 
+        $('.event-error').attr('hidden', true);
+
         $('#createEventModal').modal('show');
     })
 
@@ -262,7 +272,7 @@ $(function () {
         
         var id = $('#id').val();
         var title = $('#create-event-title').val();
-        var poster = currentTimestamp + $('#create-event-poster').val().replace(/^.*[\\\/]/, '');
+        var poster = $('#create-event-poster').val() != "" ? currentTimestamp + $('#create-event-poster').val().replace(/^.*[\\\/]/, '') : '';
         var artistId = $('#create-event-data').data('artist');
         var placeId = $('#create-event-data').data('place');
         var date = $('#create-event-data').data('date');
@@ -308,13 +318,14 @@ $(function () {
                 $('#successfulEventModal').modal('show');
             },
             error: function(response) {
-                console.log('ERROR:');
-                console.log(response);
+                title == "" ? $('#error-event-title').removeAttr('hidden') :$('#error-event-title').attr('hidden', true);
+                poster == "" ? $('#error-event-poster').removeAttr('hidden') : $('#error-event-poster').attr('hidden', true);
             }
         });
     })
 
     $('body').on('click', '.button-create-event', function(e){
+        $('.new-event-error').attr('hidden', true);
         $('#createNewEventModal').modal('show');
     })
 
@@ -322,7 +333,7 @@ $(function () {
         var currentTimestamp = Date.now();
 
         var title = $('#create-new-event-title').val();
-        var poster = currentTimestamp + $('#create-new-event-poster').val().replace(/^.*[\\\/]/, '');
+        var poster = $('#create-new-event-poster').val() != "" ? currentTimestamp + $('#create-new-event-poster').val().replace(/^.*[\\\/]/, '') : '';
         var date = $('#create-new-event-date').val();
 
         var formData = new FormData;
@@ -362,8 +373,9 @@ $(function () {
                 $('#successfulEventModal').modal('show');
             },
             error: function(response) {
-                console.log('ERROR:');
-                console.log(response);
+                title == "" ? $('#error-new-event-title').removeAttr('hidden') :$('#error-new-event-title').attr('hidden', true);
+                date == "" ? $('#error-new-event-date').removeAttr('hidden') :$('#error-new-event-date').attr('hidden', true);
+                poster == "" ? $('#error-new-event-poster').removeAttr('hidden') : $('#error-new-event-poster').attr('hidden', true);
             }
         });
     })
@@ -505,6 +517,7 @@ $(function () {
 
 
     $('.artist-invite').on('click', function(e){
+        $('.invite-error').attr('hidden', true);
         $('#inviteArtistModal').modal('show');
     })
 
@@ -535,8 +548,12 @@ $(function () {
                 $('#successfulInvitationModal').modal('show');
             },
             error: function(response) {
-                console.log('ERROR:');
-                console.log(response);
+                console.log( date, start, end, fee);
+                place == "" ? $('#error-invite-place').attr('hidden', false) : $('#error-invite-place').attr('hidden', true);
+                date == "" ? $('#error-invite-date').attr('hidden', false) : $('#error-invite-date').attr('hidden', true);
+                start == "" ? $('#error-invite-start-hour').attr('hidden', false) : $('#error-invite-start-hour').attr('hidden', true);
+                end == "" ? $('#error-invite-end-hour').attr('hidden', false) : $('#error-invite-end-hour').attr('hidden', true);
+                fee == "" ? $('#error-invite-fee').attr('hidden', false) : $('#error-invite-fee').attr('hidden', true);
             }
         });
     })
