@@ -73,10 +73,12 @@
 							<input type="hidden" name="data" id="create-event-data" data-artist data-place data-invitation>
 							<div class="form-group">
 								<input type="text" class="form-control edit" id="create-event-title" placeholder="Заглавие на събитието">
+								<span hidden id="error-event-title" class="event-error">Полето за заглавие на събитието е задължително.</span>
 							</div>
 							<div class="input-group custom-file-button">
 								<label class="input-group-text" for="create-event-poster">Постер на събитието</label>
 								<input type="file" class="form-control edit" id="create-event-poster">
+								<span hidden id="error-event-poster" class="event-error">Полето за постер на събитието е задължително.</span>
 							</div>
 							<button type="submit" class="button-submit button-custom" id="submit-create-event">Създай</button>
 						</form>
@@ -102,13 +104,16 @@
 							<input type="hidden" name="data" id="create-new-event-data">
 							<div class="form-group">
 								<input type="text" class="form-control edit" id="create-new-event-title" placeholder="Заглавие на събитието">
+								<span hidden id="error-new-event-title" class="new-event-error">Полето за заглавие на събитието е задължително.</span>
 							</div>
                             <div class="form-group">
 								<input type="text" onfocus="(this.type='date')" class="form-control edit" id="create-new-event-date" placeholder="Дата на събитието">
+								<span hidden id="error-new-event-date" class="new-event-error">Полето за дата на събитието е задължително.</span>
 							</div>
 							<div class="input-group custom-file-button">
 								<label class="input-group-text" for="create-new-event-poster">Постер на събитието</label>
 								<input type="file" class="form-control edit" id="create-new-event-poster">
+								<span hidden id="error-new-event-poster" class="new-event-error">Полето за постер на събитието е задължително.</span>
 							</div>
 							<button type="submit" class="button-submit button-custom" id="submit-create-new-event">Създай</button>
 						</form>
@@ -147,14 +152,14 @@
 			<h4>Активни</h4>
 			<div class='invitation-dashboard pending'>
 			<?php
-			foreach ( $pending_invitations as $inv ) :
-                $artist   = $artist_controller->getArtistDataById( $inv->artist_id )[0];
-				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+			foreach ( $pending_invitations as $single_invitation ) :
+                $artist   = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+				$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
 				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
-				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
-				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
 				?>
-				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
 					<div class='invitation-single-content'>
 						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
@@ -164,10 +169,12 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name . ', ' . $location}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-id=<?php echo $inv->id; ?>>
+						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<?php if ( ! empty( $single_invitation->message ) ) : ?>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php endif; ?>
+						<div class='invitation-buttons' data-id=<?php echo $single_invitation->id; ?>>
 							<button type="button" class='invitation-status' data-status=1>Приеми</button>
 							<button type="button" class='invitation-status' data-status=-1>Отхвърли</button>
 						</div>
@@ -182,14 +189,14 @@
 			<h4>Одобрени</h4>
 			<div class='invitation-dashboard approved'>
 			<?php
-			foreach ( $approved_invitations as $inv ) :
-                $artist   = $artist_controller->getArtistDataById( $inv->artist_id )[0];
-				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+			foreach ( $approved_invitations as $single_invitation ) :
+                $artist   = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+				$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
 				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
-				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
-				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
 				?>
-				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
 					<div class='invitation-single-content'>
 						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
@@ -199,12 +206,14 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name . ', ' . $location}}</a> 
                         </p>
                         <p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
-						<div class='invitation-buttons' data-event-id=<?php echo $inv->id; ?>>
-							<button class='invitation-single-create-event' data-date="<?php echo $inv->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $inv->id; ?>>Създай събитие</button>
+						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
+							<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
 						</div>
-						<button class='invitation-single-see-more'>Виж повече ▼</button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php if ( ! empty( $single_invitation->message ) ) : ?>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php endif; ?>
 					</div>
 				</div>
 			<?php endforeach; ?>
@@ -216,14 +225,14 @@
 			<h4>Отхвърлени</h4>
 			<div class='invitation-dashboard disapproved'>
 			<?php
-			foreach ( $disapproved_invitations as $inv ) :
-                $artist   = $artist_controller->getArtistDataById( $inv->artist_id )[0];
-				$place    = $place_controller->getPlaceDataById( $inv->place_id )[0];
+			foreach ( $disapproved_invitations as $single_invitation ) :
+                $artist   = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+				$place    = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
 				$location = $place_controller->getSingleLocation( $place->location_id )[0]->name;
-				$date     = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
-				$time     = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'h:i' );
+				$date     = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+				$time     = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'h:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'h:i' );
 				?>
-				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
 					<div class='invitation-single-content'>
 						<img class='invitation-single-place-thumbnail' src='images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
@@ -233,12 +242,14 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name . ', ' . $location}}</a> 
                         </p>
                         <p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
-						<div class='invitation-buttons' data-delete-id=<?php echo $inv->id; ?>>
+						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
 							<button class='invitation-single-delete'>Изтрий</button>
 						</div>
-						<button class='invitation-single-see-more'>Виж повече ▼</button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php if ( ! empty( $single_invitation->message ) ) : ?>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php endif; ?>
 					</div>
 				</div>
 			<?php endforeach; ?>
@@ -295,13 +306,13 @@
 			<h4>Активни</h4>
 			<div class='invitation-dashboard pending'>
 			<?php
-			foreach ( $pending_invitations as $inv ) :
-				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
-                $place  = $place_controller->getPlaceDataById( $inv->place_id )[0];
-				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
-				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
+			foreach ( $pending_invitations as $single_invitation ) :
+				$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+                $place  = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
+				$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+				$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
 				?>
-				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
 					<div class='invitation-single-content'>
 						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
@@ -311,10 +322,12 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-delete-id=<?php echo $inv->id; ?>>
+						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<?php if ( ! empty( $single_invitation->message ) ) : ?>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php endif; ?>
+						<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
 							<button type="button" class='invitation-single-delete'>Изтрий покана</button>
 						</div>
 					</div>
@@ -328,13 +341,13 @@
 			<h4>Одобрени</h4>
 			<div class='invitation-dashboard approved'>
 			<?php
-			foreach ( $approved_invitations as $inv ) :
-				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
-                $place  = $place_controller->getPlaceDataById( $inv->place_id )[0];
-				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
-				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
+			foreach ( $approved_invitations as $single_invitation ) :
+				$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+                $place  = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
+				$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+				$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
 				?>
-				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
 					<div class='invitation-single-content'>
 						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
@@ -344,11 +357,13 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-event-id=<?php echo $inv->id; ?>>
-							<button class='invitation-single-create-event' data-date="<?php echo $inv->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $inv->id; ?>>Създай събитие</button>
+						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<?php if ( ! empty( $single_invitation->message ) ) : ?>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php endif; ?>
+						<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
+							<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
 						</div>
 					</div>
 				</div>
@@ -361,13 +376,13 @@
 			<h4>Отхвърлени</h4>
 			<div class='invitation-dashboard disapproved'>
 			<?php
-			foreach ( $disapproved_invitations as $inv ) :
-				$artist = $artist_controller->getArtistDataById( $inv->artist_id )[0];
-                $place  = $place_controller->getPlaceDataById( $inv->place_id )[0];
-				$date   = Carbon::createFromFormat( 'Y-m-d', $inv->date )->format( 'd M Y' );
-				$time   = Carbon::createFromFormat( 'H:i:s', $inv->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $inv->end_hour )->format( 'H:i' );
+			foreach ( $disapproved_invitations as $single_invitation ) :
+				$artist = $artist_controller->getArtistDataById( $single_invitation->artist_id )[0];
+                $place  = $place_controller->getPlaceDataById( $single_invitation->place_id )[0];
+				$date   = Carbon::createFromFormat( 'Y-m-d', $single_invitation->date )->format( 'd M Y' );
+				$time   = Carbon::createFromFormat( 'H:i:s', $single_invitation->start_hour )->format( 'H:i' ) . ' - ' . Carbon::createFromFormat( 'H:i:s', $single_invitation->end_hour )->format( 'H:i' );
 				?>
-				<div class='invitation-single' id="inv-<?php echo $inv->id; ?>">
+				<div class='invitation-single' id="inv-<?php echo $single_invitation->id; ?>">
 					<div class='invitation-single-content'>
 						<img class='invitation-single-place-thumbnail' src='/images/cover-pictures/<?php echo $artist->cover_picture; ?>'>
 						<p class='invitation-single-title'>
@@ -377,10 +392,12 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $inv->message; ?></p>
-						<button class='invitation-single-see-more'>Виж повече ▼ </button>
-						<button class='invitation-single-see-less'>Виж по-малко ▲</button>
-						<div class='invitation-buttons' data-delete-id=<?php echo $inv->id; ?>>
+						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<?php if ( ! empty( $single_invitation->message ) ) : ?>
+							<button class='invitation-single-see-more'>Виж повече ▼ </button>
+							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
+						<?php endif; ?>
+						<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
 							<button class='invitation-single-delete'>Изтрий</button>
 						</div>
 					</div>
@@ -411,10 +428,12 @@
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                     <input type="hidden" name="admin-id" id="admin-id" value="{{ $user->id }}">
                     <div class="form-group">
-                    <input type="text" class="form-control" id="new-artist-name" placeholder="Име на изпълнителя*">
+                    	<input type="text" class="form-control" id="new-artist-name" placeholder="Име на изпълнителя*">
+						<span hidden id="error-new-artist-name" class="new-artist-error">Полето за име на изпълнител е задължително.</span>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="new-artist-username" placeholder="Потребителско име на изпълнителя*">
+						<span hidden id="error-new-artist-username" class="new-artist-error">Полето за потребителско име на изпълнител е задължително.</span>
                     </div>
                     <div class="form-group">
                         @php $genres = $artist_controller->getAllGenres(); @endphp
@@ -424,6 +443,7 @@
                             <option class="genre-option" value="{{$genre->id}}">{{$genre->name}}</option>
                             @endforeach
                         </select>
+						<span hidden id="error-new-artist-genre" class="new-artist-error">Полето за жанр на изпълнител е задължително.</span>
                     </div>
                     <div class="form-group">
                     <input type="url" class="form-control" id="new-artist-facebook" placeholder="Facebook">
@@ -437,6 +457,7 @@
                     <div class="input-group custom-file-button">
                         <label class="input-group-text" for="new-artist-profile-pic">Профилна снимка*</label>
                         <input type="file" class="form-control" id="new-artist-profile-pic" name="file">
+						<span hidden id="error-new-artist-profile-pic" class="new-artist-error">Полето за профилна снимка на изпълнител е задължително.</span>
                     </div>
                     <div class="input-group custom-file-button">
                         <label class="input-group-text" for="new-artist-cover-pic">Корица</label>
@@ -466,9 +487,11 @@
                     <input type="hidden" name="admin-id" id="admin-id" value="{{ $user->id }}">
                     <div class="form-group">
                         <input type="text" class="form-control" id="new-place-name" placeholder="Име на заведението*">
+						<span hidden id="error-new-place-name" class="new-place-error">Полето за име на заведението е задължително.</span>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="new-place-username" placeholder="Потребителско име на заведението*">
+						<span hidden id="error-new-place-username" class="new-place-error">Полето за потребителско име на заведението е задължително.</span>
                     </div>
                     <div class="form-group">
                         @php $genres = $artist_controller->getAllGenres(); @endphp
@@ -478,6 +501,7 @@
                             <option class="genre-option" value="{{$genre->id}}">{{$genre->name}}</option>
                             @endforeach
                         </select>
+						<span hidden id="error-new-place-genre" class="new-place-error">Полето за жанр на заведението е задължително.</span>
                     </div>
                     <div class="d-flex justify-content-between gap-3">
                         <select class="form-control select" id="new-place-opening-hour">
@@ -498,11 +522,12 @@
                     <div class="form-group">
                         @php $locations = $place_controller->getAllLocations(); @endphp
                         <select class="form-control select" id="new-place-location">
-                            <option class="location-option" value="all-locations" selected>Локация</option>
+                            <option class="location-option" value="all-locations" selected>Локация*</option>
                             @foreach ( $locations as $location )
                             <option class="loacation-option" value="{{$location->id}}">{{$location->name}}</option>
                             @endforeach
                         </select>
+						<span hidden id="error-new-place-location" class="new-place-error">Полето за локация на заведението е задължително.</span>
                     </div>
                     <div class="form-group">
                         <input type="url" class="form-control" id="new-place-facebook" placeholder="Facebook">
@@ -510,12 +535,10 @@
                     <div class="form-group">
                         <input type="url" class="form-control" id="new-place-instagram" placeholder="Instagram">
                     </div>
-                    <div class="form-group">
-                        <input type="url" class="form-control" id="new-place-youtube" placeholder="YouTube">
-                    </div>
                     <div class="input-group custom-file-button">
                         <label class="input-group-text" for="new-place-profile-pic">Профилна снимка*</label>
                         <input type="file" class="form-control" id="new-place-profile-pic">
+						<span hidden id="error-new-place-profile-pic" class="new-place-error">Полето за профилна снимка на заведението е задължително.</span>
                     </div>
                     <div class="input-group custom-file-button">
                         <label class="input-group-text" for="new-place-profile-pic">Корица</label>

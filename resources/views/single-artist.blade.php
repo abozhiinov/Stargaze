@@ -127,10 +127,12 @@
 							<input type="hidden" name="data" id="create-event-data" data-artist data-place data-invitation>
 							<div class="form-group">
 								<input type="text" class="form-control edit" id="create-event-title" placeholder="Заглавие на събитието">
+								<span hidden id="error-event-title" class="event-error">Полето за заглавие на събитието е задължително.</span>
 							</div>
 							<div class="input-group custom-file-button">
 								<label class="input-group-text" for="create-event-poster">Постер на събитието</label>
 								<input type="file" class="form-control edit" id="create-event-poster">
+								<span hidden id="error-event-poster" class="event-error">Полето за постер на събитието е задължително.</span>
 							</div>
 							<button type="submit" class="button-submit button-custom" id="submit-create-event">Създай</button>
 						</form>
@@ -250,36 +252,43 @@
 							<input type="hidden" name="artist-id" id="artist-id" value="<?php echo $artist->id; ?>">
 							<div class="form-group">
 								<select class="form-control select" id="invite-artist-place">
-									<option class="place-option" selected>Място на събитието</option>
+									<option class="place-option" value="" selected>Място на събитието *</option>
 									<?php if ( isset( $manager_places ) ) : foreach ( $manager_places as $manager_place ) : ?>
 										<option class="place-option" value="<?php echo $manager_place->id; ?>"><?php echo $manager_place->name; ?></option>
 									<?php endforeach; endif; ?>
 								</select>
+								<span hidden id="error-invite-place" class="invite-error">Полето за място на събитието е задължително.</span>
 							</div>
 							<div class="form-group">
 								<textarea rows="5" type="textarea" class="form-control edit" id="invite-artist-message" placeholder="Съобщение"></textarea>
 							</div>
 							<div class="form-group">
-								<input type="text" onfocus="(this.type='date')" id="invite-artist-date" class="form-control edit" placeholder="Дата на събитието">
+								<input type="text" onfocus="(this.type='date')" id="invite-artist-date" class="form-control edit" placeholder="Дата на събитието *">
+								<span hidden id="error-invite-date" class="invite-error">Полето за дата на събитието е задължително.</span>
 							</div>
-							<div class="form-group d-flex justify-content-between gap-4">
+							<div class="form-group">
 								<select class="form-control select" id="invite-artist-start-hour">
-									<option class="start-option" value="" selected>Начален час</option>
+									<option class="start-option" value="" selected>Начален час *</option>
 									@for ( $i = 0; $i < 24; $i++ )
 									<option class="start-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}</option>
 									<option class="start-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}</option>
 									@endfor
 								</select>
+								<span hidden id="error-invite-start-hour" class="invite-error">Полето за начален час на събитието е задължително.</span>
+							</div>
+							<div class="form-group">
 								<select class="form-control select" id="invite-artist-end-hour">
-									<option class="end-option" value="" selected>Краен час</option>
+									<option class="end-option" value="" selected>Краен час *</option>
 									@for ( $i = 0; $i < 24; $i++ )
 									<option class="end-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':00'}}</option>
 									<option class="end-option" value="@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}">@if( $i < 10 ){{'0'}}@endif{{$i.':30'}}</option>
 									@endfor
 								</select>
+								<span hidden id="error-invite-end-hour" class="invite-error">Полето за краен час на събитието е задължително.</span>
 							</div>
 							<div class="form-group">
-								<input type="number" class="form-control edit" id="invite-artist-fee" placeholder="Хонорар">
+								<input type="number" class="form-control edit" id="invite-artist-fee" placeholder="Хонорар *">
+								<span hidden id="error-invite-fee" class="invite-error">Полето за хонорар на изпълнителя е задължително.</span>
 							</div>
 							<button type="submit" class="button-submit button-custom" id="submit-invite-artist">Изпрати покана</button>
 						</form>

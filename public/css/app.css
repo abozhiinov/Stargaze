@@ -12049,6 +12049,12 @@ h2, .h2, h3, .h3, h4, .h4 {
 .modal-body label {
   font-size: 1rem;
 }
+.modal-body span {
+  color: white;
+  padding-left: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
 .modal-body input:not([type=file]), .modal-body select {
   border: 1px solid #e5e5e5;
   border-radius: 1rem;
@@ -12056,7 +12062,6 @@ h2, .h2, h3, .h3, h4, .h4 {
   background: transparent;
   height: 3rem;
   font-size: 1rem;
-  margin-bottom: 1rem;
 }
 .modal-body input:not([type=file])::-moz-placeholder, .modal-body select::-moz-placeholder {
   color: white;
@@ -12113,6 +12118,14 @@ h2, .h2, h3, .h3, h4, .h4 {
 
 .input-group {
   width: 100%;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group #new-place-location {
+  margin-top: 1rem;
 }
 
 .custom-file-button {

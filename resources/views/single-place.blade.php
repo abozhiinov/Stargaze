@@ -74,10 +74,12 @@
 							<input type="hidden" name="data" id="create-event-data" data-artist data-place data-invitation>
 							<div class="form-group">
 								<input type="text" class="form-control edit" id="create-event-title" placeholder="Заглавие на събитието">
+								<span hidden id="error-event-title" class="event-error">Полето за заглавие на събитието е задължително.</span>
 							</div>
 							<div class="input-group custom-file-button">
 								<label class="input-group-text" for="create-event-poster">Постер на събитието</label>
 								<input type="file" class="form-control edit" id="create-event-poster">
+								<span hidden id="error-event-poster" class="event-error">Полето за постер на събитието е задължително.</span>
 							</div>
 							<button type="submit" class="button-submit button-custom" id="submit-create-event">Създай</button>
 						</form>
