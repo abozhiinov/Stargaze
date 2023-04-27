@@ -60,7 +60,7 @@ $(function () {
         });
 
         $.ajax({
-            type: "get",
+            type: "post",
             url: '/addNewArtist',
             data: {
                 _token: $('#token').val(),
@@ -126,7 +126,7 @@ $(function () {
         });
 
         $.ajax({
-            type: "get",
+            type: "post",
             url: '/addNewPlace',
             data: {
                 _token: $('#token').val(),
@@ -211,7 +211,7 @@ $(function () {
         var invitation = $(this).closest('.invitation-single-content').closest('.invitation-single');
 
         $.ajax({
-            type: "get",
+            type: "delete",
             url: '/deleteInvitation' ,
             data: {
                 _token: $('#token').val(),
@@ -232,7 +232,7 @@ $(function () {
         var status = $(this).data('status') ;
         
         $.ajax({
-            type: "get",
+            type: "put",
             url: '/statusInvitation',
             data: {
                 _token: $('#token').val(),
@@ -302,7 +302,7 @@ $(function () {
         });
 
         $.ajax({
-            type: "get",
+            type: "post",
             url: '/createEvent',
             data: {
                 _token: $('#token').val(),
@@ -361,7 +361,7 @@ $(function () {
         });
 
         $.ajax({
-            type: "get",
+            type: "post",
             url: '/createNewEvent',
             data: {
                 title: title,
@@ -428,7 +428,7 @@ $(function () {
         });
         
         $.ajax({
-            type: "get",
+            type: "put",
             url: '/editArtist',
             data: {
                 _token: $('#token').val(),
@@ -491,7 +491,7 @@ $(function () {
         });
 
         $.ajax({
-            type: "get",
+            type: "put",
             url: '/editPlace',
             data: {
                 _token: $('#token').val(),
@@ -531,7 +531,7 @@ $(function () {
         var fee = $('#invite-artist-fee').val();
 
         $.ajax({
-            type: "get",
+            type: "post",
             url: '/inviteArtist',
             data: {
                 _token: $('#token').val(),
@@ -578,7 +578,7 @@ $(function () {
         var username = $('#form-delete-artist').data('username');
 
         $.ajax({
-            type: "get",
+            type: "delete",
             url: '/artistDelete/' + username,
             data: {
                 _token: $('#token').val(),
@@ -601,7 +601,7 @@ $(function () {
         var username = $('#form-delete-place').data('username');
 
         $.ajax({
-            type: "get",
+            type: "delete",
             url: '/placeDelete/' + username,
             data: {
                 _token: $('#token').val(),
@@ -662,7 +662,7 @@ $(function () {
         }
 
         $.ajax({
-            type: "get",
+            type: "post",
             url: '/eventsFilter',
             data: {
                 _token: $('#token').val(),
@@ -734,7 +734,7 @@ $(function () {
         }
 
         $.ajax({
-            type: "get",
+            type: "post",
             url: '/dashboardFilter',
             data: {
                 _token: $('#token').val(),
