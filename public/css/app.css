@@ -11032,6 +11032,11 @@ body {
 .site-header .first-button {
   display: none;
 }
+@media (max-width: 640px) {
+  .site-header .stargaze-logo {
+    height: 2rem;
+  }
+}
 @media (max-width: 1080px) {
   .site-header .primary-menu {
     display: none;
@@ -11168,6 +11173,20 @@ body {
   margin-bottom: -0.25rem;
   font-size: 15px;
 }
+@media (max-width: 640px) {
+  .footer_for-more {
+    font-size: 1rem;
+  }
+  .footer .social-media-icon {
+    height: 2rem;
+    width: 2rem;
+  }
+  .footer_copyright {
+    margin-top: 1.5rem;
+    margin-bottom: -0.25rem;
+    font-size: 12px;
+  }
+}
 
 .dashboard {
   display: grid;
@@ -11207,6 +11226,8 @@ body {
 @media (max-width: 768px) {
   .event-dashboard {
     grid-template-columns: 1fr;
+    gap: 2rem;
+    margin: 2rem auto;
   }
 }
 .event-box {
@@ -11228,6 +11249,11 @@ body {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(255, 255, 255, 0) 60%);
   z-index: 10;
   border-radius: 2rem;
+}
+@media (max-width: 991px) {
+  .event-box::after {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(255, 255, 255, 0) 90%);
+  }
 }
 .event-box-content {
   position: absolute;
@@ -11266,21 +11292,6 @@ body {
   bottom: 0;
   left: 0;
 }
-.event-box .event-book {
-  width: 10rem;
-  height: 3rem;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 1rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: none;
-  z-index: 100;
-}
-.event-box:hover .event-book {
-  display: block;
-}
 @media (max-width: 991px) {
   .event-box-content {
     padding: 0.75rem 1.25rem;
@@ -11289,7 +11300,7 @@ body {
     font-size: 1rem;
   }
   .event-box .event-date {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -11597,9 +11608,32 @@ body {
   .welcome-banner .banner-content .banner-body {
     font-size: 20px;
     letter-spacing: 0.5px;
+    white-space: normal;
   }
   .welcome-banner .banner-content .banner-button {
     padding: 0.8rem 1.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+  }
+  .welcome-banner .banner-content .banner-bottom-text {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+}
+@media (max-width: 640px) {
+  .welcome-banner {
+    height: 30rem;
+  }
+  .welcome-banner .banner-content .banner-title {
+    font-size: 25px;
+    letter-spacing: 1px;
+  }
+  .welcome-banner .banner-content .banner-body {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+  }
+  .welcome-banner .banner-content .banner-button {
+    padding: 0.7rem 1rem;
     margin-bottom: 0.5rem;
   }
   .welcome-banner .banner-content .banner-bottom-text {
@@ -11878,7 +11912,7 @@ body {
 }
 @media (max-width: 991px) {
   .artist-title, .place-title {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 }
 .artist-location, .artist-genre, .place-location, .place-genre {
@@ -11889,6 +11923,11 @@ body {
   margin-bottom: 0;
   position: relative;
   z-index: 200;
+}
+@media (max-width: 991px) {
+  .artist-location, .artist-genre, .place-location, .place-genre {
+    font-size: 1rem;
+  }
 }
 .artist-verified, .place-verified {
   width: 1.5rem;
@@ -11970,12 +12009,12 @@ h2, .h2, h3, .h3, h4, .h4 {
 }
 @media (max-width: 768px) {
   h2, .h2, h3, .h3, h4, .h4 {
-    font-size: calc(1rem + 0.66vw);
+    font-size: calc(1.2rem + 0.66vw);
   }
 }
 @media (max-width: 640px) {
   h2, .h2, h3, .h3, h4, .h4 {
-    font-size: calc(0.75rem + 0.66vw);
+    font-size: calc(1rem + 0.66vw);
   }
 }
 
@@ -12039,6 +12078,7 @@ h2, .h2, h3, .h3, h4, .h4 {
 .modal-body {
   --bs-modal-padding: 2rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

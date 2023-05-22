@@ -24,4 +24,22 @@
         margin-bottom: -0.25rem;
         font-size: 15px;
     }
+
+    @media (max-width: 640px) {
+
+        &_for-more {
+            font-size: 1rem;
+        }
+
+        .social-media-icon {
+            height: 2rem;
+            width: 2rem;
+        }
+
+        &_copyright {
+            margin-top: 1.5rem;
+            margin-bottom: -0.25rem;
+            font-size: 12px;
+        }
+    }
 }

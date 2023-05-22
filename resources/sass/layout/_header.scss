@@ -33,6 +33,12 @@ body {
             display: none;
         }
 
+        @media (max-width: 640px) {
+            .stargaze-logo {
+                height: 2rem;
+            }
+        }
+
         @media (max-width: 1080px) {
             .primary-menu {
                 display: none;

@@ -90,10 +90,40 @@
             & .banner-body {
                 font-size: 20px;
                 letter-spacing: 0.5px;
+                white-space: normal;
             }
     
             & .banner-button {
                 padding: 0.8rem 1.6rem;
+                margin-bottom: 0.5rem;
+                font-size: 0.7rem;
+            }
+    
+            & .banner-bottom-text {
+                font-size: 10px;
+                letter-spacing: 0.5px;
+            }
+        }
+    }
+
+    @media (max-width: 640px) { 
+
+        height: 30rem;
+
+        & .banner-content {
+    
+            & .banner-title {
+                font-size: 25px;
+                letter-spacing: 1px;
+            }
+    
+            & .banner-body {
+                font-size: 15px;
+                letter-spacing: 0.5px;
+            }
+    
+            & .banner-button {
+                padding: 0.7rem 1rem;
                 margin-bottom: 0.5rem;
             }
     
@@ -405,7 +435,7 @@
         z-index: 200;
 
         @media (max-width: 991px) {
-            font-size: 1rem;
+            font-size: 1.25rem;
         }
     }
 
@@ -417,6 +447,10 @@
         margin-bottom: 0;
         position: relative;
         z-index: 200;
+
+        @media (max-width: 991px) {
+            font-size: 1rem;
+        }
     }
 
     &-verified {
@@ -499,11 +533,11 @@ h2, h3, h4 {
     text-shadow: $text-shadow-main;
 
     @media (max-width: 768px) {
-        font-size: calc(1rem + 0.66vw);
+        font-size: calc(1.2rem + 0.66vw);
     }
 
     @media (max-width: 640px) {
-        font-size: calc(0.75rem + 0.66vw);
+        font-size: calc(1rem + 0.66vw);
     }
 
 }
@@ -580,6 +614,7 @@ h2, h3, h4 {
         --bs-modal-padding: 2rem;
 
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
 

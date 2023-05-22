@@ -19,7 +19,7 @@ use App\Http\Controllers\ArtistController;
 	<form>
 		<form id="event-filter-form" onsubmit="return false">
 			<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-			<div class="form-container event-filter justify-content-around row p-4 mt-5">
+			<div class="form-container event-filter justify-content-around row p-4">
 				<div class="row justify-content-around">
 					<input type="text" class="search-input-field col-sm-4 search-artist-events" id="search-artist-events" placeholder="Търси по изпълнител...">
 					<input type="text" class="search-input-field col-sm-4 search-place-events" id="search-place-events" placeholder="Търси по заведение...">
