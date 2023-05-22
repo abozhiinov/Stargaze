@@ -621,6 +621,13 @@ h2, h3, h4 {
         form {
             width: 100%;
             max-width: 100%;
+
+            &#form-delete-artist, &#form-delete-place {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
         }
 
         & label {

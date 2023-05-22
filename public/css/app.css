@@ -12086,6 +12086,12 @@ h2, .h2, h3, .h3, h4, .h4 {
   width: 100%;
   max-width: 100%;
 }
+.modal-body form#form-delete-artist, .modal-body form#form-delete-place {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .modal-body label {
   font-size: 1rem;
 }

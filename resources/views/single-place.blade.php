@@ -48,8 +48,10 @@
 							@csrf
 							@method('DELETE')
 							<h5 id="delete-place-text" class="text-center text-white ">Сигурни ли сте че искате да изтриете това заведение?</h5>
-							<button id="delete-place-yes" type="submit" class="btn btn-sm btn-danger">Да</button>
-							<button id="delete-place-no" type="button" class="btn btn-secondary" data-dismiss="modal">Не</button>
+							<div>
+								<button id="delete-place-yes" type="submit" class="btn button-custom">Да</button>
+								<button id="delete-place-no" type="button" class="btn button-custom" data-dismiss="modal">Не</button>
+							</div>
 							<button id="delete-place-ok" class="button-custom" hidden>ОК!</button>
 						</form>
 					</div>

@@ -169,7 +169,7 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name . ', ' . $location}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo "Хонорар: " . $single_invitation->fee . "lv." . nl2br("\n") . $single_invitation->message; ?></p>
 						<?php if ( ! empty( $single_invitation->message ) ) : ?>
 							<button class='invitation-single-see-more'>Виж повече ▼ </button>
 							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
@@ -206,7 +206,7 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name . ', ' . $location}}</a> 
                         </p>
                         <p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo "Хонорар: " . $single_invitation->fee . "lv." . nl2br("\n") . $single_invitation->message; ?></p>
 						<div class='invitation-buttons' data-event-id=<?php echo $single_invitation->id; ?>>
 							<button class='invitation-single-create-event' data-date="<?php echo $single_invitation->date; ?>"  data-artist="<?php echo $artist->id; ?>" data-place="<?php echo $place->id; ?>" data-invitation=<?php echo $single_invitation->id; ?>>Създай събитие</button>
 						</div>
@@ -242,7 +242,7 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name . ', ' . $location}}</a> 
                         </p>
                         <p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo "Хонорар: " . $single_invitation->fee . "lv." . nl2br("\n") . $single_invitation->message; ?></p>
 						<div class='invitation-buttons' data-delete-id=<?php echo $single_invitation->id; ?>>
 							<button class='invitation-single-delete'>Изтрий</button>
 						</div>
@@ -322,7 +322,7 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo "Хонорар: " . $single_invitation->fee . "lv." . nl2br("\n") . $single_invitation->message; ?></p>
 						<?php if ( ! empty( $single_invitation->message ) ) : ?>
 							<button class='invitation-single-see-more'>Виж повече ▼ </button>
 							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
@@ -357,7 +357,7 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo "Хонорар: " . $single_invitation->fee . "lv." . nl2br("\n") . $single_invitation->message; ?></p>
 						<?php if ( ! empty( $single_invitation->message ) ) : ?>
 							<button class='invitation-single-see-more'>Виж повече ▼ </button>
 							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
@@ -392,7 +392,7 @@
                             <a class='invitation-single-title-link' href="/place/<?php echo $place->username; ?>">{{$place->name}}</a> 
                         </p>
 						<p class='invitation-single-info'><?php echo $date . ', ' . $time; ?></p>
-						<p id='message' class='invitation-single-message'><?php echo $single_invitation->message; ?></p>
+						<p id='message' class='invitation-single-message'><?php echo "Хонорар: " . $single_invitation->fee . "lv." . nl2br("\n") . $single_invitation->message; ?></p>
 						<?php if ( ! empty( $single_invitation->message ) ) : ?>
 							<button class='invitation-single-see-more'>Виж повече ▼ </button>
 							<button class='invitation-single-see-less'>Виж по-малко ▲</button>
