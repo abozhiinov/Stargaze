@@ -791,7 +791,6 @@ $(function () {
         }
     })
 
-
     const swiper = new Swiper('.swiper', {
         // Optional parameters
         slidesPerView: 2,
@@ -805,5 +804,13 @@ $(function () {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
+        breakpoints: {  
+            '0': {
+              slidesPerView: 1,
+            },
+            '770': {
+              slidesPerView: 2,
+            },
+          },
     });
 });
